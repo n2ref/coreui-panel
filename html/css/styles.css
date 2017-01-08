@@ -1,0 +1,171 @@
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.panel.panel-default {border-color: #cbcbcb}
+.panel.panel-default > .panel-heading {
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd;
+}
+.panel > .panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.panel > .panel-body {
+    padding: 15px;
+}
+
+.panel > .panel-body .tab-content > .tab-pane,
+.panel > .panel-body .pill-content > .pill-pane {display: none}
+
+.panel > .panel-body .tab-content > .active,
+.panel > .panel-body .pill-content > .active {display: block}
+
+.panel > .panel-body > .panel-tabs {
+    padding-left: 0;
+    margin-bottom: 20px;
+    margin-top: -15px;
+    list-style: none;
+}
+.panel > .panel-body > .panel-tabs:after,
+.panel > .panel-body > .panel-tabs:before {
+    display: table;
+    content: " ";
+    clear: both;
+}
+.panel > .panel-body > .panel-tabs > li {
+    position: relative;
+    display: block;
+    float: left;
+    margin-top: -1px;
+    margin-bottom: -1px;
+}
+
+.panel > .panel-body > .panel-tabs > li > a {
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    background: 0 0
+}
+
+.panel > .panel-body > .panel-tabs > li > a:hover,
+.panel > .panel-body > .panel-tabs > li > a:focus {
+    border-bottom-color: transparent;
+    text-decoration: none;
+}
+
+.panel > .panel-body > .panel-tabs > .active > a,
+.panel > .panel-body > .panel-tabs > .active > a:hover,
+.panel > .panel-body > .panel-tabs > .active > a:focus {border-color: transparent #ddd #ddd #ddd}
+
+.panel > .panel-body > .panel-tabs > li.active > a,
+.panel > .panel-body > .panel-tabs > li.active > a:hover,
+.panel > .panel-body > .panel-tabs > li.active > a:focus {
+    color: #555;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    text-decoration: none;
+}
+.panel > .panel-body > .panel-tabs li.disabled > a {
+    color: #a0a0a0 !important;
+    text-decoration: none;
+    cursor: not-allowed;
+    background-color: transparent;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.panel > .panel-body > .panel-tabs > li.dropdown.open > a,
+.panel > .panel-body > .panel-tabs > li.dropdown.open > a:hover,
+.panel > .panel-body > .panel-tabs > li.dropdown.open > a:focus {
+    background-color: #eee;
+    border-color: #337ab7;
+    text-decoration: none;
+}
+
+.panel > .panel-body > .panel-tabs > li > .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.panel > .panel-body > .panel-tabs > li.open > .dropdown-menu {display: block}
+
+.panel > .panel-body > .panel-tabs > li > .dropdown-menu > li > a:hover,
+.panel > .panel-body > .panel-tabs > li > .dropdown-menu > li > a:focus {
+    color: #262626;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+.panel > .panel-body > .panel-tabs > li > .dropdown-menu > .active > a,
+.panel > .panel-body > .panel-tabs > li > .dropdown-menu > .active > a:hover,
+.panel > .panel-body > .panel-tabs > li > .dropdown-menu > .active > a:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #428bca;
+    outline: 0;
+}
+.panel > .panel-body > .panel-tabs > li > .dropdown-menu .divider {
+    height: 1px;
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+.panel > .panel-body > .panel-tabs > li > .dropdown-menu > li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+.panel > .panel-body > .panel-tabs > li > .dropdown-menu > li > a:hover,
+.panel > .panel-body > .panel-tabs > li > .dropdown-menu > li > a:focus {
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+.panel > .panel-body > .panel-tabs > li > .dropdown .caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px solid;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
