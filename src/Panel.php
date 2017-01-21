@@ -155,7 +155,7 @@ class Panel {
                         $combo_tab_class = '';
                         foreach ($elements as $element) {
                             if ($element['type'] == $tab::ELEMENT_BREAK) {
-                                $tpl->tabs->elements->combo_tab->elements->touchBlock('break');
+                                $tpl->tabs->elements->combo_tab->combo_elements->touchBlock('break');
 
                             } else {
                                 $url = $element['url'] . '&' . $this->resource . '=' . $element['id'];
@@ -169,11 +169,11 @@ class Panel {
                                     $class = '';
                                 }
 
-                                $tpl->tabs->elements->combo_tab->elements->element->assign('[CLASS]', $class);
-                                $tpl->tabs->elements->combo_tab->elements->element->assign('[TITLE]', $element['title']);
-                                $tpl->tabs->elements->combo_tab->elements->element->assign('[URL]',   $url);
+                                $tpl->tabs->elements->combo_tab->combo_elements->element->assign('[CLASS]', $class);
+                                $tpl->tabs->elements->combo_tab->combo_elements->element->assign('[TITLE]', $element['title']);
+                                $tpl->tabs->elements->combo_tab->combo_elements->element->assign('[URL]',   $url);
                             }
-                            $tpl->tabs->elements->combo_tab->elements->reassign();
+                            $tpl->tabs->elements->combo_tab->combo_elements->reassign();
                         }
 
                         $tpl->tabs->elements->combo_tab->assign('[TITLE]', $tab->getTitle());
