@@ -14,8 +14,11 @@ class Panel {
 
     protected $active_tab = '';
     protected $title      = '';
+    protected $subtitle   = '';
     protected $content    = '';
+    protected $actions    = '';
     protected $resource   = '';
+    protected $type       = '';
     protected $tabs       = array();
 
     protected static $added_script = false;
@@ -24,10 +27,12 @@ class Panel {
     /**
      * Panel constructor.
      * @param string $resource
+     * @param string $type
      */
-    public function __construct($resource) {
+    public function __construct($resource, $type = 'default') {
 
         $this->resource = $resource;
+        $this->type     = $type;
 
         if (isset($_GET[$this->resource])) {
             $this->active_tab = $_GET[$this->resource];
@@ -36,16 +41,27 @@ class Panel {
 
 
     /**
+     * Установка загаловка
      * @param string $title
+     * @param string $subtitle
      */
-    public function setTitle($title) {
-        $this->title = $title;
+    public function setTitle($title, $subtitle = '') {
+        $this->title    = $title;
+        $this->subtitle = $subtitle;
+    }
+
+
+    /**
+     * Установка своих елементов управления
+     * @param string $actions
+     */
+    public function setActionsHtml($actions = '') {
+        $this->actions = $actions;
     }
 
 
     /**
      * Добавление таба
-     *
      * @param string $title
      * @param string $id
      * @param string $url
@@ -142,9 +158,16 @@ class Panel {
 
         $tpl->assign('[ID]',      $this->resource);
         $tpl->assign('[CONTENT]', $this->content);
+        $tpl->assign('[TYPE]',    $this->type);
 
         if ( ! empty($this->title)) {
-            $tpl->title->assign('[TITLE]', $this->title);
+            $tpl->heading->title->assign('[TITLE]', $this->title);
+            if ( ! empty($this->subtitle)) {
+                $tpl->heading->title->subtitle->assign('[SUBTITLE]', $this->subtitle);
+            }
+        }
+        if ( ! empty($this->actions)) {
+            $tpl->heading->actions->assign('[ACTIONS]', $this->actions);
         }
 
         if ( ! empty($this->tabs)) {
