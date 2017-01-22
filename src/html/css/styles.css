@@ -176,7 +176,7 @@
     border-bottom: 1px solid #ddd;
 }
 .coreui-panel.coreui-panel-default > .coreui-panel-tabs > li > a {
-    color: #333
+    color: #337ab7
 }
 .coreui-panel.coreui-panel-default > .coreui-panel-tabs > li.active > a {
     color: #555;
