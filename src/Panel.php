@@ -135,7 +135,7 @@ class Panel {
             self::$added_script = true;
             $container_dir = substr(__DIR__, strlen($_SERVER['DOCUMENT_ROOT']));
 
-            $scripts  = "<link rel=\"stylesheet\"  type=\"text/css\" href=\"{$container_dir}/html/css/styles.css\"/>";
+            $scripts  = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$container_dir}/html/css/styles.css\"/>";
             $scripts .= "<script src=\"{$container_dir}/html/js/panel.js\"></script>";
 
         } else {
