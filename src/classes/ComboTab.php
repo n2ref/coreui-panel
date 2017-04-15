@@ -32,7 +32,7 @@ class ComboTab {
      * @param  bool   $disabled
      * @return self
      */
-    public function addItem($title, $id, $url, $disabled = false) {
+    public function addItem($title, $id, $url = '', $disabled = false) {
         $this->elements[] = array(
             'type'     => self::ELEMENT_ITEM,
             'title'    => $title,

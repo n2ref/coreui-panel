@@ -1,7 +1,6 @@
 <?php
 namespace CoreUI;
 use CoreUI\Panel\classes\ComboTab;
-use CoreUI\Utils\Mtpl;
 
 require_once 'classes/ComboTab.php';
 
@@ -15,24 +14,22 @@ class Panel {
     protected $active_tab = '';
     protected $title      = '';
     protected $subtitle   = '';
-    protected $content    = '';
+    protected $content    = [];
     protected $actions    = '';
     protected $resource   = '';
-    protected $type       = '';
-    protected $tabs       = array();
-
-    protected static $added_script = false;
+    protected $view       = '';
+    protected $tabs       = [];
 
 
     /**
      * Panel constructor.
      * @param string $resource
-     * @param string $type
+     * @param string $view
      */
-    public function __construct($resource, $type = 'default') {
+    public function __construct($resource, $view = 'default') {
 
         $this->resource = $resource;
-        $this->type     = $type;
+        $this->view     = $view;
 
         if (isset($_GET[$this->resource])) {
             $this->active_tab = $_GET[$this->resource];
@@ -53,10 +50,10 @@ class Panel {
 
     /**
      * Установка своих елементов управления
-     * @param string $actions
+     * @param string $html
      */
-    public function setActionsHtml($actions = '') {
-        $this->actions = $actions;
+    public function setActions($html = '') {
+        $this->actions = $html;
     }
 
 
@@ -67,7 +64,7 @@ class Panel {
      * @param string $url
      * @param bool   $disabled
      */
-    public function addTab($title, $id, $url, $disabled = false) {
+    public function addTab($title, $id, $url = '', $disabled = false) {
         $this->tabs[] = array(
             'title'    => $title,
             'id'       => $id,
@@ -93,8 +90,8 @@ class Panel {
      * Установка содержимого для контейнера
      * @param string $content
      */
-    public function setContent($content) {
-        $this->content = $content;
+    public function addContent($content) {
+        array_push($this->content, $content);
     }
 
 
@@ -126,102 +123,85 @@ class Panel {
 
 
     /**
-     * Создание и возврат контейнера
-     * @return string
+     * Формирует данные панели
+     * @return array
      */
     public function render() {
 
-        if ( ! self::$added_script) {
-            self::$added_script = true;
-            $container_dir = substr(__DIR__, strlen($_SERVER['DOCUMENT_ROOT']));
+        $result = [
+            'type'     => 'panel',
+            'name'     => $this->resource,
+            'view'     => $this->view,
+            'title'    => $this->title,
+            'actions'  => $this->actions,
+            'subtitle' => $this->subtitle,
+        ];
 
-            $scripts  = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$container_dir}/html/css/styles.css\"/>";
-            $scripts .= "<script src=\"{$container_dir}/html/js/panel.js\"></script>";
-
-        } else {
-            $scripts = '';
-        }
-
-
-        $result = $this->make();
-        return $scripts . $result;
-    }
-
-
-    /**
-     * Создание контейнера
-     * @return string
-     */
-    protected function make() {
-
-        $tpl = new Mtpl(__DIR__ . '/html/template.html');
-
-        $tpl->assign('[ID]',      $this->resource);
-        $tpl->assign('[CONTENT]', $this->content);
-        $tpl->assign('[TYPE]',    $this->type);
-
-        if ( ! empty($this->title)) {
-            $tpl->heading->title->assign('[TITLE]', $this->title);
-            if ( ! empty($this->subtitle)) {
-                $tpl->heading->title->subtitle->assign('[SUBTITLE]', $this->subtitle);
-            }
-        }
-        if ( ! empty($this->actions)) {
-            $tpl->heading->actions->assign('[ACTIONS]', $this->actions);
-        }
 
         if ( ! empty($this->tabs)) {
             foreach ($this->tabs as $tab) {
+                $tab_item = [];
+
                 if ($tab instanceof ComboTab) {
                     $elements = $tab->getElements();
                     if ( ! empty($elements)) {
-                        $combo_tab_class = '';
+                        $tab_item['title']    = $tab->getTitle();
+                        $tab_item['type']     = 'combotab';
+                        $tab_item['elements'] = [];
+
                         foreach ($elements as $element) {
+                            $element_item = [];
+
                             if ($element['type'] == $tab::ELEMENT_BREAK) {
-                                $tpl->tabs->elements->combo_tab->combo_elements->touchBlock('break');
+                                $element_item['type'] = 'divider';
 
                             } else {
-                                $url = $element['url'] . '&' . $this->resource . '=' . $element['id'];
+                                $element_item['id']    = $element['id'];
+                                $element_item['title'] = $element['title'];
+                                $element_item['type']  = 'element';
+
                                 if ($element['disabled']) {
-                                    $class = 'disabled';
-                                    $url   = 'javascript:void(0);';
-                                } elseif ($this->active_tab == $element['id']) {
-                                    $class = 'active';
-                                    $combo_tab_class = 'active';
+                                    $element_item['disabled'] = true;
                                 } else {
-                                    $class = '';
+                                    $element_item['active'] = $this->active_tab == $element['id'];
+                                    $element_item['url']    = strpos($element['url'], '?') !== false
+                                        ? $element['url'] . '&' . $this->resource . '=' . $element['id']
+                                        : $element['url'] . '?' . $this->resource . '=' . $element['id'];
+
+                                    if ($element_item['active']) {
+                                        $tab_item['active'] = true;
+                                    }
                                 }
-
-                                $tpl->tabs->elements->combo_tab->combo_elements->element->assign('[CLASS]', $class);
-                                $tpl->tabs->elements->combo_tab->combo_elements->element->assign('[TITLE]', $element['title']);
-                                $tpl->tabs->elements->combo_tab->combo_elements->element->assign('[URL]',   $url);
                             }
-                            $tpl->tabs->elements->combo_tab->combo_elements->reassign();
+
+                            $tab_item['elements'][] = $element_item;
                         }
-
-                        $tpl->tabs->elements->combo_tab->assign('[TITLE]', $tab->getTitle());
-                        $tpl->tabs->elements->combo_tab->assign('[CLASS]', $combo_tab_class);
                     }
+
                 } else {
-                    $url = $tab['url'] . '&' . $this->resource . '=' . $tab['id'];
-                    if ($tab['disabled']) {
-                        $class = 'disabled';
-                        $url   = 'javascript:void(0);';
-                    } elseif ($this->active_tab == $tab['id']) {
-                        $class = 'active';
-                    } else {
-                        $class = '';
-                    }
+                    $tab_item['id']    = $tab['id'];
+                    $tab_item['title'] = $tab['title'];
+                    $tab_item['type']  = 'tab';
 
-                    $tpl->tabs->elements->tab->assign('[CLASS]', $class);
-                    $tpl->tabs->elements->tab->assign('[TITLE]', $tab['title']);
-                    $tpl->tabs->elements->tab->assign('[URL]',   $url);
+                    if ($tab['disabled']) {
+                        $tab_item['disabled'] = true;
+                    } else {
+                        $tab_item['active'] = $this->active_tab == $tab['id'];
+                        $tab_item['url']    = strpos($tab['url'], '?') !== false
+                            ? $tab['url'] . '&' . $this->resource . '=' . $tab['id']
+                            : $tab['url'] . '?' . $this->resource . '=' . $tab['id'];
+                    }
                 }
 
-                $tpl->tabs->elements->reassign();
+
+                if ( ! empty($tab_item)) {
+                    $result['tabs'][] = $tab_item;
+                }
             }
         }
 
-        return $tpl->render();
+        $result['content'] = $this->content;
+
+        return $result;
     }
 } 
