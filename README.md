@@ -1,8 +1,23 @@
 CoreUI Panel
 ============
 
-The component is designed to create panels.
-Panel used to place any content on it.
+Create and manage panels on site pages. 
+**[DEMO](https://shabuninil.github.io/coreui-panel)**
+ 
+![Panel](https://raw.githubusercontent.com/shabuninil/coreui-panel/master/preview.png) 
 
+Installation using Composer
+---------------------------
+```
+$ composer require bluefish/coreui-panel
+```
 
-![Panel](https://raw.githubusercontent.com/shabuninil/combine/master/examples/panel/preview.png) 
+CoreUI Panel CDN
+----------------
+```html
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://raw.githubusercontent.com/shabuninil/coreui-panel/master/src/html/js/coreui-panel.min.js">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://raw.githubusercontent.com/shabuninil/coreui-panel/master/src/html/css/coreui-panel.min.css"></script>
+```
