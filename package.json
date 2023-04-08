@@ -1,7 +1,7 @@
 {
   "name": "coreui-panel",
   "version": "1.0.0",
-  "description": "",
+  "description": "CoreUI Panel",
   "scripts": {
     "build_all": "gulp build_tpl && gulp build_dependents && gulp build_js && gulp build_css",
 
@@ -10,7 +10,7 @@
     "build_dependents": "gulp build_dependents",
 
     "build_watch": "gulp build_watch",
-    "text_js": "eslint -c .eslintrc.json --max-warnings 100 --ext .js ./assets/js"
+    "text_js": "eslint -c ./src/.eslintrc.json --max-warnings 100 --ext .js ./src/assets/js"
   },
   "dependencies": {
     "ejs": "3.1.*",
@@ -28,7 +28,21 @@
     "gulp-wrap-file": "0.1.2",
     "eslint": "8.36.0"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shabuninil/coreui-panel.git"
+  },
+  "keywords": [
+    "js",
+    "frontend",
+    "framework",
+    "panel",
+    "card"
+  ],
   "author": "shabuninil",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shabuninil/coreui-panel/issues"
+  },
+  "homepage": "https://github.com/shabuninil/coreui-panel#readme"
 }

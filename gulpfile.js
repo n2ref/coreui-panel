@@ -11,18 +11,18 @@ const rename     = require("gulp-rename");
 
 
 var conf = {
-    dist: "../dist",
+    dist: "./dist",
     js: {
         file: 'coreui-panel.min.js',
         src: [
-            'assets/js/coreui.panel.js',
-            'assets/js/coreui.panel.templates.js',
-            'assets/js/coreui.panel.instance.js',
-            'assets/js/coreui.panel.ejs.js'
+            'src/js/coreui.panel.js',
+            'src/js/coreui.panel.templates.js',
+            'src/js/coreui.panel.instance.js',
+            'src/js/coreui.panel.ejs.js'
         ]
     },
     js_dependents: {
-        dist: './assets/js',
+        dist: './src/js',
         src: [
             'node_modules/ejs/ejs.min.js'
         ],
@@ -45,18 +45,18 @@ var conf = {
     },
     tpl: {
         file: 'coreui.panel.templates.js',
-        dist: './assets/js',
+        dist: './src/js',
         variable: 'CoreUI"]["panel"]["tpl',
         src: [
-            'assets/html/**/*.html',
-            'assets/html/*.html'
+            'src/html/**/*.html',
+            'src/html/*.html'
         ]
     },
     css: {
         file: 'coreui-panel.min.css',
         src: [
             'node_modules/bootstrap-5-vertical-tabs/dist/b5vtabs.min.css',
-            'assets/css/coreui.panel.css'
+            'src/css/coreui.panel.css'
         ]
     }
 };
@@ -124,7 +124,7 @@ gulp.task('build_tpl', function() {
             base: 'templates',
             name: conf.tpl.variable,
             rename: function (moduleName) {
-                return moduleName.replace('../assets/html/', '');
+                return moduleName.replace('../src/html/', '');
             }
         }))
         .pipe(gulp.dest(conf.tpl.dist));
