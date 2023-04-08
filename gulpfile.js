@@ -35,7 +35,6 @@ var conf = {
                            "\"use strict\";" +
                            content + ";" +
                            "CoreUI.panel.ejs = ejs;" +
-                           "delete window.ejs;" +
                        "})();"
             }
 
