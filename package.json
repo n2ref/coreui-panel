@@ -10,7 +10,7 @@
     "build_dependents": "gulp build_dependents",
 
     "build_watch": "gulp build_watch",
-    "text_js": "eslint -c ./src/.eslintrc.json --max-warnings 100 --ext .js ./src/assets/js"
+    "text_js": "eslint -c ./.eslintrc.json --max-warnings 100 --ext .js ./src/js"
   },
   "dependencies": {
     "ejs": "3.1.*",
