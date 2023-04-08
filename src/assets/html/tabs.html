@@ -1,0 +1,40 @@
+<% if (typeof tabs === 'object' && tabs.length > 0) { %>
+<ul class="nav <% if (tabsType) { %>nav-<%= tabsType %><% } %> card-body-tabs mb-3 <% if (containerClasses) { %><%= containerClasses %><% } %>
+           <% if (tabsFill) { %>nav-<%= tabsFill %><% } %>">
+    <% $.each(tabs, function(key, tab) { %>
+        <% if (tab.type === 'tab') { %>
+        <li class="nav-item">
+            <a class="nav-link<% if (tab.active) { %> active<% } %><% if (tab.disabled) { %> disabled<% } %>"
+               href="<% if (tab.url) { %><%= tab.url %><% } else { %>#<% } %>" data-tab-id="<%= tab.id %>"
+               data-bs-toggle="tab"
+            ><%= tab.title %></a>
+        </li>
+        <% } %>
+        <% if (tab.type === 'dropdown') { %>
+        <li class="nav-item dropdown<% if (tab.active) { %> active<% } %><% if (tab.disabled) { %> disabled<% } %>">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                <%= tab.title %>
+            </a>
+            <ul class="dropdown-menu">
+                <% $.each(tab.items, function(key, item) { %>
+                    <% if (item.type === 'item') { %>
+                    <li>
+                        <a class="dropdown-item<% if (item.active) { %> active<% } %><% if (item.disabled) { %> disabled<% } %>"
+                           href="<% if (item.url) { %><%= item.url %><% } else { %>#<% } %>" data-bs-toggle="tab"
+                           data-tab-id="<%= item.id %>">
+                            <%= item.title %>
+                        </a>
+                    </li>
+                    <% } %>
+                    <% if (item.type === 'divider') { %>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <% } %>
+                <% }) %>
+            </ul>
+        </li>
+        <% } %>
+    <% }) %>
+</ul>
+<% } %>
