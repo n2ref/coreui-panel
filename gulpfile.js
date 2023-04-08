@@ -7,21 +7,21 @@ var cleanCSS   = require('gulp-clean-css');
 
 
 var conf = {
-    dist: "../dist",
+    dist: "./dist",
     js: {
         file: 'page.min.js',
         src: [
             'node_modules/jquery/dist/jquery.min.js',
             'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-            'js/highlight.pack.js',
+            'src/js/highlight.pack.js',
         ]
     },
     css: {
         file: 'page.min.css',
         src: [
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
-            'css/github-gist.css',
-            'css/styles.css',
+            'src/css/github-gist.css',
+            'src/css/styles.css',
         ]
     }
 };

@@ -12,7 +12,7 @@
     "build_css_fast": "gulp build_css_fast",
 
     "build_watch": "gulp build_watch",
-    "text_js": "eslint -c .eslintrc.json --max-warnings 100 --ext .js ./assets/js"
+    "text_js": "eslint -c .eslintrc.json --max-warnings 100 --ext .js ./src/js"
   },
   "dependencies": {
     "bootstrap": "5.3.0-alpha2",
