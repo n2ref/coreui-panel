@@ -6,655 +6,733 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoreUI Panel</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="css/coreui-panel.min.css" rel="stylesheet"/>
-    <link href="css/styles.css" rel="stylesheet"/>
-    <link href="css/github-gist.css" rel="stylesheet"/>
+    <link href="dist/page.min.css" rel="stylesheet"/>
+    <script src="dist/page.min.js"></script>
+
+    <link href="dist/coreui-panel.min.css" rel="stylesheet"/>
+    <script src="dist/coreui-panel.min.js"></script>
+
+    <script src="src/js/examples.js"></script>
 </head>
-<body data-spy="scroll" data-target="#docs-sidenav">
+<body data-bs-spy="scroll" data-bs-target="#docs-sidenav">
 
-<section class="text-left">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <header>
-                    <nav class="navbar navbar-default">
-                        <div class="container-fluid">
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
+    <section class="text-left">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <header>
+                        <nav class="navbar navbar-expand-lg navbar-default">
+                            <div class="container-fluid">
+                                <a class="navbar-brand" href="#">CoreUI</a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
                                 </button>
-                                <span class="navbar-brand">CoreUI</span>
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item"><span class="nav-link active">Panel</span></li>
+                                        <li class="nav-item"><a class="nav-link" href="https://shabuninil.github.io/coreui-form">Form</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="https://shabuninil.github.io/coreui-tabs">Tabs</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="https://shabuninil.github.io/coreui-layout">Layout</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="https://shabuninil.github.io/coreui-table">Table</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="https://shabuninil.github.io/coreui-info">Info</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="https://shabuninil.github.io/coreui-modal">Modal</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="https://shabuninil.github.io/coreui-notice">Notice</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="https://shabuninil.github.io/coreui-alert">Alert</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="https://shabuninil.github.io/coreui-confirm">Confirm</a></li>
+                                    </ul>
+
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <li class="nav-item"><a class="nav-link" href="https://github.com/shabuninil/coreui-panel">GitHub</a></li>
+                                    </ul>
+                                </div>
                             </div>
+                        </nav>
+                    </header>
+                </div>
+                <div class="col-lg-2">
+                    <div id="docs-sidenav" class="hidden-xs hidden-sm hidden-md d-none d-lg-block"
+                         data-bs-spy="affix" data-bs-offset-top="90" data-bs-offset-bottom="70">
+                        <ul class="nav">
+                            <li><a href="#download">Download</a></li>
+                            <li>
+                                <a href="#examples">Examples</a>
+                                <ul class="nav">
+                                    <li><a href="#example-simple">Simple panel</a></li>
+                                    <li><a href="#example-inset-components">Insert components</a></li>
+                                    <li><a href="#example-tabs">Tabs</a></li>
+                                    <li><a href="#example-pills">Pills</a></li>
+                                    <li><a href="#example-underline">Underline</a></li>
+                                    <li><a href="#example-fill">Fill</a></li>
+                                    <li><a href="#example-justify">Justify</a></li>
+                                    <li><a href="#example-pos-left">Position Left</a></li>
+                                    <li><a href="#example-pos-right">Position Right</a></li>
+                                    <li><a href="#example-pos-left-sideways">Position Left Sideways</a></li>
+                                    <li><a href="#example-pos-right-sideways">Position Right Sideways</a></li>
+                                    <li><a href="#example-ajax">Ajax</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#options">Options</a></li>
+                            <li><a href="#methods">Methods</a></li>
+                            <li><a href="#events">Events</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    <h2 id="download">Download</h2>
+                    <div>
+                        <p>
+                            You can download a minimized version of the library or get the full source code at github.com.
+                        </p>
+                        <a class="btn btn-secondary" href="https://github.com/shabuninil/coreui-panel/archive/master.zip">Download source</a>
+                    </div>
 
-                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                <ul class="nav navbar-nav">
-                                    <li class="active"><a href="javascript:void(0);">Panel</a></li>
-                                    <li><a href="https://shabuninil.github.io/coreui-form">Form</a></li>
-                                    <li><a href="https://shabuninil.github.io/coreui-table">Table</a></li>
-                                    <li><a href="https://shabuninil.github.io/coreui-tabs">Tabs</a></li>
-                                    <li><a href="https://shabuninil.github.io/coreui-tree">Tree</a></li>
-                                    <li><a href="https://shabuninil.github.io/coreui-alert">Alert</a></li>
-                                    <li><a href="https://shabuninil.github.io/coreui-layout">Layout</a></li>
-                                </ul>
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li><a href="https://github.com/shabuninil/coreui-panel">GitHub</a></li>
-                                </ul>
+
+                    <h2 class="section-margin">Install with npm</h2>
+                    <pre><code class="bash">$ npm install coreui-panel</code></pre>
+
+
+                    <h2 class="section-margin">Требования</h2>
+                    <p>
+                        Для корректной работы на странице необходимо наличие:
+                        <a href="https://getbootstrap.com/docs/5.3" target="_blank">Bootstrap 5</a>,
+                        <a href="https://jquery.com" target="_blank">jquery</a>
+                    </p>
+
+                    <h2 id="examples" class="section-margin">Examples</h2>
+                    <div>
+                        <h3 id="example-simple">Simple panel</h3>
+                        <div>
+                            <div class="content-example" id="example-simple-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
+
+        &lt;div id="example-simple-content"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+            let panelSimple = CoreUI.panel.create({
+                title: "Component Panel",
+                subtitle: "CoreUI Framework",
+                controls: "&lt;button class=\"btn btn-sm btn-outline-secondary\"&gt;Help&lt;\/button&gt;",
+                content: "Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui."
+            });
+
+            panelSimple.render('example-simple-content');
+        &lt;/script&gt;
+                                </code></pre>
                             </div>
                         </div>
-                    </nav>
-                </header>
-            </div>
-            <div class="col-lg-2">
-                <div id="docs-sidenav" class="hidden-xs hidden-sm hidden-md"
-                     data-spy="affix" data-offset-top="90" data-offset-bottom="70">
-                    <ul class="nav">
-                        <li><a href="#download">Download</a></li>
-                        <li>
-                            <a href="#examples">Examples</a>
-                            <ul class="nav">
-                                <li><a href="#example-simple">Simple panel</a></li>
-                                <li><a href="#example-tabs">Tabs</a></li>
-                                <li><a href="#example-components">Insert components</a></li>
-                                <li><a href="#example-ajax">Ajax</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#options">Options</a></li>
-                        <li><a href="#methods">Methods</a></li>
-                        <li><a href="#events">Events</a></li>
-                        <li><a href="#browser-compatibility">Browser compatibility</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-10">
-                <h2 id="download">Download</h2>
-                <div>
-                    <p>
-                        You can download a minimized version of the library or get the full source code at github.com.
-                    </p>
-                    <a class="btn btn-default" href="https://github.com/shabuninil/coreui-panel/archive/master.zip">Download source</a>
-
-                    <h2 class="section-margin">Install with Composer</h2>
-                    <p>
-                        You can also install the component using Composer:
-                    </p>
-                    <pre><code class="bash">$ composer require bluefish/coreui-panel</code></pre>
-
-                    <h2 class="section-margin">CoreUI Panel CDN</h2>
-                    <pre><code class="html">
-&lt;!-- Latest compiled and minified CSS --&gt;
-&lt;link rel="stylesheet" href="https://raw.githubusercontent.com/shabuninil/coreui-panel/master/src/html/js/coreui-panel.min.js"&gt;
-
-&lt;!-- Latest compiled and minified JavaScript --&gt;
-&lt;script src="https://raw.githubusercontent.com/shabuninil/coreui-panel/master/src/html/css/coreui-panel.min.css"&gt;&lt;/script&gt;
-                    </code></pre>
-                </div>
+                        <br><br>
 
 
-                <h2 id="examples" class="section-margin">Examples</h2>
-                <div>
-                    <h3 id="example-simple">Simple panel</h3>
-                    <div>
-                        <div class="content-example" id="example-simple-content"></div>
-                        <div class="content-markup">
-                            <pre><code class="html">
-    &lt;link href="coreui-panel.css" rel="stylesheet"/&gt;
-    &lt;script src="coreui-panel.js"&gt;&lt;/script&gt;
+                        <h3 id="example-inset-components">Insert components</h3>
+                        <div>
+                            <div class="content-example" id="example-inset-components-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
+        &lt;div id="example-inset-components-content"&gt;&lt;/div&gt;
 
-    &lt;div id="example-simple-content"&gt;&lt;/div&gt;
-
-    &lt;script&gt;
-        document.addEventListener('DOMContentLoaded', function () {
-
-            var panel = new CoreUIPanel({
-                "type":  "panel",
-                "name":  "simple",
-                "title": "Component Panel",
-                "subtitle": "CoreUI Framework",
-                "actions": "&lt;span class=\"help\" title=\"help\"&gt;?&lt;\/span&gt;",
-                "content": ["Your content"]
-            });
-
-            panel.render('example-simple-content');
-        });
-    &lt;/script&gt;
-                            </code></pre>
-                        </div>
-                        <div class="content-php">
-                            <pre><code class="php">
-    $panel = new \CoreUI\Panel('simple');
-
-    $panel->setTitle('Component Panel', 'CoreUI Framework');\
-    $panel->setActions('&lt;span class="help" title="help"&gt;?&lt;/span&gt;');
-    $panel->addContent( 'Your content' );
-
-    echo json_encoded($panel->render()); // JSON output
-                            </code></pre>
-                        </div>
-                    </div>
-                    <br><br>
-
-
-                    <h3 id="example-tabs">Togglable tabs</h3>
-                    <div>
-                        <div class="content-example" id="example-tabs-content"></div>
-                        <div class="content-markup">
-                            <pre><code class="html">
-    &lt;link href="coreui-panel.css" rel="stylesheet"/&gt;
-    &lt;script src="coreui-panel.js"&gt;&lt;/script&gt;
-
-    &lt;div id="example-tabs-content"&gt;&lt;/div&gt;
-
-    &lt;script&gt;
-        document.addEventListener('DOMContentLoaded', function () {
-
-            var panel = new CoreUIPanel({
-                "type": "panel",
-                "name": "tabs",
-                "tabs": [
-                    {"id": "1", "title": "Home", "type": "tab", "active": true},
-                    {"id": "2", "title": "Profile", "type": "tab", "active": false},
-                    {"id": "3", "title": "Disabled", "type": "tab", "disabled": true},
-                    {
-                        "title": "Dropdown",
-                        "type": "combotab",
-                        "elements": [
-                            {"id": "4", "title": "Tab title 4", "type": "element", "disabled": true},
-                            {"id": "5", "title": "Tab title 5", "type": "element", "active": false},
-                            {"type": "divider"},
-                            {"id": "6","title": "Tab title 6","type": "element","active": false}
-                        ]
-                    }
-                ],
-                "content": [ "Tab 1" ]
-            });
-
-            panel.render('example-tabs-content');
-
-            panel.on('click-tab.coreui.panel', function (event, name, tab_id) {
-                $('#coreui-panel-' + name + ' .coreui-panel-body')
-                    .html('Tab ' + tab_id);
-            });
-        });
-    &lt;/script&gt;
-                            </code></pre>
-                        </div>
-                        <div class="content-php">
-                            <pre><code class="php">
-    $panel = new \CoreUI\Panel('tabs');
-
-    $panel->addTab('Home',     '1');
-    $panel->addTab('Profile',  '2');
-    $panel->addTab('Disabled', '3', '', true);
-    $panel->addComboTab('Dropdown')
-        ->addItem('Tab title 3', '4', '', true)
-        ->addItem('Tab title 4', '5')
-        ->addBreak()
-        ->addItem('Tab title 5', '');
-
-    $panel->addContent( 'Tab 1' );
-
-    echo json_encoded($panel->render()); // JSON output
-                            </code></pre>
-                        </div>
-                    </div>
-                    <br><br>
-
-
-                    <h3 id="example-components">Insert components</h3>
-                    <div>
-                        <div class="content-example" id="example-components-content"></div>
-                        <div class="content-markup">
-                            <pre><code class="html">
-    &lt;link href="coreui-panel.css" rel="stylesheet"/&gt;
-    &lt;script src="coreui-panel.js"&gt;&lt;/script&gt;
-
-    &lt;div id="example-components-content"&gt;&lt;/div&gt;
-
-    &lt;script&gt;
-        document.addEventListener('DOMContentLoaded', function () {
-
-            var panel = new CoreUIPanel({
-                "type": "panel",
-                "name": "components",
-                "title": "Component Panel",
-                "subtitle": "CoreUI Framework",
-                "content": [
+        &lt;script&gt;
+            let panelInsetComponents = CoreUI.panel.create({
+                id: "components",
+                title: "Component Panel",
+                subtitle: "CoreUI Framework",
+                content: [
                     "Your content 1 &lt;br&gt;&lt;br&gt;",
                     {
-                        "type": "html",
-                        "content" : "Your content 2 &lt;br&gt;&lt;br&gt;"
-                    },
-                    {
-                        "type":  "panel", // and other components
-                        "name":  "sub-panel",
-                        "title": "Sub Panel",
-                        "content": [ "Your content 3" ]
+                        component:  "coreui.panel",
+                        title: "Sub Panel",
+                        content: "Your content 3"
                     }
                 ]
             });
-            panel.render('example-components-content');
-        });
-    &lt;/script&gt;
 
-                            </code></pre>
+            let html = panelInsetComponents.render();
+            $('#example-inset-components-content').html(html);
+
+            panelInsetComponents.initEvents();
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
                         </div>
-                        <div class="content-php">
-                            <pre><code class="php">
-    // Panel 1
-    $panel = new \CoreUI\Panel('components');
-    $panel->setTitle('Component Panel', 'CoreUI Framework');
-    $panel->addContent( 'Your content 1 &lt;br&gt;&lt;br&gt;' );
-    $panel->addContent( 'Your content 2 &lt;br&gt;&lt;br&gt;' );
-
-    // Panel 2
-    $sub_panel = new \CoreUI\Panel('sub-panel');
-    $sub_panel->setTitle('Sub Panel');
-    $sub_panel->addContent( 'Your content 3' );
-
-    $panel->addContent($sub_panel->render());
-
-    echo json_encoded($panel->render()); // JSON output
-                            </code></pre>
-                        </div>
-                    </div>
-                    <br><br>
+                        <br><br>
 
 
-                    <h3 id="example-ajax">Ajax</h3>
-                    <div>
-                        <div class="content-example" id="example-ajax-content"></div>
-                        <div class="content-markup">
-                            <pre><code class="html">
-    &lt;link href="coreui-panel.css" rel="stylesheet"/&gt;
-    &lt;script src="coreui-panel.js"&gt;&lt;/script&gt;
+                        <h3 id="example-tabs">Tabs</h3>
+                        <div>
+                            <div class="content-example" id="example-tabs-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
 
-    &lt;div id="example-ajax-content"&gt;&lt;/div&gt;
+        &lt;div id="example-tabs-content"&gt;&lt;/div&gt;
 
-    &lt;script&gt;
-        document.addEventListener('DOMContentLoaded', function () {
-
-             var panel = new CoreUIPanel({
-                "type": "panel",
-                "name": "ajax",
-                "title": "Component Panel",
-                "actions": "&lt;span class=\"help\" title=\"help\"&gt;?&lt;\/span&gt;",
-                "subtitle": "CoreUI Framework",
-                "tabs": [
-                    {"id":"tab1", "title":"Home",     "type":"tab", "active":true,  "url":"data/tab1.txt"},
-                    {"id":"tab2", "title":"Profile",  "type":"tab", "active":false, "url":"data/tab2.json"},
-                    {"id":"tab3", "title":"Disabled", "type":"tab", "disabled":true},
+        &lt;script&gt;
+            let panelTabs = CoreUI.panel.create({
+                title: "Component Panel",
+                subtitle: "CoreUI Framework",
+                backUrl: "#",
+                controls: "&lt;button class=\"btn btn-sm btn-outline-secondary\"&gt;Help&lt;\/button&gt;",
+                tabs: [
+                    {id: "1", title: "Home", active: true},
+                    {id: "2", title: "Profile", active: false},
+                    {id: "3", title: "Disabled", disabled: true},
                     {
-                        "title": "Dropdown",
-                        "type":  "combotab",
-                        "elements": [
-                            {"id":"tab4", "title":"Tab title 3", "type":"element", "disabled":true},
-                            {"id":"tab5", "title":"Tab title 4", "type":"element", "active":false, "url":"data/tab3.json"},
-                            {"type": "divider"},
-                            {"id":"tab6", "title":"Tab title 5", "type":"element", "active":false, "url":"data/tab4.json"}
+                        title: "Dropdown",
+                        type: "dropdown",
+                        items: [
+                            {id: "4", title: "Tab title 4", disabled: true},
+                            {id: "5", title: "Tab title 5", active: false},
+                            {type: "divider"},
+                            {id: "6", title: "Tab title 6", active: false}
                         ]
                     }
                 ],
-                "content": ["Your content 1"]
+                content: "Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui."
             });
-            panel.render('example-ajax-content');
-            panel.on('click-tab.coreui.panel', function (event, name, tab_id) {
 
-                $.ajax({
-                    url: this.href,
-                    method: 'get',
-                    success: function (result) {
-                        var content = CoreUIPanel.renderContent(result);
-                        $('#coreui-panel-' + name + ' .coreui-panel-body').html(content);
-                    }
-                });
-
-                event.preventDefault();
+            panelTabs.render('example-tabs-content');
+            panelTabs.on('click-tab.coreui.panel', function (tab, event) {
+                panelTabs.setContent('Tab ' + tab.title);
             });
-        });
-    &lt;/script&gt;
-                            </code></pre>
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
                         </div>
-                        <div class="content-php">
-                            <pre><code class="php">
-    $panel = new \CoreUI\Panel('ajax');
-    $panel->setTitle('Component Panel', 'CoreUI Framework');
+                        <br><br>
 
-    $panel->setActions('&lt;span class="help" title="help"&gt;?&lt;/span&gt;');
-    $panel->addTab('Home',     'tab1', 'data/tab1.json');
-    $panel->addTab('Profile',  'tab2', 'data/tab2.json');
-    $panel->addTab('Disabled', 'tab3', '', true);
-    $panel->addComboTab('Dropdown')
-        ->addItem('Tab title 3', 'tab4', '', true)
-        ->addItem('Tab title 4', 'tab5', 'data/tab3.json')
-        ->addBreak()
-        ->addItem('Tab title 5', 'tab6', 'data/tab4.json');
 
-    switch ($panel->getActiveTab()) {
-        case 'tab1': $panel->addContent( 'Your content 1' ); break;
-        case 'tab2': $panel->addContent( 'Your content 2' ); break;
-        case 'tab3': $panel->addContent( 'Your content 3' ); break;
-        case 'tab4': $panel->addContent( 'Your content 4' ); break;
-        case 'tab5': $panel->addContent( 'Your content 5' ); break;
-        case 'tab6': $panel->addContent( 'Your content 6' ); break;
-    }
+                        <h3 id="example-pills">Pills</h3>
+                        <div>
+                            <div class="content-example" id="example-pills-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
 
-    echo json_encoded($panel->render()); // JSON output
-                            </code></pre>
+        &lt;div id="example-pills-content"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+            let panelPills = CoreUI.panel.create({
+                tabsType: 'pills',
+                tabs: [
+                    {id: "1", title: "Home", active: true},
+                    {id: "2", title: "Profile", active: false},
+                    {id: "3", title: "Disabled", disabled: true},
+                    {
+                        title: "Dropdown",
+                        type: "dropdown",
+                        items: [
+                            {id: "4", title: "Tab title 4", disabled: true},
+                            {id: "5", title: "Tab title 5", active: false},
+                            {type: "divider"},
+                            {id: "6", title: "Tab title 6", active: false}
+                        ]
+                    }
+                ],
+                content: [ "Tab Home" ]
+            });
+
+            panelPills.render('example-pills-content');
+            panelPills.on('click-tab.coreui.panel', function (tab, event) {
+                panelPills.setContent('Tab ' + tab.title);
+            })
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
+                        </div>
+                        <br><br>
+
+
+                        <h3 id="example-underline">Underline</h3>
+                        <div>
+                            <div class="content-example" id="example-underline-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
+
+        &lt;div id="example-underline-content"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+            let panelUnderline = CoreUI.panel.create({
+                tabsType: 'underline',
+                tabs: [
+                    {id: "1", title: "Home", active: true},
+                    {id: "2", title: "Profile", active: false},
+                    {id: "3", title: "Disabled", disabled: true},
+                    {
+                        title: "Dropdown",
+                        type: "dropdown",
+                        items: [
+                            {id: "4", title: "Tab title 4", disabled: true},
+                            {id: "5", title: "Tab title 5", active: false},
+                            {type: "divider"},
+                            {id: "6", title: "Tab title 6", active: false}
+                        ]
+                    }
+                ],
+                content: [ "Tab Home" ]
+            });
+
+            panelUnderline.render('example-underline-content');
+            panelUnderline.on('click-tab.coreui.panel', function (tab, event) {
+                panelUnderline.setContent('Tab ' + tab.title);
+            });
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
+                        </div>
+                        <br><br>
+
+
+                        <h3 id="example-fill">Fill</h3>
+                        <div>
+                            <div class="content-example" id="example-fill-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
+
+        &lt;div id="example-fill-content"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+            let panelFill = CoreUI.panel.create({
+                tabsType: 'tabs',
+                tabsFill: 'fill',
+                tabs: [
+                    {id: "1", title: "Home", active: true},
+                    {id: "2", title: "Profile", active: false},
+                    {id: "3", title: "Disabled", disabled: true},
+                    {
+                        title: "Dropdown",
+                        type: "dropdown",
+                        items: [
+                            {id: "4", title: "Tab title 4", disabled: true},
+                            {id: "5", title: "Tab title 5", active: false},
+                            {type: "divider"},
+                            {id: "6", title: "Tab title 6", active: false}
+                        ]
+                    }
+                ],
+                content: [ "Tab Home" ]
+            });
+
+            panelFill.render('example-fill-content');
+            panelFill.on('click-tab.coreui.panel', function (tab, event) {
+                panelJustify.setContent('Tab ' + tab.title);
+            });
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
+                        </div>
+                        <br><br>
+
+
+                        <h3 id="example-justify">Justify</h3>
+                        <div>
+                            <div class="content-example" id="example-justify-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
+        &lt;div id="example-justify-content"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+            let panelJustify = CoreUI.panel.create({
+                tabsType: 'tabs',
+                tabsFill: 'justified',
+                tabs: [
+                    {id: "1", title: "Home", active: true},
+                    {id: "2", title: "Profile", active: false},
+                    {id: "3", title: "Disabled", disabled: true},
+                    {
+                        title: "Dropdown",
+                        type: "dropdown",
+                        items: [
+                            {id: "4", title: "Tab title 4", disabled: true},
+                            {id: "5", title: "Tab title 5", active: false},
+                            {type: "divider"},
+                            {id: "6", title: "Tab title 6", active: false}
+                        ]
+                    }
+                ],
+                content: [ "Tab Home" ]
+            });
+
+            panelJustify.render('example-justify-content');
+            panelJustify.on('click-tab.coreui.panel', function (tab, event) {
+                panelJustify.setContent('Tab ' + tab.title);
+            });
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
+                        </div>
+                        <br><br>
+
+
+                        <h3 id="example-pos-left">Position Left</h3>
+                        <div>
+                            <div class="content-example" id="example-pos-left-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
+        &lt;div id="example-pos-left-content"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+            let panelLeft = CoreUI.panel.create({
+                tabsPosition: 'left',
+                tabsWidth: 200,
+                tabs: [
+                    {id: "1", title: "Home", active: true},
+                    {id: "2", title: "Profile", active: false},
+                    {id: "3", title: "Disabled", disabled: true},
+                    {
+                        title: "Dropdown",
+                        type: "dropdown",
+                        items: [
+                            {id: "4", title: "Tab title 4", disabled: true},
+                            {id: "5", title: "Tab title 5", active: false},
+                            {type: "divider"},
+                            {id: "6", title: "Tab title 6", active: false}
+                        ]
+                    }
+                ],
+                content: [ "Tab Home" ]
+            });
+
+            panelLeft.render('example-pos-left-content');
+            panelLeft.on('click-tab.coreui.panel', function (tab, event) {
+                panelLeft.setContent('Tab ' + tab.title);
+            });
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
+                        </div>
+                        <br><br>
+
+
+                        <h3 id="example-pos-right">Position Right</h3>
+                        <div>
+                            <div class="content-example" id="example-pos-right-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
+        &lt;div id="example-pos-right-content"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+            let panelRight = CoreUI.panel.create({
+                tabsPosition: 'right',
+                tabsWidth: 200,
+                tabs: [
+                    {id: "1", title: "Home", active: true},
+                    {id: "2", title: "Profile", active: false},
+                    {id: "3", title: "Disabled", disabled: true},
+                    {
+                        title: "Dropdown",
+                        type: "dropdown",
+                        items: [
+                            {id: "4", title: "Tab title 4", disabled: true},
+                            {id: "5", title: "Tab title 5", active: false},
+                            {type: "divider"},
+                            {id: "6", title: "Tab title 6", active: false}
+                        ]
+                    }
+                ],
+                content: [ "Tab Home" ]
+            });
+
+            panelRight.render('example-pos-right-content');
+            panelRight.on('click-tab.coreui.panel', function (tab, event) {
+                panelRight.setContent('Tab ' + tab.title);
+            });
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
+                        </div>
+                        <br><br>
+
+
+                        <h3 id="example-pos-left-sideways">Position left sideways</h3>
+                        <div>
+                            <div class="content-example" id="example-pos-left-sideways-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
+        &lt;div id="example-pos-left-sideways-content"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+            let panelLeftSideways = CoreUI.panel.create({
+                tabsPosition: 'left-sideways',
+                tabsWidth: 65,
+                tabs: [
+                    {id: "1", title: "Home", active: true},
+                    {id: "2", title: "Profile", active: false},
+                    {id: "3", title: "Disabled", disabled: true}
+                ],
+                content: [ "Tab Home" ]
+            });
+
+            panelLeftSideways.render('example-pos-left-sideways-content');
+            panelLeftSideways.on('click-tab.coreui.panel', function (tab, event) {
+                panelLeftSideways.setContent('Tab ' + tab.title);
+            });
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
+                        </div>
+                        <br><br>
+
+
+                        <h3 id="example-pos-right-sideways">Position Right sideways</h3>
+                        <div>
+                            <div class="content-example" id="example-pos-right-sideways-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
+        &lt;div id="example-pos-right-sideways-content"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+            let panelRightSideways = CoreUI.panel.create({
+                tabsPosition: 'right-sideways',
+                tabsWidth: 25,
+                tabs: [
+                    {id: "1", title: "Home", active: true},
+                    {id: "2", title: "Profile", active: false},
+                    {id: "3", title: "Disabled", disabled: true},
+                ],
+                content: [ "Tab Home" ]
+            });
+
+            panelRightSideways.render('example-pos-right-sideways-content');
+            panelRightSideways.on('click-tab.coreui.panel', function (tab, event) {
+                panelRightSideways.setContent('Tab ' + tab.title);
+            });
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
+                        </div>
+                        <br><br>
+
+
+                        <h3 id="example-ajax">Ajax</h3>
+                        <div>
+                            <div class="content-example" id="example-ajax-content"></div>
+                            <div class="content-markup">
+                                <pre><code class="html">
+        &lt;div id="example-ajax-content"&gt;&lt;/div&gt;
+
+        &lt;script&gt;
+            let panelAjax = CoreUI.panel.create({
+                id: "ajax",
+                title: "Component Panel",
+                subtitle: "CoreUI Framework",
+                tabs: [
+                    {id: "tab1", title: "Home", active: true, url: "data/tab1.txt"},
+                    {id: "tab2", title: "Profile", active: false, url: "data/tab2.json"},
+                    {id: "tab3", title: "Disabled", disabled: true},
+                    {
+                        title: "Dropdown",
+                        type: "dropdown",
+                        items: [
+                            {id: "tab4", title: "Tab title 3", disabled: true},
+                            {id: "tab5", title: "Tab title 4", active: false, url: "data/tab3.json"},
+                            {type: "divider"},
+                            {id: "tab6",title: "Tab title 5", active: false, url: "data/tab4.json"}
+                        ]
+                    }
+                ],
+                content: "Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui."
+            });
+
+            panelAjax.render('example-ajax-content');
+
+
+            panelAjax.on('click-tab.coreui.panel', function (tab, event) {
+                console.log(tab.id + ' ' + 'click-tab.coreui.panel')
+            });
+            panelAjax.on('start-load-content.coreui.panel', function (tab, xhr) {
+                console.log(tab.id + ' ' + 'start-load-content.coreui.panel')
+            });
+            panelAjax.on('success-load-content.coreui.panel', function (tab, result) {
+                console.log(tab.id + ' ' + 'success-load-content.coreui.panel')
+            });
+            panelAjax.on('error-load-content.coreui.panel', function (tab, xhr, textStatus, errorThrown ) {
+                console.log(tab.id + ' ' + 'error-load-content.coreui.panel')
+            });
+            panelAjax.on('end-load-content.coreui.panel', function (tab, xhr) {
+                console.log(tab.id + ' ' + 'end-load-content.coreui.panel')
+            });
+        &lt;/script&gt;
+                                </code></pre>
+                            </div>
                         </div>
                     </div>
+
+
+                    <h2 id="options" class="section-margin">Options</h2>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped js-options-table">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>type</th>
+                                <th>default</th>
+                                <th>description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>id</th> <td>string</td> <td><code>crc32b</code></td>
+                                <td>Идентификатор панели. Позволяет получать панель для работы с ней, либо для css настроек. Если не указан, то будет равен случайному значению</td>
+                            </tr>
+                            <tr>
+                                <th>title</th> <td>string</td> <td></td>
+                                <td>Заголовок панели</td>
+                            </tr>
+                            <tr>
+                                <th>subtitle</th> <td>string</td> <td></td>
+                                <td>Подзаголовок панели</td>
+                            </tr>
+                            <tr>
+                                <th>backUrl</th> <td>string</td> <td></td>
+                                <td>Адрес для кнопки перехода "назад". Кнопка назад существует только если есть заголовок</td>
+                            </tr>
+                            <tr>
+                                <th>controls</th> <td>string</td> <td></td>
+                                <td>Любой Html код добавляющий свою функциональность</td>
+                            </tr>
+                            <tr>
+                                <th>tabsType</th> <td>string</td> <td><code>tabs</code></td>
+                                <td>Вид табов. Напрямую зависит от bootstrap. Доступные варианты: <code>tabs</code>, <code>pills</code>, <code>underline</code></td>
+                            </tr>
+                            <tr>
+                                <th>tabsPosition</th> <td>string</td> <td>top-left</td>
+                                <td>Позиционирование табов в пределах панели. Доступные варианты: <code>top-left</code>, <code>top-center</code>, <code>top-right</code>, <code>left</code>, <code>left-sideways</code>, <code>right</code>, <code>right-sideways</code></td>
+                            </tr>
+                            <tr>
+                                <th>tabsFill</th> <td>string</td> <td></td>
+                                <td>Выравнивание табов. <code>fill</code>, <code>justify</code></td>
+                            </tr>
+                            <tr>
+                                <th>tabsWidth</th> <td>int</td> <td>200</td>
+                                <td>Ширина колонки с табами. Может применяться совместно с позиционированием <code>left</code>, <code>left-sideways</code>, <code>right</code>, <code>right-sideways</code></td>
+                            </tr>
+                            <tr>
+                                <th>tabs</th> <td>array</td> <td></td>
+                                <td>Массив объектов описанием табов для панели</td>
+                            </tr>
+                            <tr>
+                                <th>content</th> <td>string | array | object</td> <td></td>
+                                <td>Содержимое панели. Может быть в виде строки с html, в виде объекта coreui, либо массива с комбинацией этих объектов </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <h2 id="methods" class="section-margin">Methods</h2>
+                    <div>
+                        <code>let panel = CoreUI.panel.create( { ... } )</code>
+                        <p>Метод для создания экземпляра панели.</p>
+
+                        <code>let panel = CoreUI.panel.get('panel-id')</code>
+                        <p>Получение ранее созданной панели по id</p>
+
+                        <code>panel.render('element-id')</code>
+                        <p>
+                            Формирует и вставляет сгенерированную html-панель в указанный элемент.
+                            Параметр элемента может содержать идентификатор элемента страницы или объект элемента страницы.
+                            Если параметр не указан, метод вернет сформированный html код панели
+                        </p>
+
+                        <code>panel.initEvents()</code>
+                        <p>
+                            Инициализировать события панели.
+                            При использовании метода <code>panel.render('element-id')</code> c переданным элементом, метод <code>panel.initEvents()</code> выполняется автоматически.
+                        </p>
+
+                        <code>panel.getId()</code>
+                        <p>
+                            Получение идентификатора панели
+                        </p>
+
+                        <code>panel.setContent(content)</code>
+                        <p>
+                            Установка содержимого внутри панели. Может содержать в себе тоже, что и параметр <code>content</code> в опциях
+                        </p>
+
+                        <code>panel.on('click-tab.coreui.panel', function() { ... })</code>
+                        <p>
+                            Установка события, которое может произойти в текущей панели.
+                        </p>
+                    </div>
+
+
+                    <h2 id="events" class="section-margin">Events</h2>
+                    <div>
+                        <table class="table table-bordered table-striped bs-events-table">
+                            <thead>
+                            <tr>
+                                <th>Event Type</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-nowrap">shown.coreui.panel</td>
+                                <td>
+                                    Показ панели на странице. Происходит один раз при отображении панели
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">show-content.coreui.panel</td>
+                                <td>
+                                    Показ содержимого внутри панели.
+                                    Первый раз происходит при показе панели, а после при каждом выполнении метода <code>panel.setContent(content)</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">click-tab.coreui.panel</td>
+                                <td>
+                                    Происходит при нажатии на таб.<br>
+                                    В качестве параметров передаются <code>panel.on('click-tab.coreui.panel', function (tab, event)</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">start-load-content.coreui.panel</td>
+                                <td>
+                                    Происходит при клике на таб с указанным свойством <code>url</code>.
+                                    Дает возможность показывать прелодер или модифицировать запрос через изменение объекта <code>xhr</code>.<br>
+                                    В качестве параметров передаются <code>panel.on('start-load.coreui.panel', function (tab, xhr)</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">success-load-content.coreui.panel</td>
+                                <td>
+                                    Происходит при успешной ajax загрузке содержимого панели.<br>
+                                    В качестве параметров передаются <code>panel.on('success-load.coreui.panel', function (tab, result)</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">error-load-content.coreui.panel</td>
+                                <td>
+                                    Происходит при НЕ успешной ajax загрузке содержимого панели.<br>
+                                    В качестве параметров передаются <code>panel.on('error-load.coreui.panel', function (tab, xhr, textStatus, errorThrown)</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">end-load-content.coreui.panel</td>
+                                <td>
+                                    Происходит после завершения ajax запроса для получения содержимого для панели.
+                                    Дает возможность скрыть прелодер.<br>
+                                    В качестве параметров передаются <code>panel.on('end-load.coreui.panel', function (tab, xhr, textStatus)</code>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                    <br>
                 </div>
-
-
-                <h2 id="options" class="section-margin">Options</h2>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped js-options-table">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>type</th>
-                            <th>default</th>
-                            <th>description</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>type</td>
-                            <td>string</td>
-                            <td></td>
-                            <td>The data type. The <code> panel </code> must be specified for correct interpretation.</td>
-                        </tr>
-                        <tr>
-                            <td>name</td>
-                            <td>string</td>
-                            <td></td>
-                            <td>Unique panel name</td>
-                        </tr>
-                        <tr>
-                            <td>view</td>
-                            <td>string</td>
-                            <td><code>default</code></td>
-                            <td>
-                                Identify the appearance of the panel. Can have different values:
-                                <code>default</code>, <code>primary</code>, <code>success</code>, <code>warning</code>,
-                                <code>danger</code>. But there may be other values if you have you will create your personal styles.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>title</td>
-                            <td>string</td>
-                            <td></td>
-                            <td>The title of the panel.</td>
-                        </tr>
-                        <tr>
-                            <td>subtitle</td>
-                            <td>string</td>
-                            <td></td>
-                            <td>Text of additional panel title.</td>
-                        </tr>
-                        <tr>
-                            <td>actions</td>
-                            <td>string</td>
-                            <td></td>
-                            <td>Any html text to create additional panel controls.</td>
-                        </tr>
-                        <tr>
-                            <td>tabs</td>
-                            <td>array</td>
-                            <td></td>
-                            <td>Array of objects containing properties for creating bookmarks.</td>
-                        </tr>
-                        <tr>
-                            <td>content</td>
-                            <td>array</td>
-                            <td></td>
-                            <td>An array with the contents of the panel. Elements can be strings or objects.</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <h2 id="methods" class="section-margin">Methods</h2>
-                <div>
-                    <code>CoreUIPanel.get('panel-name')</code>
-                    <p>Receiving a previously created panel by its name.</p>
-
-                    <code>panel.render('element-id')</code>
-                    <p>
-                        Forms and inserts the generated html panel into the specified element.
-                        The element's parameter can contain the page element identifier or the page element's object.
-                        If there is no specified parameter, the method will return the html panel.
-                    </p>
-
-                    <code>CoreUIPanel.renderContent({ ... })</code>
-                    <p>Forms from the passed parameter html returns it.</p>
-
-                    <code>CoreUIPanel.initEvents(element)</code>
-                    <p>
-                        Initialize associated events for the panel. The parameter can contain the dom element in which
-                        you need to look for panels to initialize events. When using the method
-                        <code>panel.render('element-id')</code> event initialization is performed automatically.
-                    </p>
-
-                    <code>CoreUIPanel.onGlobal('click-tab.coreui.panel', function() { ... })</code>
-                    <p>Set an event that can occur in any of the panels created.</p>
-
-                    <code>panel.on('click-tab.coreui.panel', function() { ... })</code>
-                    <p>Set an event that can occur in the current panel.</p>
-
-                    <code>panel.activeTab('tab-id', context, event)</code>
-                    <p>
-                        Set the activity in the specified tab. The first parameter is the tab ID, context and event are
-                        the context and the event parameter with which the events specified for this action should be called.
-                    </p>
-                </div>
-
-
-                <h2 id="events" class="section-margin">Events</h2>
-                <div>
-                    <table class="table table-bordered table-striped bs-events-table">
-                        <thead>
-                        <tr>
-                            <th width="160">Event Type</th>
-                            <th>Description</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>click-tab.coreui.panel</td>
-                            <td>
-                                This event occurs when the user clicks on a bookmark or when the method is called
-                                <code>panel.activeTab('tab-id', callback)</code>.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>show.coreui.panel</td>
-                            <td>
-                                This event occurs before the panel is inserted into the page using the method
-                                <code>panel.render('element-id')</code>.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>shown.coreui.panel</td>
-                            <td>
-                                This event occurs after the panel is pushed onto the page using the method
-                                <code>panel.render('element-id')</code>.
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-
-                    <pre><code class="html">&lt;script&gt;
-    panel.on('click-tab.coreui.panel', function (event, name, tab_id) {
-        $.ajax({
-            url: this.href,
-            method: 'get',
-            success: function (result) {
-                var content = CoreUIPanel.renderContent(result);
-                $('#coreui-panel-' + name + ' .coreui-panel-body').html(content);
-            }
-        });
-        event.preventDefault();
-    });
-&lt;/script&gt;</code></pre>
-                </div>
-
-
-                <h2 id="browser-compatibility" class="section-margin">Browser compatibility</h2>
-                <div>
-                    <p>
-                        CoreUI Panel works in most major browsers. Some details:
-                    </p>
-                    <ul>
-                        <li><b>IE: 9.</b></li>
-                        <li><b>Microsoft Edge: 12+</b></li>
-                        <li><b>Safari: 4+</b></li>
-                        <li><b>Firefox: 4+</b></li>
-                        <li><b>Chrome 14+</b></li>
-                        <li><b>Opera: 15+</b></li>
-                    </ul>
-                </div>
-                <br>
-                <br>
             </div>
         </div>
-    </div>
-    <div class="buffer-content"></div>
-</section>
-
-<footer>
-    <section class="copyright">
-        <div class="container">
-            <span class="pull-left">&copy; 2017, shabuninil24@gmail.com</span>
-            <span class="pull-right">Code licensed under the GNU License</span>
-        </div>
+        <div class="buffer-content"></div>
     </section>
-</footer>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-        // Simple panel
-        var panelSimple = new CoreUIPanel({
-            "type": "panel",
-            "name": "simple",
-            "title": "Component Panel",
-            "subtitle": "CoreUI Framework",
-            "actions": "<span class=\"help\" title=\"help\">?<\/span>",
-            "content": [
-                "Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui."
-            ]
-        });
-        panelSimple.render('example-simple-content');
-
-
-        // Tabs panel
-        var panelTabs = new CoreUIPanel({
-            "type": "panel",
-            "name": "tabs",
-            "tabs": [
-                {"id": "1", "title": "Home", "type": "tab", "active": true},
-                {"id": "2", "title": "Profile", "type": "tab", "active": false},
-                {"id": "3", "title": "Disabled", "type": "tab", "disabled": true},
-                {
-                    "title": "Dropdown",
-                    "type": "combotab",
-                    "elements": [
-                        {"id": "4", "title": "Tab title 4", "type": "element", "disabled": true},
-                        {"id": "5", "title": "Tab title 5", "type": "element", "active": false},
-                        {"type": "divider"},
-                        {"id": "6","title": "Tab title 6","type": "element","active": false}
-                    ]
-                }
-            ],
-            "content": [ "Tab 1" ]
-        });
-        panelTabs.render('example-tabs-content');
-        panelTabs.on('click-tab.coreui.panel', function (event, name, tab_id) {
-
-            $('#coreui-panel-' + name + ' .coreui-panel-body')
-                .html('Tab ' + tab_id);
-        });
-
-
-        // Components panel
-        var panelComponents = new CoreUIPanel({
-            "type": "panel",
-            "name": "components",
-            "title": "Component Panel",
-            "subtitle": "CoreUI Framework",
-            "content": [
-                "Your content 1 <br><br>",
-                {
-                    "type": "html",
-                    "content" : "Your content 2 <br><br>"
-                },
-                {
-                    "type":  "panel",
-                    "name":  "simple",
-                    "title": "Sub Panel",
-                    "content": [ "Your content 3" ]
-                }
-            ]
-        });
-        panelComponents.render('example-components-content');
-
-
-        // Ajax panel
-        var panelAjax = new CoreUIPanel({
-            "type": "panel",
-            "name": "ajax",
-            "title": "Component Panel",
-            "actions": "<span class=\"help\" title=\"help\">?<\/span>",
-            "subtitle": "CoreUI Framework",
-            "tabs": [
-                {"id": "tab1", "title": "Home", "type": "tab", "active": true, "url": "data/tab1.txt"},
-                {"id": "tab2", "title": "Profile", "type": "tab", "active": false, "url": "data/tab2.json"},
-                {"id": "tab3", "title": "Disabled", "type": "tab", "disabled": true},
-                {
-                    "title": "Dropdown",
-                    "type": "combotab",
-                    "elements": [
-                        {"id": "tab4", "title": "Tab title 3", "type": "element", "disabled": true},
-                        {"id": "tab5", "title": "Tab title 4", "type": "element", "active": false, "url": "data/tab3.json"},
-                        {"type": "divider"},
-                        {"id": "tab6","title": "Tab title 5","type": "element","active": false,"url": "data/tab4.json"}
-                    ]
-                }
-            ],
-            "content": [
-                "Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui."
-            ]
-        });
-        panelAjax.render('example-ajax-content');
-        panelAjax.on('click-tab.coreui.panel', function (event, name, tab_id) {
-
-            $.ajax({
-                url: this.href,
-                method: 'get',
-                success: function (result) {
-                    var content = CoreUIPanel.renderContent(result);
-                    $('#coreui-panel-' + name + ' .coreui-panel-body').html(content);
-                }
-            });
-
-            event.preventDefault();
-        });
-
-        $('pre code').each(function(i, block) {
-            hljs.highlightBlock(block);
-        });
-    });
-</script>
-
-<script src="js/coreui-panel.min.js" type="application/javascript"></script>
-<script src="js/jquery-1.12.4.min.js" type="application/javascript"></script>
-<script src="js/bootstrap.min.js" type="application/javascript"></script>
-<script src="js/highlight.pack.js" type="application/javascript"></script>
+    <footer>
+        <section class="copyright">
+            <div class="container">
+                <span class="float-start">shabuninil24@gmail.com</span>
+                <span class="float-end">Code licensed under the GNU License</span>
+            </div>
+        </section>
+    </footer>
 </body>
 </html>
