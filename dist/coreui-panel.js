@@ -191,7 +191,6 @@ CoreUI.panel.instance = {
     _init: function (options) {
 
         this._options = $.extend(true, {}, this._options, options);
-        this._events  = {};
 
         if ( ! this._options.id) {
             this._options.id = CoreUI.panel._hashCode();
@@ -464,16 +463,17 @@ CoreUI.panel.instance = {
 
         params = params || [];
 
-        if (this._events[name] instanceof Object && this._events[name].length > 0) {
+        if (this._events.hasOwnProperty(name) && this._events[name].length > 0) {
             for (var i = 0; i < this._events[name].length; i++) {
                 let callback = this._events[name][i].callback;
 
-                context = context || this._events[name][i].context;
+                context = this._events[name][i].context || context;
 
                 callback.apply(context, params);
 
                 if (this._events[name][i].singleExec) {
                     this._events[name].splice(i, 1);
+                    i--;
                 }
             }
         }
