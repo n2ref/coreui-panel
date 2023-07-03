@@ -353,7 +353,7 @@ CoreUI.panel.instance = {
                         let instance = CoreUI[name].create(data[i]);
                         result.push(instance.render());
 
-                        this.on('show-content.coreui.panel', instance.initEvents, instance, true);
+                        this.on('shown.coreui.panel', instance.initEvents, instance, true);
 
                     } else {
                         result.push(JSON.stringify(data[i]));
