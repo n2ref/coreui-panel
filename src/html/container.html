@@ -1,7 +1,7 @@
 <div class="card text-center mb-3 shadow-sm" id="coreui-panel-<%= id %>">
     <div class="card-body text-start">
         <% if (title) { %>
-        <h4 class="card-title">
+        <h4 class="card-title<% if ( ! subtitle) { %> mb-4<% } %>>">
             <% if (backUrl) { %>
             <a class="btn btn-sm btn-outline-secondary me-2 align-top" href="<%- backUrl %>">
                 <svg class="align-text-top" xmlns="http://www.w3.org/2000/svg" width="16px" height="18px" viewBox="0 0 24 24" fill="none">
