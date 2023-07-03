@@ -13,7 +13,8 @@ const rename     = require("gulp-rename");
 var conf = {
     dist: "./dist",
     js: {
-        file: 'coreui-panel.min.js',
+        fileMin: 'coreui-panel.min.js',
+        file: 'coreui-panel.js',
         src: [
             'src/js/coreui.panel.js',
             'src/js/coreui.panel.templates.js',
@@ -52,7 +53,8 @@ var conf = {
         ]
     },
     css: {
-        file: 'coreui-panel.min.css',
+        fileMin: 'coreui-panel.min.css',
+        file: 'coreui-panel.css',
         src: [
             'node_modules/bootstrap-5-vertical-tabs/dist/b5vtabs.min.css',
             'src/css/coreui.panel.css'
@@ -62,38 +64,53 @@ var conf = {
 
 
 
-gulp.task('build_css', function(){
+gulp.task('build_css_min', function(){
     return gulp.src(conf.css.src)
         .pipe(sourcemaps.init())
         .pipe(cleanCSS())
-        .pipe(concat(conf.css.file))
+        .pipe(concat(conf.css.fileMin))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(conf.dist));
 });
 
-gulp.task('build_css_fast', function(){
+gulp.task('build_css_min_fast', function(){
+    return gulp.src(conf.css.src)
+        .pipe(sourcemaps.init())
+        .pipe(concat(conf.css.fileMin))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(conf.dist));
+});
+
+gulp.task('build_css', function(){
     return gulp.src(conf.css.src)
         .pipe(sourcemaps.init())
         .pipe(concat(conf.css.file))
+        .pipe(gulp.dest(conf.dist));
+});
+
+
+gulp.task('build_js_min', function() {
+    return gulp.src(conf.js.src)
+        .pipe(sourcemaps.init())
+        .pipe(uglify())
+        .pipe(concat(conf.js.fileMin, {newLine: ";\n"}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(conf.dist));
 });
 
+
+gulp.task('build_js_min_fast', function() {
+    return gulp.src(conf.js.src)
+        .pipe(sourcemaps.init())
+        .pipe(concat(conf.js.fileMin, {newLine: ";\n"}))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(conf.dist));
+});
 
 gulp.task('build_js', function() {
     return gulp.src(conf.js.src)
         .pipe(sourcemaps.init())
-        .pipe(uglify())
         .pipe(concat(conf.js.file, {newLine: ";\n"}))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(conf.dist));
-});
-
-gulp.task('build_js_fast', function() {
-    return gulp.src(conf.js.src)
-        .pipe(sourcemaps.init())
-        .pipe(concat(conf.js.file, {newLine: ";\n"}))
-        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(conf.dist));
 });
 
@@ -131,9 +148,9 @@ gulp.task('build_tpl', function() {
 
 
 gulp.task('build_watch', function() {
-    gulp.watch(conf.css.src, gulp.series(['build_css_fast']));
-    gulp.watch(conf.tpl.src, gulp.series(['build_tpl', 'build_js_fast']));
-    gulp.watch(conf.js.src, gulp.parallel(['build_js_fast']));
+    gulp.watch(conf.css.src, gulp.series(['build_css_min_fast']));
+    gulp.watch(conf.tpl.src, gulp.series(['build_tpl', 'build_js_min_fast']));
+    gulp.watch(conf.js.src, gulp.parallel(['build_js_min_fast']));
 });
 
-gulp.task("default", gulp.series([ 'build_tpl', 'build_js', 'build_css']));
+gulp.task("default", gulp.series([ 'build_tpl', 'build_js_min', 'build_js', 'build_css_min', 'build_css']));

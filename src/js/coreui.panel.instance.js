@@ -23,7 +23,7 @@ CoreUI.panel.instance = {
      */
     _init: function (options) {
 
-        this._options = $.extend({}, this._options, options);
+        this._options = $.extend(true, {}, this._options, options);
         this._events  = {};
 
         if ( ! this._options.id) {
