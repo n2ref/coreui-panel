@@ -329,6 +329,7 @@ CoreUI.panel.instance = {
             'coreui.panel',
             'coreui.tabs',
             'coreui.alert',
+            'coreui.chart',
         ];
 
         if (typeof data === 'string') {
