@@ -4,7 +4,7 @@ window["CoreUI"]["panel"]["tpl"] = {};
 window["CoreUI"]["panel"]["tpl"]["container.html"] = "<div class=\"card text-center mb-3 shadow-sm\" id=\"coreui-panel-<%= id %>\">\n" +
     "    <div class=\"card-body text-start\">\n" +
     "        <% if (title) { %>\n" +
-    "        <h4 class=\"card-title<% if ( ! subtitle) { %> mb-4<% } %>>\">\n" +
+    "        <h4 class=\"card-title<% if ( ! subtitle) { %> mb-4<% } %>\">\n" +
     "            <% if (backUrl) { %>\n" +
     "            <a class=\"btn btn-sm btn-outline-secondary me-2 align-top\" href=\"<%- backUrl %>\">\n" +
     "                <svg class=\"align-text-top\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16px\" height=\"18px\" viewBox=\"0 0 24 24\" fill=\"none\">\n" +
