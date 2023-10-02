@@ -1,7 +1,7 @@
 
-var CoreUI = typeof CoreUI !== 'undefined' ? CoreUI : {};
+import panelInstance from './coreui.panel.instance';
 
-CoreUI.panel = {
+let panel = {
 
     _instances: {},
 
@@ -11,7 +11,7 @@ CoreUI.panel = {
      */
     create: function (options) {
 
-        let instance = $.extend(true, {}, this.instance);
+        let instance = $.extend(true, {}, panelInstance);
         instance._init(options instanceof Object ? options : {});
 
         let panelId = instance.getId();
@@ -71,3 +71,5 @@ CoreUI.panel = {
         return (-1 ^ n) >>> 0;
     }
 }
+
+export default panel;

@@ -1,5 +1,9 @@
 
-CoreUI.panel.instance = {
+import '../../node_modules/ejs/ejs.min';
+import tpl from './coreui.panel.templates';
+
+
+let panelInstance = {
 
     _options: {
         id: '',
@@ -238,9 +242,9 @@ CoreUI.panel.instance = {
             }
         }
 
-        this._options.tabsContent = CoreUI.panel.ejs.render(CoreUI.panel.tpl['tabs.html'], this._options);
+        this._options.tabsContent = ejs.render(tpl['tabs.html'], this._options);
 
-        let html = CoreUI.panel.ejs.render(CoreUI.panel.tpl['container.html'], this._options);
+        let html = ejs.render(tpl['container.html'], this._options);
 
         if (element === undefined) {
             return html;
@@ -328,7 +332,7 @@ CoreUI.panel.instance = {
             'coreui.layout',
             'coreui.panel',
             'coreui.tabs',
-            'coreui.alert',
+            'coreui.info',
             'coreui.chart',
         ];
 
@@ -365,3 +369,5 @@ CoreUI.panel.instance = {
         return result.join('');
     }
 }
+
+export default panelInstance;
