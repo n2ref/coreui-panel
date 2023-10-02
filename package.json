@@ -15,7 +15,8 @@
     "text_js": "eslint -c .eslintrc.json --max-warnings 100 --ext .js ./src/js"
   },
   "dependencies": {
-    "bootstrap": "5.3.0-alpha2",
+    "bootstrap": "5.3.0-alpha3",
+    "bootstrap-icons": "1.11.1",
     "jquery": "^3.6.*"
   },
   "devDependencies": {
@@ -26,6 +27,6 @@
     "gulp-clean-css": "4.*"
   },
   "keywords": [],
-  "author": "shabuninil",
+  "author": "n2ref",
   "license": "ISC"
 }
