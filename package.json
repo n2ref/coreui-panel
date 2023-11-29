@@ -1,9 +1,9 @@
 {
   "name": "coreui-panel",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "CoreUI Panel",
   "scripts": {
-    "build_all": "gulp build_tpl && gulp build_js_min && gulp build_js && gulp build_css_min && gulp build_css && npm run text_js",
+    "build_all": "gulp build_tpl && gulp build_js_min && gulp build_js && gulp build_css_min && gulp build_css && npm run test_js",
 
     "build_css": "gulp build_css",
     "build_css_min": "gulp build_css_min",
@@ -13,7 +13,7 @@
     "build_js_min": "gulp build_tpl && gulp build_js_min",
 
     "build_watch": "gulp build_watch",
-    "text_js": "eslint -c ./.eslintrc.json --max-warnings 100 --ext .js ./src/js"
+    "test_js": "eslint -c ./.eslintrc.json --max-warnings 100 --ext .js ./src/js"
   },
   "dependencies": {
     "ejs": "3.1.*",
