@@ -2,10 +2,12 @@
 
 .coreui-panel {
     min-width: min-content;
-}
-.coreui-panel .coreui-panel-back i {
-    font-size: 1.09em;
-}
-.coreui-panel .right-tabs .nav-link {
-    text-align: left;
+
+    .coreui-panel-back i {
+        font-size: 1.09em;
+    }
+
+    .right-tabs .nav-link {
+        text-align: left;
+    }
 }

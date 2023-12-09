@@ -1,14 +1,16 @@
-const gulp       = require('gulp');
-const concat     = require('gulp-concat');
-const sourcemaps = require('gulp-sourcemaps');
-const uglify     = require('gulp-uglify');
-const htmlToJs   = require('gulp-html-to-js');
-const babel      = require("gulp-babel");
-const sass       = require('gulp-sass')(require('sass'));
-const rollup     = require('rollup-stream');
-const source     = require('vinyl-source-stream');
-const buffer     = require("vinyl-buffer");
-const wrapFile   = require('gulp-wrap-file');
+const gulp             = require('gulp');
+const concat           = require('gulp-concat');
+const sourcemaps       = require('gulp-sourcemaps');
+const uglify           = require('gulp-uglify');
+const htmlToJs         = require('gulp-html-to-js');
+const babel            = require("gulp-babel");
+const sass             = require('gulp-sass')(require('sass'));
+const rollup           = require('rollup-stream');
+const rollupSourcemaps = require('rollup-plugin-sourcemaps');
+const rollupBabel      = require('rollup-plugin-babel');
+const source           = require('vinyl-source-stream');
+const buffer           = require("vinyl-buffer");
+const wrapFile         = require('gulp-wrap-file');
 
 
 
@@ -62,7 +64,7 @@ gulp.task('build_js', function() {
         sourcemap: false,
         format: 'umd',
         name: "CoreUI.panel",
-        plugins: [babel()],
+        plugins: [rollupBabel()],
         context: "window"
     })
         .pipe(source(conf.js.file))
@@ -78,6 +80,10 @@ gulp.task('build_js_min', function() {
         format: 'umd',
         name: "CoreUI.panel",
         context: "window",
+        plugins: [
+            rollupSourcemaps(),
+            rollupBabel()
+        ]
     })
         .pipe(source(conf.js.fileMin))
         .pipe(buffer())
@@ -97,6 +103,8 @@ gulp.task('build_tpl', function() {
         .pipe(htmlToJs({global: 'tpl', concat: conf.tpl.file}))
         .pipe(wrapFile({
             wrapper: function(content, file) {
+                content = content.replace(/\\n/g, ' ');
+                content = content.replace(/[ ]{2,}/g, ' ');
                 return 'let ' + content + ";\nexport default tpl;"
             }
         }))
