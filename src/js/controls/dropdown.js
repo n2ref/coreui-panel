@@ -37,7 +37,9 @@ coreuiPanel.controls.dropdown = {
             $.each(this._options.items, function (key, item) {
                 if (coreuiPanelUtils.isObject(item) && typeof item.type === 'string') {
 
-                    item.id = coreuiPanelUtils.hashCode();
+                    item.id = item.hasOwnProperty('id') && typeof item.id === 'string' && item.id
+                        ? item.id
+                        : coreuiPanelUtils.hashCode();
                 }
             });
         }

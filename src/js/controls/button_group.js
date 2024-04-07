@@ -57,7 +57,9 @@ coreuiPanel.controls.button_group = {
                         $.each(button.items, function (key, item) {
                             if (coreuiPanelUtils.isObject(item) && typeof item.type === 'string') {
 
-                                item.id = coreuiPanelUtils.hashCode();
+                                item.id = item.hasOwnProperty('id') && typeof item.id === 'string' && item.id
+                                    ? item.id
+                                    : coreuiPanelUtils.hashCode();
                             }
                         });
                     }
@@ -170,7 +172,7 @@ coreuiPanel.controls.button_group = {
                         ) {
                             let attributes = [];
 
-                            if (coreuiPanelUtils.isObject(button.attr)) {
+                            if ( ! coreuiPanelUtils.isObject(button.attr)) {
                                 button.attr = {};
                             }
 
@@ -202,7 +204,7 @@ coreuiPanel.controls.button_group = {
                         ) {
                             let attributes = [];
 
-                            if (coreuiPanelUtils.isObject(button.attr)) {
+                            if ( ! coreuiPanelUtils.isObject(button.attr)) {
                                 button.attr = {};
                             }
 
@@ -277,7 +279,7 @@ coreuiPanel.controls.button_group = {
                             });
 
 
-                            if (coreuiPanelUtils.isObject(button.attr)) {
+                            if ( ! coreuiPanelUtils.isObject(button.attr)) {
                                 button.attr = {};
                             }
 

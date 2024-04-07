@@ -2405,7 +2405,7 @@ coreuiPanel$1.controls.dropdown = {
     if (Array.isArray(this._options.items)) {
       $.each(this._options.items, function (key, item) {
         if (coreuiPanelUtils.isObject(item) && typeof item.type === 'string') {
-          item.id = coreuiPanelUtils.hashCode();
+          item.id = item.hasOwnProperty('id') && typeof item.id === 'string' && item.id ? item.id : coreuiPanelUtils.hashCode();
         }
       });
     }
@@ -2551,7 +2551,7 @@ coreuiPanel$1.controls.button_group = {
           if (button.type === 'dropdown' && Array.isArray(button.items)) {
             $.each(button.items, function (key, item) {
               if (coreuiPanelUtils.isObject(item) && typeof item.type === 'string') {
-                item.id = coreuiPanelUtils.hashCode();
+                item.id = item.hasOwnProperty('id') && typeof item.id === 'string' && item.id ? item.id : coreuiPanelUtils.hashCode();
               }
             });
           }
@@ -2626,7 +2626,7 @@ coreuiPanel$1.controls.button_group = {
           if (button.type === 'link') {
             if (button.hasOwnProperty('link') && button.hasOwnProperty('content') && typeof button.link === 'string' && typeof button.content === 'string') {
               let attributes = [];
-              if (coreuiPanelUtils.isObject(button.attr)) {
+              if (!coreuiPanelUtils.isObject(button.attr)) {
                 button.attr = {};
               }
               if (button.attr.hasOwnProperty('href')) {
@@ -2648,7 +2648,7 @@ coreuiPanel$1.controls.button_group = {
           } else if (button.type === 'button') {
             if (button.hasOwnProperty('content') && button.hasOwnProperty('onClick') && typeof button.content === 'string' && ['string', 'function'].indexOf(typeof button.onClick) >= 0) {
               let attributes = [];
-              if (coreuiPanelUtils.isObject(button.attr)) {
+              if (!coreuiPanelUtils.isObject(button.attr)) {
                 button.attr = {};
               }
               if (button.attr.hasOwnProperty('type')) {
@@ -2700,7 +2700,7 @@ coreuiPanel$1.controls.button_group = {
                   }
                 }
               });
-              if (coreuiPanelUtils.isObject(button.attr)) {
+              if (!coreuiPanelUtils.isObject(button.attr)) {
                 button.attr = {};
               }
               if (button.attr.hasOwnProperty('type')) {
