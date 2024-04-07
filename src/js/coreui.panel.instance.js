@@ -1,6 +1,10 @@
 
 import '../../node_modules/ejs/ejs.min';
-import tpl from './coreui.panel.templates';
+import coreuiPanel         from './coreui.panel';
+import coreuiPanelUtils    from './coreui.panel.utils';
+import coreuiPanelPrivate  from './coreui.panel.private';
+import coreuiPanelTpl      from './coreui.panel.templates';
+import coreuiPanelElements from './coreui.panel.elements';
 
 
 let panelInstance = {
@@ -9,15 +13,20 @@ let panelInstance = {
         id: '',
         title: null,
         subtitle: null,
-        backUrl: null,
-        controls: null,
-        tabs: [],
-        tabsType: 'tabs', // pills, underline
-        tabsPosition: 'top-left', // top-center, top-right, left, left-sideways, right, right-sideways
-        containerClasses: '',
-        tabsWidth: 200,
-        tabsFill: '', // fill, justify
+        controls: [],
+        content: null,
+        tabs: {
+            type: 'tabs',         // pills, underline
+            position: 'top-left', // top-center, top-right, left, right
+            width: 200,
+            fill: '', // fill, justify
+            items: []
+        }
     },
+
+    _id: '',
+    _tabs: [],
+    _controls: [],
     _events: {},
 
 
@@ -28,140 +37,230 @@ let panelInstance = {
     _init: function (options) {
 
         this._options = $.extend(true, {}, this._options, options);
-
-        if ( ! this._options.id) {
-            this._options.id = CoreUI.panel._hashCode();
-        }
-
-        switch (this._options.tabsPosition) {
-            case 'top-left' :       this._options.containerClasses = ''; break;
-            case 'top-center' :     this._options.containerClasses = 'justify-content-center'; break;
-            case 'top-right' :      this._options.containerClasses = 'justify-content-end'; break;
-            case 'left' :           this._options.containerClasses = 'left-tabs'; break;
-            case 'left-sideways' :  this._options.containerClasses = 'left-tabs sideways-tabs'; break;
-            case 'right' :          this._options.containerClasses = 'right-tabs'; break;
-            case 'right-sideways' : this._options.containerClasses = 'right-tabs sideways-tabs'; break;
-            default :               this._options.containerClasses = '';
-        }
+        this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
+            ? this._options.id
+            : coreuiPanelUtils.hashCode();
 
 
-        if (this._options.tabsType === 'tabs' ||
-            this._options.tabsType === 'pills'
+        // Инициализация контролов
+        if (this._options.hasOwnProperty('controls') &&
+            Array.isArray(this._options.controls) &&
+            this._options.controls.length > 0
         ) {
-            this._options.containerClasses += ' gap-1'
+            coreuiPanelPrivate.initControls(this, this._options.controls);
+        }
+
+        // Инициализация табов
+        if (this._options.hasOwnProperty('tabs') &&
+            coreuiPanelUtils.isObject(this._options.tabs) &&
+            this._options.tabs.hasOwnProperty('items') &&
+            Array.isArray(this._options.tabs.items) &&
+            this._options.tabs.items.length > 0
+        ) {
+            coreuiPanelPrivate.initTabs(this, this._options.tabs.items);
         }
     },
 
 
     /**
-     *
+     * Инициализация событий таблицы
      */
     initEvents: function () {
 
-        this._trigger('shown.coreui.panel');
+        let that = this;
 
-        let element = $('#coreui-panel-' + this._options.id);
-        let panel   = this;
+        this.on('tab_click', function (tab, event) {
 
-        // Загрузка табов ajax
-        if (this._options.tabs.length > 0) {
-            this.on('click-tab.coreui.panel', function (tab, event) {
+            let options = tab.getOptions();
+            let url     = options.hasOwnProperty('url') && typeof options.url == 'string' && options.url
+                ? options.url
+                : '#';
 
-                if (tab.url && tab.url !== '#') {
-                    $.ajax({
-                        url: tab.url,
-                        method: 'get',
-                        beforeSend: function(xhr) {
-                            panel._trigger('start-load-content.coreui.panel', panel, [ tab, xhr ]);
-                        },
-                        success: function (result) {
-                            panel._trigger('success-load-content.coreui.panel', panel, [ tab, result ]);
+            if (url && url !== '#') {
+                that.loadContent(url);
+            }
 
-                            let content = panel._renderContent(result);
-                            panel.setContent(content);
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            panel._trigger('error-load-content.coreui.panel', panel, [ tab, xhr, textStatus, errorThrown ]);
-                        },
-                        complete: function(xhr, textStatus) {
-                            panel._trigger('end-load-content.coreui.panel', panel, [ tab, xhr, textStatus ]);
-                        },
-                    });
-                }
-            });
-        }
 
-        if (element[0]) {
-            $('.nav-link:not(.dropdown-toggle)', element).click(function (event) {
-                let tabId = $(this).data('tab-id') || '';
-                let tab   = null;
+            let urlWindow = options.hasOwnProperty('urlWindow') && typeof options.urlWindow == 'string' && options.urlWindow
+                ? options.urlWindow
+                : null;
 
-                $.each(panel._options.tabs, function (key, tabItem) {
-                    if (tabItem.hasOwnProperty('id') &&
-                        tabItem.id.toString() === tabId.toString()
-                    ) {
-                        tab = Object.assign({}, tabItem);
-                        return false;
-                    }
-                });
+            if (urlWindow) {
+                window.history.pushState({ path:urlWindow }, '', urlWindow);
+            }
+        });
 
-                panel._trigger('click-tab.coreui.panel', this, [ tab, event ]);
-
-                if (tab.url === '#') {
-                    return false;
-                }
-            })
-
-            $('.dropdown-item', element).click(function (event) {
-                let tabId = $(this).data('tab-id') || '';
-                let tab   = null;
-
-                $.each(panel._options.tabs, function (key, tabItem) {
-                    if (tabItem.hasOwnProperty('type') &&
-                        tabItem.hasOwnProperty('items') &&
-                        tabItem.type === 'dropdown' &&
-                        tabItem.items.length > 0
-                    ) {
-                        $.each(tabItem.items, function (key, item) {
-                            if (item.hasOwnProperty('id') &&
-                                item.id.toString() === tabId.toString()
-                            ) {
-                                tab = Object.assign({}, item);
-                                return false;
-                            }
-                        });
-                    }
-                });
-
-                panel._trigger('click-tab.coreui.panel', this, [ tab, event ]);
-
-                if (tab.url === '#') {
-                    return false;
-                }
-            })
-        }
+        coreuiPanelPrivate.trigger(this, 'panel_show');
+        coreuiPanelPrivate.trigger(this, 'content_show');
     },
 
 
     /**
-     *
-     * @returns {*}
+     * Получение идентификатора таблицы
+     * @returns {string}
      */
     getId: function () {
-        return this._options.id;
+        return this._id;
     },
 
 
     /**
-     * @param content
+     * Получение опций панели
+     * @returns {*}
+     */
+    getOptions: function () {
+
+        return $.extend(true, {}, this._options);
+    },
+
+
+    /**
+     * Блокировка панели
+     */
+    lock: function () {
+
+        let container = coreuiPanelElements.getPanel(this.getId());
+
+        if (container[0] && ! container.find('.coreui-panel-lock')[0]) {
+            let html = ejs.render(coreuiPanelTpl['loader.html'], {
+                lang: this.getLang()
+            });
+
+            container.prepend(html);
+        }
+    },
+
+
+    /**
+     * Разблокировка панели
+     */
+    unlock: function () {
+
+        coreuiPanelElements.getLock(this.getId()).hide(50, function () {
+            $(this).remove()
+        });
+    },
+
+
+    /**
+     * Загрузка данных и установка их в панель
+     * @param url
+     */
+    loadContent: function (url) {
+
+        let that = this;
+
+        this.lock();
+
+        $.ajax({
+            url: url,
+            method: 'get',
+            beforeSend: function(xhr) {
+                coreuiPanelPrivate.trigger(that, 'load_start', that, [ xhr ]);
+            },
+            success: function (result) {
+                coreuiPanelPrivate.trigger(that, 'load_success', that, [ result ]);
+                that.setContent(result);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                coreuiPanelPrivate.trigger(that, 'load_error', that, [ xhr, textStatus, errorThrown ]);
+            },
+            complete: function(xhr, textStatus) {
+                that.unlock();
+                coreuiPanelPrivate.trigger(that, 'load_end', that, [ xhr, textStatus ]);
+            },
+        });
+    },
+
+
+    /**
+     * Получение переводов текущего языка
+     * @return {object}
+     */
+    getLang: function () {
+
+        let result = {};
+
+        if (this._options.lang && coreuiPanel.lang.hasOwnProperty(this._options.lang)) {
+            result = coreuiPanel.lang[this._options.lang];
+
+        } else {
+            let lang = coreuiPanel.getSetting('lang')
+
+            if (lang && coreuiPanel.lang.hasOwnProperty(lang)) {
+                result = coreuiPanel.lang[lang];
+
+            } else if (Object.keys(coreuiPanel.lang).length > 0) {
+                result = coreuiPanel.lang[Object.keys(coreuiPanel.lang)[0]];
+            }
+        }
+
+        return $.extend(true, {}, result);
+    },
+
+
+    /**
+     * Получение объекта таба по id
+     * @param tabId
+     */
+    getTabById: function (tabId) {
+
+        let result = null;
+
+        $.each(this._tabs, function (key, tab) {
+            if (tab.hasOwnProperty('getId') &&
+                typeof tab.getId === 'function' &&
+                tab.getId() === tabId
+            ) {
+                result = tab;
+                return false;
+            }
+        });
+
+        return result;
+    },
+
+
+    /**
+     * Получение объекта контрола по его id
+     * @param {string} id
+     * @return {object}
+     */
+    getControlById: function (id) {
+
+        let result = null;
+
+        $.each(this._controls, function (key, control) {
+            if (control.hasOwnProperty('getId') &&
+                typeof control.getId === 'function' &&
+                control.getId() === id
+            ) {
+                result = control;
+                return false;
+            }
+        });
+
+        return result;
+    },
+
+
+    /**
+     * Размещение содержимого внутри панели
+     * @param {string|object|Array} content
      * @returns {*}
      */
     setContent: function (content) {
 
-        content = this._renderContent(content);
+        let contents  = coreuiPanelPrivate.renderContents(this, content);
+        let container = coreuiPanelElements.getContent(this.getId());
 
-        $('#coreui-panel-' + this._options.id + ' .card-content').html(content);
-        this._trigger('show-content.coreui.panel');
+        container.html('');
+
+        $.each(contents, function (key, content) {
+            container.append(content);
+        });
+
+        coreuiPanelPrivate.trigger(this, 'content_show');
     },
 
 
@@ -172,107 +271,84 @@ let panelInstance = {
      */
     render: function(element) {
 
-        this._options.renderContent = this._renderContent(this._options.content);
+        let that         = this;
+        let tabsContent  = null;
+        let tabsPosition = 'top-left';
+        let tabsWidth    = '200px';
 
-        if (typeof this._options.tabs === 'object' && Array.isArray(this._options.tabs)) {
-            let tabProps = {
-                id: '',
-                type: 'tab',
-                title: '',
-                url: '#',
-                active: false,
-                disabled: false,
-            };
-            let tabDropdownProps = {
-                type: 'dropdown',
-                title: '',
-                active: false,
-                disabled: false,
-                items: [],
-            };
-            let tabDropdownItem = {
-                id: '',
-                type: 'item',
-                title: '',
-                url: '#',
-                active: false,
-                disabled: false
-            };
 
-            for (let i = 0; i < this._options.tabs.length; i++) {
-                let tabType = this._options.tabs[i].hasOwnProperty('type') && typeof this._options.tabs[i].type === 'string'
-                    ? this._options.tabs[i].type
-                    : 'tab';
+        if (this._options.hasOwnProperty('tabs') &&
+            coreuiPanelUtils.isObject(this._options.tabs) &&
+            this._options.tabs.hasOwnProperty('items') &&
+            Array.isArray(this._options.tabs.items) &&
+            this._options.tabs.items.length > 0
+        ) {
+            tabsContent = coreuiPanelPrivate.renderTabs(this, this._options.tabs);
 
-                switch (tabType) {
-                    case 'tab':
-                    default:
-                        this._options.tabs[i] = Object.assign({}, tabProps, this._options.tabs[i]);
+            tabsPosition = this._options.tabs.hasOwnProperty('position') && typeof this._options.tabs.position === 'string'
+                ? this._options.tabs.position
+                : 'top-left';
 
-                        if ( ! this._options.tabs[i].id) {
-                            this._options.tabs[i].id = CoreUI.panel._hashCode();
-                        }
-                        break;
-
-                    case 'dropdown':
-                        this._options.tabs[i] = Object.assign({}, tabDropdownProps, this._options.tabs[i]);
-
-                        for (let j = 0; j < this._options.tabs[i].items.length; j++) {
-                            let tabType = this._options.tabs[i].items[j].hasOwnProperty('type') && typeof this._options.tabs[i].items[j].type === 'string'
-                                ? this._options.tabs[i].items[j].type
-                                : 'item';
-
-                            switch (tabType) {
-                                case 'item':
-                                default:
-                                    this._options.tabs[i].items[j] = Object.assign({}, tabDropdownItem, this._options.tabs[i].items[j]);
-
-                                    if ( ! this._options.tabs[i].items[j].id) {
-                                        this._options.tabs[i].items[j].id = CoreUI.panel._hashCode();
-                                    }
-                                    break;
-
-                                case 'divider':
-                                    this._options.tabs[i].items[j] = { type: "divider" };
-                                    break;
-                            }
-                        }
-                        break;
-                }
+            if (this._options.tabs.hasOwnProperty('width') &&
+                ['string', 'number'].indexOf(typeof this._options.tabs.width) &&
+                this._options.tabs.width
+            ) {
+                let unit  = typeof this._options.tabs.width === 'number' ? 'px' : '';
+                tabsWidth = this._options.tabs.width + unit;
             }
         }
 
-        this._options.tabsContent = ejs.render(tpl['tabs.html'], this._options);
 
-        let html = ejs.render(tpl['container.html'], this._options);
+
+        let panelElement = $(
+            ejs.render(coreuiPanelTpl['container.html'], {
+                issetControls: !! this._controls.length,
+                id: this.getId(),
+                title: this._options.title,
+                subtitle: this._options.subtitle,
+                tabs: {
+                    content: tabsContent,
+                    position: tabsPosition,
+                    width: tabsWidth,
+                }
+            })
+        );
+
+
+        let renderContents = coreuiPanelPrivate.renderContents(this, this._options.content);
+
+        $.each(renderContents, function (key, content) {
+            panelElement.find('.coreui-panel-content').append(content);
+        });
+
+
+        $.each(this._controls, function (key, control) {
+            panelElement.find('.coreui-panel-controls').append(coreuiPanelPrivate.renderControl(that, control));
+        });
 
         if (element === undefined) {
-            return html;
+            return panelElement;
         }
 
         // Dom element
-        let domElement = {};
+        let domElement = null;
 
         if (typeof element === 'string') {
             domElement = document.getElementById(element);
-
-            if ( ! domElement) {
-                return '';
-            }
 
         } else if (element instanceof HTMLElement) {
             domElement = element;
         }
 
-
-        domElement.innerHTML = html;
-
-        this.initEvents();
-        this._trigger('show-content.coreui.panel');
+        if (domElement) {
+            $(domElement).html(panelElement);
+            this.initEvents();
+        }
     },
 
 
     /**
+     * Регистрация функции на событие
      * @param eventName
      * @param callback
      * @param context
@@ -287,86 +363,6 @@ let panelInstance = {
             callback: callback,
             singleExec: !! singleExec,
         });
-    },
-
-
-    /**
-     * @param name
-     * @param context
-     * @param params
-     * @private
-     */
-    _trigger: function(name, context, params) {
-
-        params = params || [];
-
-        if (this._events.hasOwnProperty(name) && this._events[name].length > 0) {
-            for (var i = 0; i < this._events[name].length; i++) {
-                let callback = this._events[name][i].callback;
-
-                context = this._events[name][i].context || context;
-
-                callback.apply(context, params);
-
-                if (this._events[name][i].singleExec) {
-                    this._events[name].splice(i, 1);
-                    i--;
-                }
-            }
-        }
-    },
-
-
-    /**
-     *
-     * @param data
-     * @returns {string}
-     * @private
-     */
-    _renderContent: function(data) {
-
-        let result          = [];
-        let alloyComponents = [
-            'coreui.table',
-            'coreui.form',
-            'coreui.layout',
-            'coreui.panel',
-            'coreui.tabs',
-            'coreui.info',
-            'coreui.chart',
-        ];
-
-        if (typeof data === 'string') {
-            result.push(data);
-
-        } else if (data instanceof Object) {
-            if ( ! Array.isArray(data)) {
-                data = [ data ];
-            }
-
-            for (let i = 0; i < data.length; i++) {
-                if (typeof data[i] === 'string') {
-                    result.push(data[i]);
-
-                } else {
-                    if ( ! Array.isArray(data[i]) &&
-                        data[i].hasOwnProperty('component') &&
-                        alloyComponents.indexOf(data[i].component) >= 0
-                    ) {
-                        let name     = data[i].component.split('.')[1];
-                        let instance = CoreUI[name].create(data[i]);
-                        result.push(instance.render());
-
-                        this.on('shown.coreui.panel', instance.initEvents, instance, true);
-
-                    } else {
-                        result.push(JSON.stringify(data[i]));
-                    }
-                }
-            }
-        }
-
-        return result.join('');
     }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "coreui-panel",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "CoreUI Panel",
   "scripts": {
     "build_all": "gulp build_tpl && gulp build_js_min && gulp build_js && gulp build_css_min && gulp build_css && npm run test_js",
@@ -13,6 +13,7 @@
     "build_js_min": "gulp build_tpl && gulp build_js_min",
 
     "build_watch": "gulp build_watch",
+    "build_bootstrap": "gulp build_bootstrap",
     "test_js": "eslint -c ./.eslintrc.json --max-warnings 100 --ext .js ./dist"
   },
   "dependencies": {
@@ -20,10 +21,10 @@
     "bootstrap-5-vertical-tabs": "2.0.*"
   },
   "devDependencies": {
-    "gulp": "4.*",
-    "gulp-concat": "2.*",
-    "gulp-sourcemaps": "3.*",
-    "gulp-uglify": "3.0.*",
+    "gulp": "5.0.0",
+    "gulp-concat": "2.6.1",
+    "gulp-sourcemaps": "3.0.0",
+    "gulp-uglify": "3.0.2",
     "gulp-babel": "8.0.0",
     "gulp-html-to-js": "0.0.7",
     "gulp-string-replace": "1.1.2",
@@ -33,9 +34,10 @@
     "rollup-plugin-sourcemaps": "0.6.3",
     "vinyl-source-stream": "2.0.0",
     "vinyl-buffer": "1.0.1",
-    "sass": "1.68.0",
+    "sass": "1.72.0",
     "gulp-sass": "5.1.0",
     "eslint": "8.50.0",
+    "bootstrap": "5.3.3",
     "@babel/plugin-transform-template-literals": "7.22.5"
   },
   "repository": {

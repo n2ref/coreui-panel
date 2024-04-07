@@ -1,0 +1,23 @@
+
+<div class="btn-group" role="group">
+    <button type="button" data-bs-toggle="dropdown"<%- attr %>>
+        <%- content %>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-<%= position %>">
+        <% $.each(items, function(key, item) { %>
+            <% if (item.type === 'link') { %>
+            <li><a class="dropdown-item" href="<%= item.link %>"><%= item.content %></a></li>
+
+            <% } else if (item.type === 'button') { %>
+            <li>
+                <button type="button" class="dropdown-item" id="btn-dropdown-<%= item.id %>">
+                    <%= item.content %>
+                </button>
+            </li>
+
+            <% } else if (item.type === 'divider') { %>
+            <li><hr class="dropdown-divider"></li>
+            <% } %>
+        <% }) %>
+    </ul>
+</div>

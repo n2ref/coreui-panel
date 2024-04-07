@@ -19,8 +19,8 @@ var conf = {
     js: {
         fileMin: 'coreui-panel.min.js',
         file: 'coreui-panel.js',
-        main: 'src/js/coreui.panel.js',
-        src: 'src/js/*.js'
+        main: 'src/js/main.js',
+        src: 'src/js/**/*.js'
     },
     tpl: {
         file: 'coreui.panel.templates.js',
@@ -33,28 +33,39 @@ var conf = {
     css: {
         fileMin: 'coreui-panel.min.css',
         file: 'coreui-panel.css',
+        main: 'src/css/main.scss',
         src: [
-            'src/css/*.css',
             'src/css/*.scss',
         ]
+    },
+    css_bootstrap: {
+        fileMin: 'coreui-panel.bootstrap.min.css',
+        main: 'src/css/coreui.panel.bootstrap.scss',
     }
 };
 
 
 
-gulp.task('build_css', function(){
-    return gulp.src(conf.css.src)
-        .pipe(sass().on('error', sass.logError))
-        .pipe(concat(conf.css.file))
-        .pipe(gulp.dest(conf.dist));
-});
-
 gulp.task('build_css_min', function(){
-    return gulp.src(conf.css.src)
+    return gulp.src(conf.css.main)
         .pipe(sourcemaps.init())
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe(concat(conf.css.fileMin))
         .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(conf.dist));
+});
+
+gulp.task('build_css_min_fast', function(){
+    return gulp.src(conf.css.main)
+        .pipe(sass().on('error', sass.logError))
+        .pipe(concat(conf.css.fileMin))
+        .pipe(gulp.dest(conf.dist));
+});
+
+gulp.task('build_css', function(){
+    return gulp.src(conf.css.main)
+        .pipe(sass().on('error', sass.logError))
+        .pipe(concat(conf.css.file))
         .pipe(gulp.dest(conf.dist));
 });
 
@@ -68,6 +79,22 @@ gulp.task('build_js', function() {
         context: "window"
     })
         .pipe(source(conf.js.file))
+        .pipe(buffer())
+        .pipe(gulp.dest(conf.dist));
+});
+
+gulp.task('build_js_min_fast', function() {
+    return rollup({
+        input: conf.js.main,
+        sourcemap: true,
+        format: 'umd',
+        name: "CoreUI.panel",
+        plugins: [
+            rollupSourcemaps(),
+        ],
+        context: "window"
+    })
+        .pipe(source(conf.js.fileMin))
         .pipe(buffer())
         .pipe(gulp.dest(conf.dist));
 });
@@ -112,10 +139,20 @@ gulp.task('build_tpl', function() {
 });
 
 
+gulp.task('build_bootstrap', function() {
+    return gulp.src(conf.css_bootstrap.main)
+        .pipe(sourcemaps.init())
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(concat(conf.css_bootstrap.fileMin))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(conf.dist));
+});
+
+
 gulp.task('build_watch', function() {
-    gulp.watch(conf.css.src, gulp.series(['build_css']));
-    gulp.watch(conf.tpl.src, gulp.series(['build_tpl', 'build_js']));
-    gulp.watch(conf.js.src, gulp.parallel(['build_js']));
+    gulp.watch(conf.css.src, gulp.series(['build_css_min_fast']));
+    gulp.watch(conf.tpl.src, gulp.series(['build_tpl', 'build_js_min_fast']));
+    gulp.watch(conf.js.src, gulp.parallel(['build_js_min_fast']));
 });
 
 gulp.task("default", gulp.series([ 'build_tpl', 'build_js_min', 'build_js', 'build_css_min', 'build_css']));

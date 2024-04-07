@@ -1,17 +1,25 @@
 
-import panelInstance from './coreui.panel.instance';
+import coreuiPanelInstance from './coreui.panel.instance';
 
-let panel = {
+
+let coreuiPanel = {
+
+    lang: {},
+    controls: {},
 
     _instances: {},
+    _settings: {
+        lang: 'ru',
+    },
+
 
     /**
      * @param {object} options
-     * @returns {CoreUI.panel.instance}
+     * @returns {coreuiPanelInstance}
      */
     create: function (options) {
 
-        let instance = $.extend(true, {}, panelInstance);
+        let instance = $.extend(true, {}, coreuiPanelInstance);
         instance._init(options instanceof Object ? options : {});
 
         let panelId = instance.getId();
@@ -23,7 +31,7 @@ let panel = {
 
     /**
      * @param {string} id
-     * @returns {CoreUI.panel.instance|null}
+     * @returns {coreuiPanelInstance|null}
      */
     get: function (id) {
 
@@ -31,7 +39,7 @@ let panel = {
             return null;
         }
 
-        if ($('#coreui-panel-' + this._instances[id])[0]) {
+        if ( ! $('#coreui-panel-' + id)[0]) {
             delete this._instances[id];
             return null;
         }
@@ -41,35 +49,29 @@ let panel = {
 
 
     /**
-     * @returns {string}
-     * @private
+     * Установка настроек
+     * @param {object} settings
      */
-    _hashCode: function() {
-        return this._crc32((new Date().getTime() + Math.random()).toString()).toString(16);
+    setSettings: function(settings) {
+
+        this._settings = $.extend(true, {}, this._settings, settings);
     },
 
 
     /**
-     * @param str
-     * @returns {number}
-     * @private
+     * Получение значения настройки
+     * @param {string} name
      */
-    _crc32: function (str) {
+    getSetting: function(name) {
 
-        for (var a, o = [], c = 0; c < 256; c++) {
-            a = c;
-            for (var f = 0; f < 8; f++) {
-                a = 1 & a ? 3988292384 ^ a >>> 1 : a >>> 1
-            }
-            o[c] = a
+        let value = null;
+
+        if (this._settings.hasOwnProperty(name)) {
+            value = this._settings[name];
         }
 
-        for (var n = -1, t = 0; t < str.length; t++) {
-            n = n >>> 8 ^ o[255 & (n ^ str.charCodeAt(t))]
-        }
-
-        return (-1 ^ n) >>> 0;
+        return value;
     }
 }
 
-export default panel;
+export default coreuiPanel;

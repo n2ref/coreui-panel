@@ -1,52 +1,40 @@
 <div class="coreui-panel card text-center mb-3 shadow-sm" id="coreui-panel-<%= id %>">
     <div class="card-body text-start">
-        <% if (controls) { %>
-            <div class="coreui-panel-controls position-relative top-0 end-0 float-end gap-1 d-flex"><%- controls %></div>
+        <% if (issetControls) { %>
+            <div class="coreui-panel-controls position-relative top-0 end-0 float-end gap-1 d-flex flex-wrap justify-content-end"></div>
         <% } %>
+
         <% if (title) { %>
         <h4 class="card-title<% if ( ! subtitle) { %> mb-4<% } %>">
-            <% if (backUrl) { %>
-            <a class="coreui-panel-back btn btn-sm btn-outline-secondary me-2 align-top" href="<%- backUrl %>">
-                <i class="bi bi-arrow-left"></i>
-            </a>
-            <% } %>
             <%- title %>
         </h4>
         <% } %>
+
         <% if (subtitle) { %>
         <p class="coreui-panel-subtitle text-muted"><%- subtitle %></p>
         <% } %>
 
-        <% if (typeof tabs === 'object' && tabs.length > 0) { %>
-            <% if (tabsPosition === 'top-left' || tabsPosition === 'top-center' || tabsPosition === 'top-right') { %>
-            <%- tabsContent %>
+        <% if (tabs.content) { %>
+            <% if (['top-left', 'top-center', 'top-right'].indexOf(tabs.position) >= 0) { %>
+            <%- tabs.content %>
 
-            <div class="coreui-panel-content card-content">
-                <%- renderContent %>
+            <div class="coreui-panel-content card-content"></div>
+
+            <% } else if (['left', 'left-sideways'].indexOf(tabs.position) >= 0) { %>
+            <div class="d-flex">
+                <div class="me-3" style="width: <%= tabs.width %>"><%- tabs.content %></div>
+                <div class="coreui-panel-content card-content flex-grow-1"></div>
             </div>
 
-            <% } else if (tabsPosition === 'left' || tabsPosition === 'left-sideways') { %>
+            <% } else if (['right', 'right-sideways'].indexOf(tabs.position) >= 0) { %>
             <div class="d-flex">
-                <div class="me-3" style="width: <%= tabsWidth %>px"><%- tabsContent %></div>
-
-                <div class="coreui-panel-content card-content flex-grow-1">
-                    <%- renderContent %>
-                </div>
-            </div>
-
-            <% } else if (tabsPosition === 'right' || tabsPosition === 'right-sideways') { %>
-            <div class="d-flex">
-                <div class="coreui-panel-content card-content flex-grow-1 pe-3">
-                    <%- renderContent %>
-                </div>
-                <div style="width: <%= tabsWidth %>px"><%- tabsContent %></div>
+                <div class="coreui-panel-content card-content flex-grow-1 pe-3"></div>
+                <div style="width: <%= tabs.width %>"><%- tabs.content %></div>
             </div>
             <% } %>
 
         <% } else { %>
-        <div class="coreui-panel-content card-content">
-            <%- renderContent %>
-        </div>
+        <div class="coreui-panel-content card-content"></div>
         <% } %>
     </div>
 </div>

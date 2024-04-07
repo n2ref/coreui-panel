@@ -1,0 +1,10 @@
+
+<li class="nav-item coreui-panel__tab-<%= tab.id %>">
+    <a class="nav-link position-relative<% if (tab.active) { %> active<% } %><% if (tab.disabled) { %> disabled<% } %>"
+       href="<% if (tab.url) { %><%= tab.url %><% } else { %>#<% } %>" data-tab-id="<%= tab.id %>"
+       data-bs-toggle="tab">
+        <span class="coreui-panel__tab-title"><%= tab.title %></span>
+        <% if (tab.count !== null) { %> <span class="coreui-panel__tab-count">(<%= tab.count %>)<% } %>
+        <%- tab.badge %>
+    </a>
+</li>

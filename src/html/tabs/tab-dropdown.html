@@ -1,0 +1,13 @@
+
+<li class="nav-item coreui-panel__tab-<%= tab.id %> dropdown<% if (tab.active) { %> active<% } %><% if (tab.disabled) { %> disabled<% } %>">
+    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+        <span class="coreui-panel__tab-title"><%= tab.title %></span>
+        <% if (tab.count !== null) { %> <span class="coreui-panel__tab-count">(<%= tab.count %>)</span><% } %>
+        <%- tab.badge %>
+    </a>
+    <ul class="dropdown-menu">
+        <% $.each(tab.itemsContents, function(key, itemContent) { %>
+            <%- itemContent %>
+        <% }) %>
+    </ul>
+</li>
