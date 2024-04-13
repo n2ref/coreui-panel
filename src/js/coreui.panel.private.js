@@ -113,9 +113,7 @@ let coreuiPanelPrivate = {
                 case 'top-center':     classes.push('justify-content-center'); break;
                 case 'top-right':      classes.push('justify-content-end'); break;
                 case 'left':           classes.push('left-tabs'); break;
-                case 'left-sideways':  classes.push('left-tabs sideways-tabs'); break;
                 case 'right':          classes.push('right-tabs'); break;
-                case 'right-sideways': classes.push('right-tabs sideways-tabs'); break;
             }
         }
 
@@ -178,16 +176,7 @@ let coreuiPanelPrivate = {
      */
     renderContents: function(panel, content) {
 
-        let result          = [];
-        let alloyComponents = [
-            'coreui.table',
-            'coreui.form',
-            'coreui.layout',
-            'coreui.panel',
-            'coreui.tabs',
-            'coreui.info',
-            'coreui.chart',
-        ];
+        let result = [];
 
         if (typeof content === 'string') {
             result.push(content);
@@ -204,7 +193,7 @@ let coreuiPanelPrivate = {
                 } else {
                     if ( ! Array.isArray(content[i]) &&
                         content[i].hasOwnProperty('component') &&
-                        alloyComponents.indexOf(content[i].component) >= 0
+                        content[i].component.substring(0, 6) === 'coreui'
                     ) {
                         let name = content[i].component.split('.')[1];
 

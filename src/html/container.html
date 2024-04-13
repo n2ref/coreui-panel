@@ -11,7 +11,7 @@
         <% } %>
 
         <% if (subtitle) { %>
-        <p class="coreui-panel-subtitle text-muted"><%- subtitle %></p>
+        <p class="coreui-panel-subtitle text-body-secondary"><%- subtitle %></p>
         <% } %>
 
         <% if (tabs.content) { %>
@@ -20,13 +20,13 @@
 
             <div class="coreui-panel-content card-content"></div>
 
-            <% } else if (['left', 'left-sideways'].indexOf(tabs.position) >= 0) { %>
+            <% } else if (tabs.position === 'left') { %>
             <div class="d-flex">
                 <div class="me-3" style="width: <%= tabs.width %>"><%- tabs.content %></div>
                 <div class="coreui-panel-content card-content flex-grow-1"></div>
             </div>
 
-            <% } else if (['right', 'right-sideways'].indexOf(tabs.position) >= 0) { %>
+            <% } else if (tabs.position === 'right') { %>
             <div class="d-flex">
                 <div class="coreui-panel-content card-content flex-grow-1 pe-3"></div>
                 <div style="width: <%= tabs.width %>"><%- tabs.content %></div>

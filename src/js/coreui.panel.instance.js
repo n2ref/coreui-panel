@@ -1,6 +1,5 @@
 
 import '../../node_modules/ejs/ejs.min';
-import coreuiPanel         from './coreui.panel';
 import coreuiPanelUtils    from './coreui.panel.utils';
 import coreuiPanelPrivate  from './coreui.panel.private';
 import coreuiPanelTpl      from './coreui.panel.templates';
@@ -11,6 +10,8 @@ let panelInstance = {
 
     _options: {
         id: '',
+        lang: 'en',
+        langList: {},
         title: null,
         subtitle: null,
         controls: [],
@@ -63,7 +64,7 @@ let panelInstance = {
 
 
     /**
-     * Инициализация событий таблицы
+     * Инициализация событий
      */
     initEvents: function () {
 
@@ -96,7 +97,7 @@ let panelInstance = {
 
 
     /**
-     * Получение идентификатора таблицы
+     * Получение идентификатора
      * @returns {string}
      */
     getId: function () {
@@ -105,8 +106,8 @@ let panelInstance = {
 
 
     /**
-     * Получение опций панели
-     * @returns {*}
+     * Получение опций
+     * @returns {object}
      */
     getOptions: function () {
 
@@ -116,14 +117,15 @@ let panelInstance = {
 
     /**
      * Блокировка панели
+     * @param {string} text
      */
-    lock: function () {
+    lock: function (text) {
 
         let container = coreuiPanelElements.getPanel(this.getId());
 
         if (container[0] && ! container.find('.coreui-panel-lock')[0]) {
             let html = ejs.render(coreuiPanelTpl['loader.html'], {
-                lang: this.getLang()
+                loading: typeof text === 'string' ? text : this.getLang().loading
             });
 
             container.prepend(html);
@@ -179,23 +181,7 @@ let panelInstance = {
      */
     getLang: function () {
 
-        let result = {};
-
-        if (this._options.lang && coreuiPanel.lang.hasOwnProperty(this._options.lang)) {
-            result = coreuiPanel.lang[this._options.lang];
-
-        } else {
-            let lang = coreuiPanel.getSetting('lang')
-
-            if (lang && coreuiPanel.lang.hasOwnProperty(lang)) {
-                result = coreuiPanel.lang[lang];
-
-            } else if (Object.keys(coreuiPanel.lang).length > 0) {
-                result = coreuiPanel.lang[Object.keys(coreuiPanel.lang)[0]];
-            }
-        }
-
-        return $.extend(true, {}, result);
+        return $.extend(true, {}, this._options.langList);
     },
 
 
@@ -247,7 +233,6 @@ let panelInstance = {
     /**
      * Размещение содержимого внутри панели
      * @param {string|object|Array} content
-     * @returns {*}
      */
     setContent: function (content) {
 

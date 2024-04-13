@@ -3,7 +3,7 @@
   "version": "1.0.10",
   "description": "CoreUI Panel",
   "scripts": {
-    "build_all": "gulp build_tpl && gulp build_js_min && gulp build_js && gulp build_css_min && gulp build_css && npm run test_js",
+    "build": "gulp build_tpl && gulp build_js_min && gulp build_js && gulp build_css_min && gulp build_css && npm run test_js",
 
     "build_css": "gulp build_css",
     "build_css_min": "gulp build_css_min",

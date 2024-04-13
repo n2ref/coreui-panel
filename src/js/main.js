@@ -1,10 +1,6 @@
 
 import coreuiPanel from "./coreui.panel";
 
-import './coreui.panel.instance';
-import './coreui.panel.templates';
-import './coreui.panel.utils';
-
 import "./controls/link";
 import "./controls/button";
 import "./controls/dropdown";

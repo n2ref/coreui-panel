@@ -1,6 +1,6 @@
 
 import coreuiPanel from "../coreui.panel";
 
-coreuiPanel.lang.ru = {
+coreuiPanel.lang.en = {
     "loading": "Loading...",
 }

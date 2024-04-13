@@ -3,15 +3,6 @@ let coreuiPanelUtils = {
 
 
     /**
-     * @returns {string}
-     * @private
-     */
-    hashCode: function() {
-        return this.crc32((new Date().getTime() + Math.random()).toString()).toString(16);
-    },
-
-
-    /**
      * Проверка на объект
      * @param value
      */
@@ -20,6 +11,14 @@ let coreuiPanelUtils = {
         return typeof value === 'object' &&
             ! Array.isArray(value) &&
             value !== null;
+    },
+
+    /**
+     * @returns {string}
+     * @private
+     */
+    hashCode: function() {
+        return this.crc32((new Date().getTime() + Math.random()).toString()).toString(16);
     },
 
 

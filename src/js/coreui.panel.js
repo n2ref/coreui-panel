@@ -20,6 +20,16 @@ let coreuiPanel = {
     create: function (options) {
 
         let instance = $.extend(true, {}, coreuiPanelInstance);
+
+        if ( ! options.hasOwnProperty('lang')) {
+            options.lang = this.getSetting('lang');
+        }
+
+        let langList     = this.lang.hasOwnProperty(options.lang) ? this.lang[options.lang] : {};
+        options.langList = options.hasOwnProperty('langList') && coreuiTabsUtils.isObject(options.langList)
+            ? $.extend(true, {}, langList, options.langList)
+            : langList;
+
         instance._init(options instanceof Object ? options : {});
 
         let panelId = instance.getId();

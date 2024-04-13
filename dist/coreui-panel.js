@@ -1104,18 +1104,18 @@
 
 let coreuiPanelUtils = {
   /**
-   * @returns {string}
-   * @private
-   */
-  hashCode: function () {
-    return this.crc32((new Date().getTime() + Math.random()).toString()).toString(16);
-  },
-  /**
    * Проверка на объект
    * @param value
    */
   isObject: function (value) {
     return typeof value === 'object' && !Array.isArray(value) && value !== null;
+  },
+  /**
+   * @returns {string}
+   * @private
+   */
+  hashCode: function () {
+    return this.crc32((new Date().getTime() + Math.random()).toString()).toString(16);
   },
   /**
    * @param str
@@ -1139,8 +1139,8 @@ let coreuiPanelUtils = {
 
 let tpl = Object.create(null);
 tpl['badge.html'] = '<span class="coreui-panel__tab-badge position-absolute top-0 translate-middle z-1 badge<%= badge.classes %>"<%- badge.attr %>> <%= badge.text %> </span>';
-tpl['container.html'] = '<div class="coreui-panel card text-center mb-3 shadow-sm" id="coreui-panel-<%= id %>"> <div class="card-body text-start"> <% if (issetControls) { %> <div class="coreui-panel-controls position-relative top-0 end-0 float-end gap-1 d-flex flex-wrap justify-content-end"></div> <% } %> <% if (title) { %> <h4 class="card-title<% if ( ! subtitle) { %> mb-4<% } %>"> <%- title %> </h4> <% } %> <% if (subtitle) { %> <p class="coreui-panel-subtitle text-muted"><%- subtitle %></p> <% } %> <% if (tabs.content) { %> <% if ([\'top-left\', \'top-center\', \'top-right\'].indexOf(tabs.position) >= 0) { %> <%- tabs.content %> <div class="coreui-panel-content card-content"></div> <% } else if ([\'left\', \'left-sideways\'].indexOf(tabs.position) >= 0) { %> <div class="d-flex"> <div class="me-3" style="width: <%= tabs.width %>"><%- tabs.content %></div> <div class="coreui-panel-content card-content flex-grow-1"></div> </div> <% } else if ([\'right\', \'right-sideways\'].indexOf(tabs.position) >= 0) { %> <div class="d-flex"> <div class="coreui-panel-content card-content flex-grow-1 pe-3"></div> <div style="width: <%= tabs.width %>"><%- tabs.content %></div> </div> <% } %> <% } else { %> <div class="coreui-panel-content card-content"></div> <% } %> </div> </div>';
-tpl['loader.html'] = '<div class="coreui-panel-lock position-absolute w-100 top-0 bottom-0"> <div class="coreui-panel-block bg-secondary-subtle position-absolute opacity-50 w-100 top-0 bottom-0"></div> <div class="coreui-panel-message position-relative d-flex align-content-center justify-content-start gap-2 mt-3 py-1 px-2 m-auto border border-secondary-subtle rounded-3 bg-body-secondary"> <div class="spinner-border text-secondary align-self-center"></div> <span class="lh-lg"><%= lang.loading %></span> </div> </div>';
+tpl['container.html'] = '<div class="coreui-panel card text-center mb-3 shadow-sm" id="coreui-panel-<%= id %>"> <div class="card-body text-start"> <% if (issetControls) { %> <div class="coreui-panel-controls position-relative top-0 end-0 float-end gap-1 d-flex flex-wrap justify-content-end"></div> <% } %> <% if (title) { %> <h4 class="card-title<% if ( ! subtitle) { %> mb-4<% } %>"> <%- title %> </h4> <% } %> <% if (subtitle) { %> <p class="coreui-panel-subtitle text-body-secondary"><%- subtitle %></p> <% } %> <% if (tabs.content) { %> <% if ([\'top-left\', \'top-center\', \'top-right\'].indexOf(tabs.position) >= 0) { %> <%- tabs.content %> <div class="coreui-panel-content card-content"></div> <% } else if (tabs.position === \'left\') { %> <div class="d-flex"> <div class="me-3" style="width: <%= tabs.width %>"><%- tabs.content %></div> <div class="coreui-panel-content card-content flex-grow-1"></div> </div> <% } else if (tabs.position === \'right\') { %> <div class="d-flex"> <div class="coreui-panel-content card-content flex-grow-1 pe-3"></div> <div style="width: <%= tabs.width %>"><%- tabs.content %></div> </div> <% } %> <% } else { %> <div class="coreui-panel-content card-content"></div> <% } %> </div> </div>';
+tpl['loader.html'] = '<div class="coreui-panel-lock position-absolute w-100 top-0 bottom-0"> <div class="coreui-panel-block bg-secondary-subtle position-absolute opacity-50 w-100 top-0 bottom-0"></div> <div class="coreui-panel-message position-relative d-flex align-content-center justify-content-start gap-2 mt-3 py-1 px-2 m-auto border border-secondary-subtle rounded-3 bg-body-secondary"> <div class="spinner-border text-secondary align-self-center"></div> <span class="lh-lg"><%= loading %></span> </div> </div>';
 tpl['panel-control.html'] = '<div id="coreui-panel-control-<%= id %>" class="coreui-panel__control"></div>';
 tpl['tabs.html'] = ' <ul class="coreui-panel-tabs nav <% if (type) { %>nav-<%= type %><% } %> card-body-tabs mb-3 <% if (classes) { %><%= classes %><% } %> <% if (fill) { %>nav-<%= fill %><% } %>"> <% $.each(tabsContents, function(key, tabContent) { %> <%- tabContent %> <% }) %> </ul>';
 tpl['controls/button.html'] = '<button type="button"<%- attr %>><%- content %></button>';
@@ -1839,14 +1839,8 @@ let coreuiPanelPrivate = {
         case 'left':
           classes.push('left-tabs');
           break;
-        case 'left-sideways':
-          classes.push('left-tabs sideways-tabs');
-          break;
         case 'right':
           classes.push('right-tabs');
-          break;
-        case 'right-sideways':
-          classes.push('right-tabs sideways-tabs');
           break;
       }
     }
@@ -1892,7 +1886,6 @@ let coreuiPanelPrivate = {
    */
   renderContents: function (panel, content) {
     let result = [];
-    let alloyComponents = ['coreui.table', 'coreui.form', 'coreui.layout', 'coreui.panel', 'coreui.tabs', 'coreui.info', 'coreui.chart'];
     if (typeof content === 'string') {
       result.push(content);
     } else if (content instanceof Object) {
@@ -1903,7 +1896,7 @@ let coreuiPanelPrivate = {
         if (typeof content[i] === 'string') {
           result.push(content[i]);
         } else {
-          if (!Array.isArray(content[i]) && content[i].hasOwnProperty('component') && alloyComponents.indexOf(content[i].component) >= 0) {
+          if (!Array.isArray(content[i]) && content[i].hasOwnProperty('component') && content[i].component.substring(0, 6) === 'coreui') {
             let name = content[i].component.split('.')[1];
             if (CoreUI.hasOwnProperty(name) && coreuiPanelUtils.isObject(CoreUI[name])) {
               let instance = CoreUI[name].create(content[i]);
@@ -1955,6 +1948,8 @@ let coreuiPanelPrivate = {
 let panelInstance = {
   _options: {
     id: '',
+    lang: 'en',
+    langList: {},
     title: null,
     subtitle: null,
     controls: [],
@@ -1993,7 +1988,7 @@ let panelInstance = {
     }
   },
   /**
-   * Инициализация событий таблицы
+   * Инициализация событий
    */
   initEvents: function () {
     let that = this;
@@ -2014,27 +2009,28 @@ let panelInstance = {
     coreuiPanelPrivate.trigger(this, 'content_show');
   },
   /**
-   * Получение идентификатора таблицы
+   * Получение идентификатора
    * @returns {string}
    */
   getId: function () {
     return this._id;
   },
   /**
-   * Получение опций панели
-   * @returns {*}
+   * Получение опций
+   * @returns {object}
    */
   getOptions: function () {
     return $.extend(true, {}, this._options);
   },
   /**
    * Блокировка панели
+   * @param {string} text
    */
-  lock: function () {
+  lock: function (text) {
     let container = coreuiPanelElements.getPanel(this.getId());
     if (container[0] && !container.find('.coreui-panel-lock')[0]) {
       let html = ejs.render(tpl['loader.html'], {
-        lang: this.getLang()
+        loading: typeof text === 'string' ? text : this.getLang().loading
       });
       container.prepend(html);
     }
@@ -2078,18 +2074,7 @@ let panelInstance = {
    * @return {object}
    */
   getLang: function () {
-    let result = {};
-    if (this._options.lang && coreuiPanel$1.lang.hasOwnProperty(this._options.lang)) {
-      result = coreuiPanel$1.lang[this._options.lang];
-    } else {
-      let lang = coreuiPanel$1.getSetting('lang');
-      if (lang && coreuiPanel$1.lang.hasOwnProperty(lang)) {
-        result = coreuiPanel$1.lang[lang];
-      } else if (Object.keys(coreuiPanel$1.lang).length > 0) {
-        result = coreuiPanel$1.lang[Object.keys(coreuiPanel$1.lang)[0]];
-      }
-    }
-    return $.extend(true, {}, result);
+    return $.extend(true, {}, this._options.langList);
   },
   /**
    * Получение объекта таба по id
@@ -2123,7 +2108,6 @@ let panelInstance = {
   /**
    * Размещение содержимого внутри панели
    * @param {string|object|Array} content
-   * @returns {*}
    */
   setContent: function (content) {
     let contents = coreuiPanelPrivate.renderContents(this, content);
@@ -2218,6 +2202,11 @@ let coreuiPanel$1 = {
    */
   create: function (options) {
     let instance = $.extend(true, {}, panelInstance);
+    if (!options.hasOwnProperty('lang')) {
+      options.lang = this.getSetting('lang');
+    }
+    let langList = this.lang.hasOwnProperty(options.lang) ? this.lang[options.lang] : {};
+    options.langList = options.hasOwnProperty('langList') && coreuiTabsUtils.isObject(options.langList) ? $.extend(true, {}, langList, options.langList) : langList;
     instance._init(options instanceof Object ? options : {});
     let panelId = instance.getId();
     this._instances[panelId] = instance;
@@ -2778,7 +2767,7 @@ coreuiPanel$1.controls.custom = {
   }
 };
 
-coreuiPanel$1.lang.ru = {
+coreuiPanel$1.lang.en = {
   "loading": "Loading..."
 };
 
