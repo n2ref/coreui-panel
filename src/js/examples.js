@@ -152,19 +152,10 @@ document.addEventListener('DOMContentLoaded', function () {
             type: 'tabs',
             fill: 'fill',
             items: [
-                { id: "1", title: "Home", active: true },
-                { id: "2", title: "Profile" },
-                { id: "3", title: "Disabled", disabled: true },
-                {
-                    title: "Dropdown",
-                    type: "dropdown",
-                    items: [
-                        { id: "4", title: "Tab title 4", disabled: true },
-                        { id: "5", title: "Tab title 5" },
-                        { type: "divider" },
-                        { id: "6", title: "Tab title 6" }
-                    ]
-                }
+                {id: "1", title: "Active", active: true},
+                {id: "2", title: "Much longer nav link"},
+                {id: "3", title: "Link"},
+                {id: "3", title: "Disabled", disabled: true},
             ]
         },
         content: [ "Tab Home" ]
@@ -182,19 +173,10 @@ document.addEventListener('DOMContentLoaded', function () {
             type: 'tabs',
             fill: 'justified',
             items: [
-                { id: "1", title: "Home", active: true },
-                { id: "2", title: "Profile" },
-                { id: "3", title: "Disabled", disabled: true },
-                {
-                    title: "Dropdown",
-                    type: "dropdown",
-                    items: [
-                        { id: "4", title: "Tab title 4", disabled: true },
-                        { id: "5", title: "Tab title 5" },
-                        { type: "divider" },
-                        { id: "6", title: "Tab title 6" }
-                    ]
-                }
+                {id: "1", title: "Active", active: true},
+                {id: "2", title: "Much longer nav link"},
+                {id: "3", title: "Link"},
+                {id: "3", title: "Disabled", disabled: true},
             ]
         },
         content: [ "Tab Home" ]
