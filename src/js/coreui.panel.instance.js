@@ -166,6 +166,7 @@ let panelInstance = {
             },
             error: function(xhr, textStatus, errorThrown) {
                 coreuiPanelPrivate.trigger(that, 'load_error', that, [ xhr, textStatus, errorThrown ]);
+                that.setContent('');
             },
             complete: function(xhr, textStatus) {
                 that.unlock();

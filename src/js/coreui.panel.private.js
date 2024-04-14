@@ -193,6 +193,7 @@ let coreuiPanelPrivate = {
                 } else {
                     if ( ! Array.isArray(content[i]) &&
                         content[i].hasOwnProperty('component') &&
+                        typeof content[i].component === 'string' &&
                         content[i].component.substring(0, 6) === 'coreui'
                     ) {
                         let name = content[i].component.split('.')[1];

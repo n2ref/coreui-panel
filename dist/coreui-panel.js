@@ -1896,7 +1896,7 @@ let coreuiPanelPrivate = {
         if (typeof content[i] === 'string') {
           result.push(content[i]);
         } else {
-          if (!Array.isArray(content[i]) && content[i].hasOwnProperty('component') && content[i].component.substring(0, 6) === 'coreui') {
+          if (!Array.isArray(content[i]) && content[i].hasOwnProperty('component') && typeof content[i].component === 'string' && content[i].component.substring(0, 6) === 'coreui') {
             let name = content[i].component.split('.')[1];
             if (CoreUI.hasOwnProperty(name) && coreuiPanelUtils.isObject(CoreUI[name])) {
               let instance = CoreUI[name].create(content[i]);
@@ -2062,6 +2062,7 @@ let panelInstance = {
       },
       error: function (xhr, textStatus, errorThrown) {
         coreuiPanelPrivate.trigger(that, 'load_error', that, [xhr, textStatus, errorThrown]);
+        that.setContent('');
       },
       complete: function (xhr, textStatus) {
         that.unlock();
