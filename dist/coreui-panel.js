@@ -1139,7 +1139,7 @@ let coreuiPanelUtils = {
 
 let tpl = Object.create(null);
 tpl['badge.html'] = '<span class="coreui-panel__tab-badge position-absolute top-0 translate-middle z-1 badge<%= badge.classes %>"<%- badge.attr %>> <%= badge.text %> </span>';
-tpl['container.html'] = '<div class="coreui-panel card text-center mb-3 shadow-sm" id="coreui-panel-<%= id %>"> <div class="card-body text-start"> <% if (issetControls) { %> <div class="coreui-panel-controls position-relative top-0 end-0 float-end gap-1 d-flex flex-wrap justify-content-end"></div> <% } %> <% if (title) { %> <h4 class="card-title<% if ( ! subtitle) { %> mb-4<% } %>"> <%- title %> </h4> <% } %> <% if (subtitle) { %> <p class="coreui-panel-subtitle text-body-secondary"><%- subtitle %></p> <% } %> <% if (tabs.content) { %> <% if ([\'top-left\', \'top-center\', \'top-right\'].indexOf(tabs.position) >= 0) { %> <%- tabs.content %> <div class="coreui-panel-content card-content"></div> <% } else if (tabs.position === \'left\') { %> <div class="d-flex"> <div class="me-3" style="width: <%= tabs.width %>"><%- tabs.content %></div> <div class="coreui-panel-content card-content flex-grow-1"></div> </div> <% } else if (tabs.position === \'right\') { %> <div class="d-flex"> <div class="coreui-panel-content card-content flex-grow-1 pe-3"></div> <div style="width: <%= tabs.width %>"><%- tabs.content %></div> </div> <% } %> <% } else { %> <div class="coreui-panel-content card-content"></div> <% } %> </div> </div>';
+tpl['container.html'] = '<div class="coreui-panel card text-center mb-3 shadow-sm<%= fit %>" id="coreui-panel-<%= id %>"> <div class="card-body text-start"> <% if (issetControls) { %> <div class="coreui-panel-controls position-relative top-0 end-0 float-end gap-1 d-flex flex-wrap justify-content-end"></div> <% } %> <% if (title) { %> <h4 class="card-title<% if ( ! subtitle) { %> mb-4<% } %>"> <%- title %> </h4> <% } %> <% if (subtitle) { %> <p class="coreui-panel-subtitle text-body-secondary"><%- subtitle %></p> <% } %> <% if (tabs.content) { %> <% if ([\'top-left\', \'top-center\', \'top-right\'].indexOf(tabs.position) >= 0) { %> <%- tabs.content %> <div class="coreui-panel-content card-content"></div> <% } else if (tabs.position === \'left\') { %> <div class="d-flex"> <div class="me-3" style="width: <%= tabs.width %>"><%- tabs.content %></div> <div class="coreui-panel-content card-content flex-grow-1"></div> </div> <% } else if (tabs.position === \'right\') { %> <div class="d-flex"> <div class="coreui-panel-content card-content flex-grow-1 pe-3"></div> <div style="width: <%= tabs.width %>"><%- tabs.content %></div> </div> <% } %> <% } else { %> <div class="coreui-panel-content card-content"></div> <% } %> </div> </div>';
 tpl['loader.html'] = '<div class="coreui-panel-lock position-absolute w-100 top-0 bottom-0"> <div class="coreui-panel-block bg-secondary-subtle position-absolute opacity-50 w-100 top-0 bottom-0"></div> <div class="coreui-panel-message position-relative d-flex align-content-center justify-content-start gap-2 mt-3 py-1 px-2 m-auto border border-secondary-subtle rounded-3 bg-body-secondary"> <div class="spinner-border text-secondary align-self-center"></div> <span class="lh-lg"><%= loading %></span> </div> </div>';
 tpl['panel-control.html'] = '<div id="coreui-panel-control-<%= id %>" class="coreui-panel__control"></div>';
 tpl['tabs.html'] = ' <ul class="coreui-panel-tabs nav <% if (type) { %>nav-<%= type %><% } %> card-body-tabs mb-3 <% if (classes) { %><%= classes %><% } %> <% if (fill) { %>nav-<%= fill %><% } %>"> <% $.each(tabsContents, function(key, tabContent) { %> <%- tabContent %> <% }) %> </ul>';
@@ -1953,6 +1953,7 @@ let panelInstance = {
     title: null,
     subtitle: null,
     controls: [],
+    contentFit: null,
     content: null,
     tabs: {
       type: 'tabs',
@@ -2129,6 +2130,7 @@ let panelInstance = {
     let tabsContent = null;
     let tabsPosition = 'top-left';
     let tabsWidth = '200px';
+    let fitContent = '';
     if (this._options.hasOwnProperty('tabs') && coreuiPanelUtils.isObject(this._options.tabs) && this._options.tabs.hasOwnProperty('items') && Array.isArray(this._options.tabs.items) && this._options.tabs.items.length > 0) {
       tabsContent = coreuiPanelPrivate.renderTabs(this, this._options.tabs);
       tabsPosition = this._options.tabs.hasOwnProperty('position') && typeof this._options.tabs.position === 'string' ? this._options.tabs.position : 'top-left';
@@ -2137,11 +2139,25 @@ let panelInstance = {
         tabsWidth = this._options.tabs.width + unit;
       }
     }
+    if (this._options.hasOwnProperty('contentFit') && typeof this._options.contentFit === 'string') {
+      switch (this._options.contentFit) {
+        case 'fit':
+          fitContent = ' coreui-panel__content-fit';
+          break;
+        case 'min':
+          fitContent = ' coreui-panel__content-min';
+          break;
+        case 'max':
+          fitContent = ' coreui-panel__content-max';
+          break;
+      }
+    }
     let panelElement = $(ejs.render(tpl['container.html'], {
       issetControls: !!this._controls.length,
       id: this.getId(),
       title: this._options.title,
       subtitle: this._options.subtitle,
+      fit: fitContent,
       tabs: {
         content: tabsContent,
         position: tabsPosition,

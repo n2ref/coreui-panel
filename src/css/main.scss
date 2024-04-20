@@ -1,6 +1,15 @@
 
 .coreui-panel {
-    min-width: min-content;
+
+    .coreui-panel__content-fit {
+        min-width: fit-content;
+    }
+    .coreui-panel__content-min {
+        min-width: min-content;
+    }
+    .coreui-panel__content-max {
+        min-width: max-content;
+    }
 
     .right-tabs .nav-link {
         text-align: left;

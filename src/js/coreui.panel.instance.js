@@ -15,6 +15,7 @@ let panelInstance = {
         title: null,
         subtitle: null,
         controls: [],
+        contentFit: null,
         content: null,
         tabs: {
             type: 'tabs',         // pills, underline
@@ -261,6 +262,7 @@ let panelInstance = {
         let tabsContent  = null;
         let tabsPosition = 'top-left';
         let tabsWidth    = '200px';
+        let fitContent   = '';
 
 
         if (this._options.hasOwnProperty('tabs') &&
@@ -285,6 +287,16 @@ let panelInstance = {
         }
 
 
+        if (this._options.hasOwnProperty('contentFit') &&
+            typeof this._options.contentFit === 'string'
+        ) {
+            switch (this._options.contentFit) {
+                case 'fit': fitContent = ' coreui-panel__content-fit'; break;
+                case 'min': fitContent = ' coreui-panel__content-min'; break;
+                case 'max': fitContent = ' coreui-panel__content-max'; break;
+            }
+        }
+
 
         let panelElement = $(
             ejs.render(coreuiPanelTpl['container.html'], {
@@ -292,6 +304,7 @@ let panelInstance = {
                 id: this.getId(),
                 title: this._options.title,
                 subtitle: this._options.subtitle,
+                fit: fitContent,
                 tabs: {
                     content: tabsContent,
                     position: tabsPosition,
