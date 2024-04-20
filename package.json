@@ -1,6 +1,6 @@
 {
   "name": "coreui-panel",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "CoreUI Panel",
   "scripts": {
     "build": "gulp build_tpl && gulp build_js_min && gulp build_js && gulp build_css_min && gulp build_css && npm run test_js",

@@ -1,13 +1,13 @@
 .coreui-panel {
 
 }
-.coreui-panel .coreui-panel__content-fit {
+.coreui-panel.coreui-panel__content-fit {
   min-width: fit-content;
 }
-.coreui-panel .coreui-panel__content-min {
+.coreui-panel.coreui-panel__content-min {
   min-width: min-content;
 }
-.coreui-panel .coreui-panel__content-max {
+.coreui-panel.coreui-panel__content-max {
   min-width: max-content;
 }
 .coreui-panel .right-tabs .nav-link {
