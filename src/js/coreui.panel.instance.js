@@ -1,5 +1,5 @@
 
-import '../../node_modules/ejs/ejs.min';
+import 'ejs/ejs.min';
 import coreuiPanelUtils    from './coreui.panel.utils';
 import coreuiPanelPrivate  from './coreui.panel.private';
 import coreuiPanelTpl      from './coreui.panel.templates';
@@ -34,9 +34,10 @@ let panelInstance = {
 
     /**
      *
-     * @param options
+     * @param {object} panelWrapper
+     * @param {object} options
      */
-    _init: function (options) {
+    _init: function (panelWrapper, options) {
 
         this._options = $.extend(true, {}, this._options, options);
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
@@ -49,7 +50,7 @@ let panelInstance = {
             Array.isArray(this._options.controls) &&
             this._options.controls.length > 0
         ) {
-            coreuiPanelPrivate.initControls(this, this._options.controls);
+            coreuiPanelPrivate.initControls(panelWrapper, this, this._options.controls);
         }
 
         // Инициализация табов

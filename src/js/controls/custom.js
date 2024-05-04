@@ -1,9 +1,7 @@
 
-import '../../../node_modules/ejs/ejs.min';
-import coreuiPanel         from "../coreui.panel";
-import coreuiPanelTpl      from '../coreui.panel.templates';
-import coreuiPanelUtils    from '../coreui.panel.utils';
-import coreuiPanelElements from "../coreui.panel.elements";
+import 'ejs/ejs.min';
+import coreuiPanel      from "../coreui.panel";
+import coreuiPanelUtils from '../coreui.panel.utils';
 
 coreuiPanel.controls.custom = {
 

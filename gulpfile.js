@@ -3,14 +3,14 @@ const concat           = require('gulp-concat');
 const sourcemaps       = require('gulp-sourcemaps');
 const uglify           = require('gulp-uglify');
 const htmlToJs         = require('gulp-html-to-js');
-const babel            = require("gulp-babel");
+const wrapFile         = require('gulp-wrap-file');
 const sass             = require('gulp-sass')(require('sass'));
-const rollup           = require('rollup-stream');
+const rollup           = require('@rollup/stream');
 const rollupSourcemaps = require('rollup-plugin-sourcemaps');
-const rollupBabel      = require('rollup-plugin-babel');
+const rollupBabel      = require('@rollup/plugin-babel');
+const nodeResolve      = require('@rollup/plugin-node-resolve');
 const source           = require('vinyl-source-stream');
 const buffer           = require("vinyl-buffer");
-const wrapFile         = require('gulp-wrap-file');
 
 
 
@@ -49,7 +49,7 @@ var conf = {
 gulp.task('build_css_min', function(){
     return gulp.src(conf.css.main)
         .pipe(sourcemaps.init())
-        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(sass({includePaths: ['node_modules'], outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe(concat(conf.css.fileMin))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(conf.dist));
@@ -57,14 +57,14 @@ gulp.task('build_css_min', function(){
 
 gulp.task('build_css_min_fast', function(){
     return gulp.src(conf.css.main)
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass({includePaths: ['node_modules']}).on('error', sass.logError))
         .pipe(concat(conf.css.fileMin))
         .pipe(gulp.dest(conf.dist));
 });
 
 gulp.task('build_css', function(){
     return gulp.src(conf.css.main)
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass({includePaths: ['node_modules']}).on('error', sass.logError))
         .pipe(concat(conf.css.file))
         .pipe(gulp.dest(conf.dist));
 });
@@ -72,11 +72,16 @@ gulp.task('build_css', function(){
 gulp.task('build_js', function() {
     return rollup({
         input: conf.js.main,
-        sourcemap: false,
-        format: 'umd',
-        name: "CoreUI.panel",
-        plugins: [rollupBabel()],
-        context: "window"
+        output: {
+            sourcemap: false,
+            format: 'umd',
+            name: "CoreUI.panel"
+        },
+        context: "window",
+        plugins: [
+            nodeResolve(),
+            rollupBabel({babelHelpers: 'bundled'}),
+        ]
     })
         .pipe(source(conf.js.file))
         .pipe(buffer())
@@ -86,13 +91,17 @@ gulp.task('build_js', function() {
 gulp.task('build_js_min_fast', function() {
     return rollup({
         input: conf.js.main,
-        sourcemap: true,
-        format: 'umd',
-        name: "CoreUI.panel",
+        output: {
+            sourcemap: false,
+            format: 'umd',
+            name: "CoreUI.panel"
+        },
+        context: "window",
         plugins: [
+            nodeResolve(),
             rollupSourcemaps(),
-        ],
-        context: "window"
+            rollupBabel({babelHelpers: 'bundled'}),
+        ]
     })
         .pipe(source(conf.js.fileMin))
         .pipe(buffer())
@@ -103,21 +112,21 @@ gulp.task('build_js_min_fast', function() {
 gulp.task('build_js_min', function() {
     return rollup({
         input: conf.js.main,
-        sourcemap: false,
-        format: 'umd',
-        name: "CoreUI.panel",
+        output: {
+            sourcemap: false,
+            format: 'umd',
+            name: "CoreUI.panel"
+        },
         context: "window",
         plugins: [
+            nodeResolve(),
             rollupSourcemaps(),
-            rollupBabel()
+            rollupBabel({babelHelpers: 'bundled'}),
         ]
     })
         .pipe(source(conf.js.fileMin))
         .pipe(buffer())
         .pipe(sourcemaps.init())
-        .pipe(babel({
-            "plugins": ["@babel/plugin-transform-template-literals"]
-        }))
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(conf.dist));
@@ -142,7 +151,7 @@ gulp.task('build_tpl', function() {
 gulp.task('build_bootstrap', function() {
     return gulp.src(conf.css_bootstrap.main)
         .pipe(sourcemaps.init())
-        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(sass({includePaths: ['node_modules'], outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe(concat(conf.css_bootstrap.fileMin))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(conf.dist));

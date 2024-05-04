@@ -30,7 +30,7 @@ let coreuiPanel = {
             ? $.extend(true, {}, langList, options.langList)
             : langList;
 
-        instance._init(options instanceof Object ? options : {});
+        instance._init(this, options instanceof Object ? options : {});
 
         let panelId = instance.getId();
         this._instances[panelId] = instance;

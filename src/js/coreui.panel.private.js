@@ -1,6 +1,5 @@
 
-import '../../node_modules/ejs/ejs.min';
-import coreuiPanel            from "./coreui.panel";
+import 'ejs/ejs.min';
 import coreuiPanelUtils       from './coreui.panel.utils';
 import coreuiPanelTpl         from "./coreui.panel.templates";
 import coreuiPanelTab         from "./tabs/coreui.panel.tab";
@@ -38,11 +37,12 @@ let coreuiPanelPrivate = {
 
     /**
      * Инициализация контролов и фильтров
-     * @param {Object} panel
+     * @param {object} panelWrapper
+     * @param {object} panel
      * @param {Array}  controls
      * @private
      */
-    initControls: function (panel, controls) {
+    initControls: function (panelWrapper, panel, controls) {
 
         let that = this;
 
@@ -50,8 +50,8 @@ let coreuiPanelPrivate = {
 
             if (coreuiPanelUtils.isObject(control) && typeof control.type === 'string') {
 
-                if (coreuiPanel.controls.hasOwnProperty(control.type)) {
-                    let instance = $.extend(true, {}, coreuiPanel.controls[control.type]);
+                if (panelWrapper.controls.hasOwnProperty(control.type)) {
+                    let instance = $.extend(true, {}, panelWrapper.controls[control.type]);
                     instance.init(panel, control);
 
                     panel._controls.push(instance);

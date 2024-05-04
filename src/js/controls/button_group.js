@@ -1,5 +1,5 @@
 
-import '../../../node_modules/ejs/ejs.min';
+import 'ejs/ejs.min';
 import coreuiPanel         from "../coreui.panel";
 import coreuiPanelTpl      from '../coreui.panel.templates';
 import coreuiPanelUtils    from '../coreui.panel.utils';
