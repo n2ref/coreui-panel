@@ -17,6 +17,7 @@ let panelInstance = {
         controls: [],
         contentFit: null,
         content: null,
+        wrapperType: 'card',
         tabs: {
             type: 'tabs',         // pills, underline
             position: 'top-left', // top-center, top-right, left, right
@@ -264,6 +265,7 @@ let panelInstance = {
         let tabsPosition = 'top-left';
         let tabsWidth    = '200px';
         let fitContent   = '';
+        let wrapperType  = '';
 
 
         if (this._options.hasOwnProperty('tabs') &&
@@ -298,6 +300,14 @@ let panelInstance = {
             }
         }
 
+        if (this._options.hasOwnProperty('wrapperType') &&
+            typeof this._options.wrapperType === 'string'
+        ) {
+            if (this._options.wrapperType === 'card') {
+                wrapperType = ' card shadow-sm';
+            }
+        }
+
 
         let panelElement = $(
             ejs.render(coreuiPanelTpl['container.html'], {
@@ -306,6 +316,7 @@ let panelInstance = {
                 title: this._options.title,
                 subtitle: this._options.subtitle,
                 fit: fitContent,
+                wrapperType: wrapperType,
                 tabs: {
                     content: tabsContent,
                     position: tabsPosition,
@@ -352,16 +363,33 @@ let panelInstance = {
      * @param eventName
      * @param callback
      * @param context
-     * @param singleExec
      */
-    on: function(eventName, callback, context, singleExec) {
+    on: function(eventName, callback, context) {
         if (typeof this._events[eventName] !== 'object') {
             this._events[eventName] = [];
         }
         this._events[eventName].push({
             context : context || this,
             callback: callback,
-            singleExec: !! singleExec,
+            singleExec: false,
+        });
+    },
+
+
+    /**
+     * Регистрация функции на событие
+     * @param eventName
+     * @param callback
+     * @param context
+     */
+    one: function(eventName, callback, context) {
+        if (typeof this._events[eventName] !== 'object') {
+            this._events[eventName] = [];
+        }
+        this._events[eventName].push({
+            context : context || this,
+            callback: callback,
+            singleExec: true,
         });
     }
 }

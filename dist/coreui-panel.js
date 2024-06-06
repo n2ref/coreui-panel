@@ -1146,7 +1146,7 @@
 
     let tpl = Object.create(null);
     tpl['badge.html'] = '<span class="coreui-panel__tab-badge position-absolute top-0 translate-middle z-1 badge<%= badge.classes %>"<%- badge.attr %>> <%= badge.text %> </span>';
-    tpl['container.html'] = '<div class="coreui-panel card text-center mb-3 shadow-sm<%= fit %>" id="coreui-panel-<%= id %>"> <div class="card-body text-start"> <% if (issetControls) { %> <div class="coreui-panel-controls position-relative top-0 end-0 float-end gap-1 d-flex flex-wrap justify-content-end"></div> <% } %> <% if (title) { %> <h4 class="card-title<% if ( ! subtitle) { %> mb-4<% } %>"> <%- title %> </h4> <% } %> <% if (subtitle) { %> <p class="coreui-panel-subtitle text-body-secondary"><%- subtitle %></p> <% } %> <% if (tabs.content) { %> <% if ([\'top-left\', \'top-center\', \'top-right\'].indexOf(tabs.position) >= 0) { %> <%- tabs.content %> <div class="coreui-panel-content card-content"></div> <% } else if (tabs.position === \'left\') { %> <div class="d-flex"> <div class="me-3" style="width: <%= tabs.width %>"><%- tabs.content %></div> <div class="coreui-panel-content card-content flex-grow-1"></div> </div> <% } else if (tabs.position === \'right\') { %> <div class="d-flex"> <div class="coreui-panel-content card-content flex-grow-1 pe-3"></div> <div style="width: <%= tabs.width %>"><%- tabs.content %></div> </div> <% } %> <% } else { %> <div class="coreui-panel-content card-content"></div> <% } %> </div> </div>';
+    tpl['container.html'] = '<div class="coreui-panel text-center mb-3<%= wrapperType %><%= fit %>" id="coreui-panel-<%= id %>"> <div class="card-body text-start"> <% if (issetControls) { %> <div class="coreui-panel-controls position-relative top-0 end-0 float-end gap-1 d-flex flex-wrap justify-content-end"></div> <% } %> <% if (title) { %> <h4 class="card-title<% if ( ! subtitle) { %> mb-4<% } %>"> <%- title %> </h4> <% } %> <% if (subtitle) { %> <p class="coreui-panel-subtitle text-body-secondary"><%- subtitle %></p> <% } %> <% if (tabs.content) { %> <% if ([\'top-left\', \'top-center\', \'top-right\'].indexOf(tabs.position) >= 0) { %> <%- tabs.content %> <div class="coreui-panel-content card-content"></div> <% } else if (tabs.position === \'left\') { %> <div class="d-flex"> <div class="me-3" style="width: <%= tabs.width %>"><%- tabs.content %></div> <div class="coreui-panel-content card-content flex-grow-1"></div> </div> <% } else if (tabs.position === \'right\') { %> <div class="d-flex"> <div class="coreui-panel-content card-content flex-grow-1 pe-3"></div> <div style="width: <%= tabs.width %>"><%- tabs.content %></div> </div> <% } %> <% } else { %> <div class="coreui-panel-content card-content"></div> <% } %> </div> </div>';
     tpl['loader.html'] = '<div class="coreui-panel-lock position-absolute w-100 top-0 bottom-0"> <div class="coreui-panel-block bg-secondary-subtle position-absolute opacity-50 w-100 top-0 bottom-0"></div> <div class="coreui-panel-message position-relative d-flex align-content-center justify-content-start gap-2 mt-3 py-1 px-2 m-auto border border-secondary-subtle rounded-3 bg-body-secondary"> <div class="spinner-border text-secondary align-self-center"></div> <span class="lh-lg"><%= loading %></span> </div> </div>';
     tpl['panel-control.html'] = '<div id="coreui-panel-control-<%= id %>" class="coreui-panel__control"></div>';
     tpl['tabs.html'] = ' <ul class="coreui-panel-tabs nav <% if (type) { %>nav-<%= type %><% } %> card-body-tabs mb-3 <% if (classes) { %><%= classes %><% } %> <% if (fill) { %>nav-<%= fill %><% } %>"> <% $.each(tabsContents, function(key, tabContent) { %> <%- tabContent %> <% }) %> </ul>';
@@ -1887,9 +1887,9 @@
         }
       },
       /**
-       *
-       * @param panel
-       * @param content
+       * Сборка содержимого
+       * @param {object} panel
+       * @param {*} content
        * @return {string}
        */
       renderContents: function (panel, content) {
@@ -1909,7 +1909,7 @@
                 if (CoreUI.hasOwnProperty(name) && coreuiPanelUtils.isObject(CoreUI[name])) {
                   let instance = CoreUI[name].create(content[i]);
                   result.push(instance.render());
-                  panel.on('panel_show', instance.initEvents, instance, true);
+                  panel.one('content_show', instance.initEvents, instance);
                 }
               } else {
                 result.push(JSON.stringify(content[i]));
@@ -1963,6 +1963,7 @@
         controls: [],
         contentFit: null,
         content: null,
+        wrapperType: 'card',
         tabs: {
           type: 'tabs',
           // pills, underline
@@ -2140,6 +2141,7 @@
         let tabsPosition = 'top-left';
         let tabsWidth = '200px';
         let fitContent = '';
+        let wrapperType = '';
         if (this._options.hasOwnProperty('tabs') && coreuiPanelUtils.isObject(this._options.tabs) && this._options.tabs.hasOwnProperty('items') && Array.isArray(this._options.tabs.items) && this._options.tabs.items.length > 0) {
           tabsContent = coreuiPanelPrivate.renderTabs(this, this._options.tabs);
           tabsPosition = this._options.tabs.hasOwnProperty('position') && typeof this._options.tabs.position === 'string' ? this._options.tabs.position : 'top-left';
@@ -2161,12 +2163,18 @@
               break;
           }
         }
+        if (this._options.hasOwnProperty('wrapperType') && typeof this._options.wrapperType === 'string') {
+          if (this._options.wrapperType === 'card') {
+            wrapperType = ' card shadow-sm';
+          }
+        }
         let panelElement = $(ejs.render(tpl['container.html'], {
           issetControls: !!this._controls.length,
           id: this.getId(),
           title: this._options.title,
           subtitle: this._options.subtitle,
           fit: fitContent,
+          wrapperType: wrapperType,
           tabs: {
             content: tabsContent,
             position: tabsPosition,
@@ -2201,16 +2209,31 @@
        * @param eventName
        * @param callback
        * @param context
-       * @param singleExec
        */
-      on: function (eventName, callback, context, singleExec) {
+      on: function (eventName, callback, context) {
         if (typeof this._events[eventName] !== 'object') {
           this._events[eventName] = [];
         }
         this._events[eventName].push({
           context: context || this,
           callback: callback,
-          singleExec: !!singleExec
+          singleExec: false
+        });
+      },
+      /**
+       * Регистрация функции на событие
+       * @param eventName
+       * @param callback
+       * @param context
+       */
+      one: function (eventName, callback, context) {
+        if (typeof this._events[eventName] !== 'object') {
+          this._events[eventName] = [];
+        }
+        this._events[eventName].push({
+          context: context || this,
+          callback: callback,
+          singleExec: true
         });
       }
     };

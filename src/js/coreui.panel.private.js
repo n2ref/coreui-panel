@@ -169,9 +169,9 @@ let coreuiPanelPrivate = {
 
 
     /**
-     *
-     * @param panel
-     * @param content
+     * Сборка содержимого
+     * @param {object} panel
+     * @param {*} content
      * @return {string}
      */
     renderContents: function(panel, content) {
@@ -204,7 +204,7 @@ let coreuiPanelPrivate = {
                             let instance = CoreUI[name].create(content[i]);
                             result.push(instance.render());
 
-                            panel.on('panel_show', instance.initEvents, instance, true);
+                            panel.one('content_show', instance.initEvents, instance);
                         }
 
                     } else {
