@@ -31,9 +31,8 @@
                                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                         <li class="nav-item"><span class="nav-link active">Panel</span></li>
                                         <li class="nav-item"><a class="nav-link" href="https://n2ref.github.io/coreui-form">Form</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="https://n2ref.github.io/coreui-tabs">Tabs</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="https://n2ref.github.io/coreui-layout">Layout</a></li>
                                         <li class="nav-item"><a class="nav-link" href="https://n2ref.github.io/coreui-table">Table</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="https://n2ref.github.io/coreui-layout">Layout</a></li>
                                         <li class="nav-item"><a class="nav-link" href="https://n2ref.github.io/coreui-info">Info</a></li>
                                         <li class="nav-item"><a class="nav-link" href="https://n2ref.github.io/coreui-modal">Modal</a></li>
                                         <li class="nav-item"><a class="nav-link" href="https://n2ref.github.io/coreui-notice">Notice</a></li>
@@ -54,7 +53,7 @@
                     <div id="docs-sidenav" class="hidden-xs hidden-sm hidden-md d-none d-lg-block"
                          data-bs-spy="affix" data-bs-offset-top="90" data-bs-offset-bottom="70">
                         <ul class="nav">
-                            <li><a href="#download">Download</a></li>
+                            <li><a href="#get-started">Get started</a></li>
                             <li>
                                 <a href="#examples">Examples</a>
                                 <ul class="nav">
@@ -82,28 +81,34 @@
                     </div>
                 </div>
                 <div class="col-lg-10">
-                    <h2 id="download">Download</h2>
-                    <div>
+
+                    <div id="get-started">
+                        <h2 class="mb-4">Get started</h2>
+
+                        <div id="download">
+                            <h4>Download</h4>
+                            <p>
+                                You can download a minimized version of the library or get the full source code at github.com.
+                            </p>
+                            <a class="btn btn-secondary" href="https://github.com/n2ref/coreui-panel/archive/master.zip">Download source</a>
+                        </div>
+
+
+                        <h4 class="section-margin">Install with npm</h4>
+                        <pre><code class="bash">$ npm install coreui-panel</code></pre>
+
+
+                        <h4 class="section-margin">Требования</h4>
                         <p>
-                            You can download a minimized version of the library or get the full source code at github.com.
+                            Для корректной работы на странице необходимо наличие:
+                            <a href="https://getbootstrap.com/docs/5.3" target="_blank">Bootstrap 5</a>,
+                            <a href="https://jquery.com" target="_blank">jquery</a>
                         </p>
-                        <a class="btn btn-secondary" href="https://github.com/n2ref/coreui-panel/archive/master.zip">Download source</a>
                     </div>
 
+                    <div id="examples">
+                        <h2 class="mb-4 section-margin">Examples</h2>
 
-                    <h2 class="section-margin">Install with npm</h2>
-                    <pre><code class="bash">$ npm install coreui-panel</code></pre>
-
-
-                    <h2 class="section-margin">Требования</h2>
-                    <p>
-                        Для корректной работы на странице необходимо наличие:
-                        <a href="https://getbootstrap.com/docs/5.3" target="_blank">Bootstrap 5</a>,
-                        <a href="https://jquery.com" target="_blank">jquery</a>
-                    </p>
-
-                    <h2 id="examples" class="section-margin">Examples</h2>
-                    <div>
                         <div id="example-simple" class="mb-5">
                             <h3>Simple panel</h3>
                             <div class="content-example" id="panel-simple"></div>
