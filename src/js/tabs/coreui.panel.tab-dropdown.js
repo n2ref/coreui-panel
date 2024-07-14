@@ -92,7 +92,10 @@ let coreuiPanelTabDropdown = {
 
                     let options = tab.getOptions();
 
-                    if (options.url === '#') {
+                    if (options.url && options.url !== '#') {
+                        location.href = options.url;
+
+                    } else {
                         return false;
                     }
                 }

@@ -75,13 +75,13 @@ let panelInstance = {
 
         this.on('tab_click', function (tab, event) {
 
-            let options = tab.getOptions();
-            let url     = options.hasOwnProperty('url') && typeof options.url == 'string' && options.url
-                ? options.url
+            let options    = tab.getOptions();
+            let urlContent = options.hasOwnProperty('urlContent') && typeof options.urlContent == 'string' && options.urlContent
+                ? options.urlContent
                 : '#';
 
-            if (url && url !== '#') {
-                that.loadContent(url);
+            if (urlContent && urlContent !== '#') {
+                that.loadContent(urlContent);
             }
 
 

@@ -14,7 +14,7 @@ let coreuiPanelTabDropdownItem = {
         active: false,
         disabled: false,
         url: '',
-        urlExtra: '',
+        urlContent: null,
         urlWindow: '',
         title: '',
         count: null,

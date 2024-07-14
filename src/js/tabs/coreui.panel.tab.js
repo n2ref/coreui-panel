@@ -12,7 +12,9 @@ let coreuiPanelTab = {
         type: 'tab',
         title: '',
         url: null,
-        urlExtra: null,
+        urlContent: null,
+        urlCount: null,
+        urlBadge: null,
         urlWindow: null,
         count: null,
         badge: null,
@@ -151,7 +153,10 @@ let coreuiPanelTab = {
             $('.nav-link', tabsContainerElement).click(function (event) {
                 coreuiPanelPrivate.trigger(that._panel, 'tab_click', that, [that, event]);
 
-                if (options.url === '#') {
+                if (options.url && options.url !== '#') {
+                    location.href = options.url;
+
+                } else {
                     return false;
                 }
             });

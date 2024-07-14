@@ -1274,7 +1274,9 @@
         type: 'tab',
         title: '',
         url: null,
-        urlExtra: null,
+        urlContent: null,
+        urlCount: null,
+        urlBadge: null,
         urlWindow: null,
         count: null,
         badge: null,
@@ -1374,7 +1376,9 @@
           let tabsContainerElement = coreuiPanelElements.getTabContainer(that._panel.getId(), that.getId());
           $('.nav-link', tabsContainerElement).click(function (event) {
             coreuiPanelPrivate.trigger(that._panel, 'tab_click', that, [that, event]);
-            if (options.url === '#') {
+            if (options.url && options.url !== '#') {
+              location.href = options.url;
+            } else {
               return false;
             }
           });
@@ -1457,7 +1461,7 @@
         active: false,
         disabled: false,
         url: '',
-        urlExtra: '',
+        urlContent: null,
         urlWindow: '',
         title: '',
         count: null
@@ -1661,7 +1665,9 @@
             if (tab) {
               coreuiPanelPrivate.trigger(that._panel, 'tab_click', tab, [tab, event]);
               let options = tab.getOptions();
-              if (options.url === '#') {
+              if (options.url && options.url !== '#') {
+                location.href = options.url;
+              } else {
                 return false;
               }
             }
@@ -2005,9 +2011,9 @@
         let that = this;
         this.on('tab_click', function (tab, event) {
           let options = tab.getOptions();
-          let url = options.hasOwnProperty('url') && typeof options.url == 'string' && options.url ? options.url : '#';
-          if (url && url !== '#') {
-            that.loadContent(url);
+          let urlContent = options.hasOwnProperty('urlContent') && typeof options.urlContent == 'string' && options.urlContent ? options.urlContent : '#';
+          if (urlContent && urlContent !== '#') {
+            that.loadContent(urlContent);
           }
           let urlWindow = options.hasOwnProperty('urlWindow') && typeof options.urlWindow == 'string' && options.urlWindow ? options.urlWindow : null;
           if (urlWindow) {
