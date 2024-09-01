@@ -2190,6 +2190,9 @@
             width: tabsWidth
           }
         }));
+        $.each(this._controls, function (key, control) {
+          panelElement.find('.coreui-panel-controls').append(coreuiPanelPrivate.renderControl(that, control));
+        });
         if (this._options.contentUrl) {
           this.on('panel_show', function (event) {
             that.loadContent(this._options.contentUrl);
@@ -2198,9 +2201,6 @@
           let renderContents = coreuiPanelPrivate.renderContents(this, this._options.content);
           $.each(renderContents, function (key, content) {
             panelElement.find('.coreui-panel-content').append(content);
-          });
-          $.each(this._controls, function (key, control) {
-            panelElement.find('.coreui-panel-controls').append(coreuiPanelPrivate.renderControl(that, control));
           });
         }
         if (element === undefined) {
