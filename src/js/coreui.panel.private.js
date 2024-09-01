@@ -241,7 +241,7 @@ let coreuiPanelPrivate = {
 
         let classes = badge.text.toString().length > 0
             ? 'rounded-pill bg-' + type
-            : 'rounded-circle p-1 border bg-' + type;
+            : 'rounded-circle p-1 bg-' + type;
 
         if (badge.hasOwnProperty('attr') && coreuiPanelUtils.isObject(badge.attr)) {
             if (badge.attr.hasOwnProperty('class') && typeof badge.attr.class === 'string') {
