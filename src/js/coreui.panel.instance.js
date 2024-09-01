@@ -329,6 +329,10 @@ let panelInstance = {
             })
         );
 
+        $.each(this._controls, function (key, control) {
+            panelElement.find('.coreui-panel-controls').append(coreuiPanelPrivate.renderControl(that, control));
+        });
+
 
         if (this._options.contentUrl) {
             this.on('panel_show', function (event) {
@@ -340,11 +344,6 @@ let panelInstance = {
 
             $.each(renderContents, function (key, content) {
                 panelElement.find('.coreui-panel-content').append(content);
-            });
-
-
-            $.each(this._controls, function (key, control) {
-                panelElement.find('.coreui-panel-controls').append(coreuiPanelPrivate.renderControl(that, control));
             });
         }
 
