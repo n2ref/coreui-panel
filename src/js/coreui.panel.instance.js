@@ -17,6 +17,7 @@ let panelInstance = {
         controls: [],
         contentFit: null,
         content: null,
+        contentUrl: null,
         wrapperType: 'card',
         tabs: {
             type: 'tabs',         // pills, underline
@@ -95,7 +96,10 @@ let panelInstance = {
         });
 
         coreuiPanelPrivate.trigger(this, 'panel_show');
-        coreuiPanelPrivate.trigger(this, 'content_show');
+
+        if (this._options.content !== null) {
+            coreuiPanelPrivate.trigger(this, 'content_show');
+        }
     },
 
 
@@ -326,16 +330,23 @@ let panelInstance = {
         );
 
 
-        let renderContents = coreuiPanelPrivate.renderContents(this, this._options.content);
+        if (this._options.contentUrl) {
+            this.on('panel_show', function (event) {
+                that.loadContent(this._options.contentUrl);
+            });
 
-        $.each(renderContents, function (key, content) {
-            panelElement.find('.coreui-panel-content').append(content);
-        });
+        } else {
+            let renderContents = coreuiPanelPrivate.renderContents(this, this._options.content);
+
+            $.each(renderContents, function (key, content) {
+                panelElement.find('.coreui-panel-content').append(content);
+            });
 
 
-        $.each(this._controls, function (key, control) {
-            panelElement.find('.coreui-panel-controls').append(coreuiPanelPrivate.renderControl(that, control));
-        });
+            $.each(this._controls, function (key, control) {
+                panelElement.find('.coreui-panel-controls').append(coreuiPanelPrivate.renderControl(that, control));
+            });
+        }
 
         if (element === undefined) {
             return panelElement;
