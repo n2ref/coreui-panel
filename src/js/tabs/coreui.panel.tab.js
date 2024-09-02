@@ -265,9 +265,17 @@ let coreuiPanelTab = {
             ? options.disabled
             : false;
 
-        let url = options.hasOwnProperty('url') && typeof options.url == 'string' && options.url
-            ? options.url
-            : '#';
+        let url = '';
+
+        if (options.hasOwnProperty('url') && typeof options.url == 'string' && options.url) {
+            url = options.url;
+
+        } else if (options.hasOwnProperty('urlWindow') && typeof options.urlWindow == 'string' && options.urlWindow) {
+            url = options.urlWindow;
+
+        } else {
+            url = '#';
+        }
 
         let count = options.hasOwnProperty('count') &&
                         ['string', 'number'].indexOf(typeof options.count) >= 0 &&

@@ -136,10 +136,18 @@ let coreuiPanelTabDropdownItem = {
             ? options.disabled
             : false;
 
+        let url = '';
 
-        let url = options.hasOwnProperty('url') && typeof options.url == 'string' && options.url
-            ? options.url
-            : '#';
+        if (options.hasOwnProperty('url') && typeof options.url == 'string' && options.url) {
+            url = options.url;
+
+        } else if (options.hasOwnProperty('urlWindow') && typeof options.urlWindow == 'string' && options.urlWindow) {
+            url = options.urlWindow;
+
+        } else {
+            url = '#';
+        }
+
 
         const title = options.hasOwnProperty('title') && typeof options.title == 'string' && options.title
             ? options.title

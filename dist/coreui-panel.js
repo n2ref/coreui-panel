@@ -1434,7 +1434,14 @@
         let title = options.hasOwnProperty('title') && typeof options.title == 'string' && options.title ? options.title : '';
         let active = options.hasOwnProperty('active') && typeof options.active == 'boolean' && options.active;
         let disabled = options.hasOwnProperty('disabled') && typeof options.disabled == 'boolean' ? options.disabled : false;
-        let url = options.hasOwnProperty('url') && typeof options.url == 'string' && options.url ? options.url : '#';
+        let url = '';
+        if (options.hasOwnProperty('url') && typeof options.url == 'string' && options.url) {
+          url = options.url;
+        } else if (options.hasOwnProperty('urlWindow') && typeof options.urlWindow == 'string' && options.urlWindow) {
+          url = options.urlWindow;
+        } else {
+          url = '#';
+        }
         let count = options.hasOwnProperty('count') && ['string', 'number'].indexOf(typeof options.count) >= 0 && options.count.toString().length > 0 ? options.count : null;
         let badge = options.hasOwnProperty('badge') ? coreuiPanelPrivate.renderBadge(options.badge) : null;
         return ejs.render(tpl['tabs/tab.html'], {
@@ -1546,7 +1553,14 @@
         options.title = options.hasOwnProperty('title') && typeof options.title == 'string' && options.title ? options.title : '';
         options.active = options.hasOwnProperty('active') && typeof options.active == 'boolean' && options.active;
         options.disabled = options.hasOwnProperty('disabled') && typeof options.disabled == 'boolean' ? options.disabled : false;
-        let url = options.hasOwnProperty('url') && typeof options.url == 'string' && options.url ? options.url : '#';
+        let url = '';
+        if (options.hasOwnProperty('url') && typeof options.url == 'string' && options.url) {
+          url = options.url;
+        } else if (options.hasOwnProperty('urlWindow') && typeof options.urlWindow == 'string' && options.urlWindow) {
+          url = options.urlWindow;
+        } else {
+          url = '#';
+        }
         const title = options.hasOwnProperty('title') && typeof options.title == 'string' && options.title ? options.title : '';
         const active = options.hasOwnProperty('active') && typeof options.active == 'boolean' && options.active;
         const disabled = options.hasOwnProperty('disabled') && typeof options.disabled == 'boolean' ? options.disabled : false;
