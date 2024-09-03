@@ -2079,11 +2079,17 @@
       },
       /**
        * Загрузка данных и установка их в панель
-       * @param url
+       * @param {string}      url
+       * @param {string|null} urlWindow
        */
-      loadContent: function (url) {
+      loadContent: function (url, urlWindow) {
         let that = this;
         this.lock();
+        if (typeof urlWindow === 'string') {
+          window.history.pushState({
+            path: urlWindow
+          }, '', urlWindow);
+        }
         $.ajax({
           url: url,
           method: 'get',
