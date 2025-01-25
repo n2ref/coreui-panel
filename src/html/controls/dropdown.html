@@ -6,12 +6,12 @@
     <ul class="dropdown-menu dropdown-menu-<%= position %>">
         <% $.each(items, function(key, item) { %>
             <% if (item.type === 'link') { %>
-            <li><a class="dropdown-item" href="<%= item.link %>"><%= item.content %></a></li>
+            <li><a class="dropdown-item" href="<%= item.link %>"><%- item.content %></a></li>
 
             <% } else if (item.type === 'button') { %>
             <li>
                 <button type="button" class="dropdown-item" id="btn-dropdown-<%= item.id %>">
-                    <%= item.content %>
+                    <%- item.content %>
                 </button>
             </li>
 
