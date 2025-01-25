@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { type: "custom", content: "<div class=\"py-2\"><em>Custom content</em></div>" },
             { type: "link",   content: "Link", href: "/link-url", attr: {class: 'btn btn-success'}, onClick: function () { return false } },
             { type: "button", attr: {class: "btn btn-outline-secondary" }, content: "Button", onClick: function () {console.log(1) } },
-            { type: "dropdown", content: "Dropdown", attr: { class: 'btn btn-primary' }, position: 'end',
+            { type: "dropdown", content: "Dropdown", attr: { class: 'btn btn-primary dropdown-toggle' }, position: 'end',
                 items: [
                     { type: 'link',   content: 'Link', link: "#" },
                     { type: 'button', content: 'Button 1', onClick: function (event, panel) { console.log(2) } },
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 buttons: [
                     { type: "link",     content: "Link",     attr: { class: 'btn btn-secondary' }, link: "#" },
                     { type: "button",   content: "Button",   attr: { class: 'btn btn-secondary' }, onClick: function (event, table) { console.log(4) } },
-                    { type: "dropdown", content: "Dropdown", attr: { class: 'btn btn-secondary' }, position: 'end',
+                    { type: "dropdown", content: "Dropdown", attr: { class: 'btn btn-secondary dropdown-toggle' }, position: 'end',
                         items: [
                             { type: 'link',   content: 'Link', link: "#" },
                             { type: 'button', content: 'Button 1', onClick: function (event, panel) { console.log(5) } },
