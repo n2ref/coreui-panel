@@ -28,7 +28,7 @@ coreuiPanel.controls.button_group = {
     },
     _dropdown: {
         attr: {
-            class: 'btn btn-secondary'
+            class: 'btn btn-secondary dropdown-toggle'
         }
     },
 
@@ -294,13 +294,6 @@ coreuiPanel.controls.button_group = {
                             if ( ! button.attr.hasOwnProperty('class')) {
                                 button.attr.class = that._dropdown.attr.class;
                             }
-
-                            if (button.attr.hasOwnProperty('class') &&
-                                ['string', 'number'].indexOf(typeof button.attr.class) >= 0
-                            ) {
-                                button.attr.class += ' dropdown-toggle';
-                            }
-
 
                             $.each(button.attr, function (name, value) {
                                 attributes.push(name + '="' + value + '"');

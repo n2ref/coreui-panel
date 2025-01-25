@@ -2463,7 +2463,7 @@
         content: null,
         items: null,
         attr: {
-          class: 'btn btn-primary'
+          class: 'btn btn-primary dropdown-toggle'
         }
       },
       /**
@@ -2558,9 +2558,6 @@
           });
         }
         if (coreuiPanelUtils.isObject(options.attr)) {
-          if (options.attr.hasOwnProperty('class') && ['string', 'number'].indexOf(typeof options.attr.class) >= 0) {
-            options.attr.class += ' dropdown-toggle';
-          }
           if (options.attr.hasOwnProperty('type')) {
             delete options.attr.type;
           }
@@ -2605,7 +2602,7 @@
       },
       _dropdown: {
         attr: {
-          class: 'btn btn-secondary'
+          class: 'btn btn-secondary dropdown-toggle'
         }
       },
       /**
@@ -2784,9 +2781,6 @@
                   }
                   if (!button.attr.hasOwnProperty('class')) {
                     button.attr.class = that._dropdown.attr.class;
-                  }
-                  if (button.attr.hasOwnProperty('class') && ['string', 'number'].indexOf(typeof button.attr.class) >= 0) {
-                    button.attr.class += ' dropdown-toggle';
                   }
                   $.each(button.attr, function (name, value) {
                     attributes.push(name + '="' + value + '"');

@@ -15,7 +15,7 @@ coreuiPanel.controls.dropdown = {
         content: null,
         items: null,
         attr: {
-            class: 'btn btn-primary',
+            class: 'btn btn-primary dropdown-toggle',
         }
     },
 
@@ -154,12 +154,6 @@ coreuiPanel.controls.dropdown = {
         }
 
         if (coreuiPanelUtils.isObject(options.attr)) {
-            if (options.attr.hasOwnProperty('class') &&
-                ['string', 'number'].indexOf(typeof options.attr.class) >= 0
-            ) {
-                options.attr.class += ' dropdown-toggle';
-            }
-
             if (options.attr.hasOwnProperty('type')) {
                 delete options.attr.type;
             }
