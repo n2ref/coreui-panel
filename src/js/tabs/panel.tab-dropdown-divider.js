@@ -1,7 +1,7 @@
-import coreuiPanelUtils from '../coreui.panel.utils';
-import coreuiPanelTpl   from "../coreui.panel.templates";
+import panelUtils from '../panel.utils';
+import panelTpl   from "../panel.tpl";
 
-let coreuiPanelTabDropdownDivider = {
+let panelTabDropdownDivider = {
 
     _id: null,
     _panel: null,
@@ -26,7 +26,7 @@ let coreuiPanelTabDropdownDivider = {
         this._dropdown = dropdown;
         this._id       = this._options.hasOwnProperty('id') && typeof this._options.id == 'string' && this._options.id
             ? this._options.id
-            : coreuiPanelUtils.hashCode();
+            : panelUtils.hashCode();
     },
 
 
@@ -45,9 +45,9 @@ let coreuiPanelTabDropdownDivider = {
      */
     render: function () {
 
-        return coreuiPanelTpl['tabs/tab-dropdown-divider.html'];
+        return panelTpl['tabs/tab-dropdown-divider.html'];
     }
 }
 
 
-export default coreuiPanelTabDropdownDivider;
+export default panelTabDropdownDivider;

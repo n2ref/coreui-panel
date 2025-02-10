@@ -1,9 +1,8 @@
 
 import 'ejs/ejs.min';
-import coreuiPanel      from "../coreui.panel";
-import coreuiPanelUtils from '../coreui.panel.utils';
+import panelUtils from '../panel.utils';
 
-coreuiPanel.controls.custom = {
+let PanelControlCustom = {
 
     _id: null,
     _panel: null,
@@ -25,7 +24,7 @@ coreuiPanel.controls.custom = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : coreuiPanelUtils.hashCode();
+            : panelUtils.hashCode();
     },
 
 
@@ -60,3 +59,5 @@ coreuiPanel.controls.custom = {
         }
     }
 }
+
+export default PanelControlCustom;

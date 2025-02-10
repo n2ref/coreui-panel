@@ -1,9 +1,9 @@
-import coreuiPanelUtils    from '../coreui.panel.utils';
-import coreuiPanelPrivate  from '../coreui.panel.private';
-import coreuiPanelTpl      from "../coreui.panel.templates";
-import coreuiPanelElements from "../coreui.panel.elements";
+import panelUtils    from '../panel.utils';
+import panelPrivate  from '../panel.private';
+import panelTpl      from "../panel.tpl";
+import panelElements from "../panel.elements";
 
-let coreuiPanelTabDropdownItem = {
+let panelTabDropdownItem = {
 
     _id: null,
     _panel: null,
@@ -35,7 +35,7 @@ let coreuiPanelTabDropdownItem = {
         this._dropdown = dropdown;
         this._id       = this._options.hasOwnProperty('id') && ['string', 'number'].indexOf(typeof this._options.id) >= 0 && this._options.id
             ? this._options.id
-            : coreuiPanelUtils.hashCode();
+            : panelUtils.hashCode();
     },
 
 
@@ -63,20 +63,20 @@ let coreuiPanelTabDropdownItem = {
      */
     setActive: function () {
 
-        let tabItemElement = coreuiPanelElements.getTabItemContainer(this._panel.getId(), this.getId());
+        let tabItemElement = panelElements.getTabItemContainer(this._panel.getId(), this.getId());
 
         if (tabItemElement[0]) {
-            let tabTabsElement = coreuiPanelElements.getTabsContainer(this._panel.getId());
+            let tabTabsElement = panelElements.getTabsContainer(this._panel.getId());
             tabTabsElement.find('.nav-link').removeClass('active');
             tabTabsElement.find('.nav-link.dropdown-toggle').removeClass('active');
             tabTabsElement.find('.nav-link.dropdown-toggle .dropdown-item').removeClass('active');
 
-            let tabElement = coreuiPanelElements.getTabContainer(this._panel.getId(), this._dropdown.getId());
+            let tabElement = panelElements.getTabContainer(this._panel.getId(), this._dropdown.getId());
             tabElement.find('> a').addClass('active');
 
             tabItemElement.find('> a').addClass('active');
 
-            coreuiPanelPrivate.trigger(this._panel, 'tab_click', this._panel, [this]);
+            panelPrivate.trigger(this._panel, 'tab_click', this._panel, [this]);
         }
     },
 
@@ -91,7 +91,7 @@ let coreuiPanelTabDropdownItem = {
             return;
         }
 
-        let tabTitleElement = coreuiPanelElements.getTabItemTitle(this._panel.getId(), this.getId());
+        let tabTitleElement = panelElements.getTabItemTitle(this._panel.getId(), this.getId());
         tabTitleElement.text(title);
     },
 
@@ -102,7 +102,7 @@ let coreuiPanelTabDropdownItem = {
      */
     setCount: function (count) {
 
-        let tabCountElement = coreuiPanelElements.getTabItemCount(this._panel.getId(), this.getId());
+        let tabCountElement = panelElements.getTabItemCount(this._panel.getId(), this.getId());
 
         if (['string', 'number'].indexOf(typeof count) < 0 || count.toString().length === 0) {
             tabCountElement.remove();
@@ -112,7 +112,7 @@ let coreuiPanelTabDropdownItem = {
                 tabCountElement.text('(' + count + ')');
 
             } else {
-                let tabTitleElement = coreuiPanelElements.getTabItemTitle(this._panel.getId(), this.getId());
+                let tabTitleElement = panelElements.getTabItemTitle(this._panel.getId(), this.getId());
                 tabTitleElement.after('(' + count + ')');
             }
         }
@@ -164,7 +164,7 @@ let coreuiPanelTabDropdownItem = {
             ? options.count
             : null;
 
-        return ejs.render(coreuiPanelTpl['tabs/tab-dropdown-item.html'], {
+        return ejs.render(panelTpl['tabs/tab-dropdown-item.html'], {
             item: {
                 id: this.getId(),
                 type: 'item',
@@ -179,4 +179,4 @@ let coreuiPanelTabDropdownItem = {
 }
 
 
-export default coreuiPanelTabDropdownItem;
+export default panelTabDropdownItem;

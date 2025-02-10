@@ -1,9 +1,9 @@
-import coreuiPanelUtils    from '../coreui.panel.utils';
-import coreuiPanelPrivate  from '../coreui.panel.private';
-import coreuiPanelTpl      from "../coreui.panel.templates";
-import coreuiPanelElements from "../coreui.panel.elements";
+import panelUtils    from '../panel.utils';
+import panelPrivate  from '../panel.private';
+import panelTpl      from "../panel.tpl";
+import panelElements from "../panel.elements";
 
-let coreuiPanelTab = {
+let panelTab = {
 
     _id: null,
     _panel: null,
@@ -35,7 +35,7 @@ let coreuiPanelTab = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id == 'string' && this._options.id
             ? this._options.id
-            : coreuiPanelUtils.hashCode();
+            : panelUtils.hashCode();
     },
 
 
@@ -63,17 +63,17 @@ let coreuiPanelTab = {
      */
     setActive: function () {
 
-        let tabTabElement = coreuiPanelElements.getTabContainer(this._panel.getId(), this.getId());
+        let tabTabElement = panelElements.getTabContainer(this._panel.getId(), this.getId());
 
         if (tabTabElement[0]) {
-            let tabTabsElement = coreuiPanelElements.getTabsContainer(this._panel.getId());
+            let tabTabsElement = panelElements.getTabsContainer(this._panel.getId());
             tabTabsElement.find('.nav-link').removeClass('active');
             tabTabsElement.find('.nav-link.dropdown-toggle').removeClass('active');
             tabTabsElement.find('.nav-link.dropdown-toggle .dropdown-item').removeClass('active');
 
             tabTabElement.find('> a').addClass('active');
 
-            coreuiPanelPrivate.trigger(this._panel, 'tab_click', this._panel, [this]);
+            panelPrivate.trigger(this._panel, 'tab_click', this._panel, [this]);
         }
     },
 
@@ -88,7 +88,7 @@ let coreuiPanelTab = {
             return;
         }
 
-        let tabTitleElement = coreuiPanelElements.getTabTitle(this._panel.getId(), this.getId());
+        let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
         tabTitleElement.text(title);
     },
 
@@ -99,7 +99,7 @@ let coreuiPanelTab = {
      */
     setCount: function (count) {
 
-        let tabCountElement = coreuiPanelElements.getTabCount(this._panel.getId(), this.getId());
+        let tabCountElement = panelElements.getTabCount(this._panel.getId(), this.getId());
 
         if (['string', 'number'].indexOf(typeof count) < 0 || count.toString().length === 0) {
             tabCountElement.remove();
@@ -109,7 +109,7 @@ let coreuiPanelTab = {
                 tabCountElement.text(' (' + count + ')');
 
             } else {
-                let tabTitleElement = coreuiPanelElements.getTabTitle(this._panel.getId(), this.getId());
+                let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
                 tabTitleElement.after('<span class="coreui-panel__tab-count"> (' + count + ')>');
             }
         }
@@ -122,16 +122,16 @@ let coreuiPanelTab = {
      */
     setBadge: function (badge) {
 
-        let badgeRender = coreuiPanelPrivate.renderBadge(badge);
+        let badgeRender = panelPrivate.renderBadge(badge);
 
         if (badgeRender) {
-            let tabBadgeElement = coreuiPanelElements.getTabBadge(this._panel.getId(), this.getId());
+            let tabBadgeElement = panelElements.getTabBadge(this._panel.getId(), this.getId());
 
             if (tabBadgeElement[0]) {
                 tabBadgeElement.replaceWith(badgeRender);
 
             } else {
-                let tabTitleElement = coreuiPanelElements.getTabTitle(this._panel.getId(), this.getId());
+                let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
                 tabTitleElement.after(badgeRender);
             }
         }
@@ -148,10 +148,10 @@ let coreuiPanelTab = {
 
         this._panel.on('panel_show', function () {
 
-            let tabsContainerElement = coreuiPanelElements.getTabContainer(that._panel.getId(), that.getId())
+            let tabsContainerElement = panelElements.getTabContainer(that._panel.getId(), that.getId())
 
             $('.nav-link', tabsContainerElement).click(function (event) {
-                coreuiPanelPrivate.trigger(that._panel, 'tab_click', that, [that, event]);
+                panelPrivate.trigger(that._panel, 'tab_click', that, [that, event]);
 
                 if (options.url && options.url !== '#') {
                     location.href = options.url;
@@ -186,7 +186,7 @@ let coreuiPanelTab = {
                                 ? JSON.parse(result)
                                 : result;
 
-                            if (coreuiPanelUtils.isObject(response) &&
+                            if (panelUtils.isObject(response) &&
                                 response.hasOwnProperty('count') &&
                                 ['string', 'number'].indexOf(typeof response.count) >= 0 &&
                                 response.count.toString().length > 0
@@ -233,9 +233,9 @@ let coreuiPanelTab = {
                             ? JSON.parse(result)
                             : result;
 
-                        if (coreuiPanelUtils.isObject(response) &&
+                        if (panelUtils.isObject(response) &&
                             response.hasOwnProperty('badge') &&
-                            coreuiPanelUtils.isObject(response.badge)
+                            panelUtils.isObject(response.badge)
                         ) {
                             that.setBadge(response.badge);
                         }
@@ -284,11 +284,11 @@ let coreuiPanelTab = {
             : null;
 
         let badge = options.hasOwnProperty('badge')
-            ? coreuiPanelPrivate.renderBadge(options.badge)
+            ? panelPrivate.renderBadge(options.badge)
             : null;
 
 
-        return ejs.render(coreuiPanelTpl['tabs/tab.html'], {
+        return ejs.render(panelTpl['tabs/tab.html'], {
             tab: {
                 id:       this.getId(),
                 title:    title,
@@ -303,4 +303,4 @@ let coreuiPanelTab = {
 }
 
 
-export default coreuiPanelTab;
+export default panelTab;

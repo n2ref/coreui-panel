@@ -1,11 +1,11 @@
 
 import 'ejs/ejs.min';
-import coreuiPanelUtils       from './coreui.panel.utils';
-import coreuiPanelTpl         from "./coreui.panel.templates";
-import coreuiPanelTab         from "./tabs/coreui.panel.tab";
-import coreuiPanelTabDropdown from "./tabs/coreui.panel.tab-dropdown";
+import panelUtils       from './panel.utils';
+import panelTpl         from "./panel.tpl";
+import panelTab         from "./tabs/panel.tab";
+import panelTabDropdown from "./tabs/panel.tab-dropdown";
 
-let coreuiPanelPrivate = {
+let panelPrivate = {
 
 
     /**
@@ -48,7 +48,7 @@ let coreuiPanelPrivate = {
 
         $.each(controls, function (key, control) {
 
-            if (coreuiPanelUtils.isObject(control) && typeof control.type === 'string') {
+            if (panelUtils.isObject(control) && typeof control.type === 'string') {
 
                 if (panelWrapper.controls.hasOwnProperty(control.type)) {
                     let instance = $.extend(true, {}, panelWrapper.controls[control.type]);
@@ -70,7 +70,7 @@ let coreuiPanelPrivate = {
     initTabs: function (panel, tabItems) {
 
         $.each(tabItems, function (key, tabItem) {
-            if (coreuiPanelUtils.isObject(tabItem)) {
+            if (panelUtils.isObject(tabItem)) {
 
                 let instance = null;
                 let tabType  = tabItem.hasOwnProperty('type') && typeof tabItem.type === 'string'
@@ -78,10 +78,10 @@ let coreuiPanelPrivate = {
                     : 'tab';
 
                 if (tabType === 'tab') {
-                    instance = $.extend(true, {}, coreuiPanelTab);
+                    instance = $.extend(true, {}, panelTab);
 
                 } else if (tabType === 'dropdown') {
-                    instance = $.extend(true, {}, coreuiPanelTabDropdown);
+                    instance = $.extend(true, {}, panelTabDropdown);
                 }
 
 
@@ -130,7 +130,7 @@ let coreuiPanelPrivate = {
         });
 
 
-        return ejs.render(coreuiPanelTpl['tabs.html'], {
+        return ejs.render(panelTpl['tabs.html'], {
             classes: classes.join(' '),
             type: tabs.hasOwnProperty('type') && typeof tabs.type === 'string' ? tabs.type : '',
             fill: tabs.hasOwnProperty('fill') && typeof tabs.fill === 'string' ? tabs.fill : '',
@@ -148,9 +148,9 @@ let coreuiPanelPrivate = {
      */
     renderControl: function (panel, control) {
 
-        if (coreuiPanelUtils.isObject(control)) {
+        if (panelUtils.isObject(control)) {
             let controlElement = $(
-                ejs.render(coreuiPanelTpl['panel-control.html'], {
+                ejs.render(panelTpl['panel-control.html'], {
                     id: control.getId()
                 })
             );
@@ -172,7 +172,7 @@ let coreuiPanelPrivate = {
      * Сборка содержимого
      * @param {object} panel
      * @param {*} content
-     * @return {string}
+     * @return {Array}
      */
     renderContents: function(panel, content) {
 
@@ -190,26 +190,32 @@ let coreuiPanelPrivate = {
                 if (typeof content[i] === 'string') {
                     result.push(content[i]);
 
-                } else {
-                    if ( ! Array.isArray(content[i]) &&
-                        content[i].hasOwnProperty('component') &&
-                        typeof content[i].component === 'string' &&
-                        content[i].component.substring(0, 6) === 'coreui'
+                } else if (content[i] instanceof Object &&
+                    typeof content[i].render === 'function' &&
+                    typeof content[i].initEvents === 'function'
+                ) {
+                    result.push(content[i].render());
+
+                    panel.one('content_show', content[i].initEvents, content[i], true);
+
+                } else if ( ! Array.isArray(content[i]) &&
+                    content[i].hasOwnProperty('component') &&
+                    typeof content[i].component === 'string' &&
+                    content[i].component.substring(0, 6) === 'coreui'
+                ) {
+                    let name = content[i].component.split('.')[1];
+
+                    if (CoreUI.hasOwnProperty(name) &&
+                        panelUtils.isObject(CoreUI[name])
                     ) {
-                        let name = content[i].component.split('.')[1];
+                        let instance = CoreUI[name].create(content[i]);
+                        result.push(instance.render());
 
-                        if (CoreUI.hasOwnProperty(name) &&
-                            coreuiPanelUtils.isObject(CoreUI[name])
-                        ) {
-                            let instance = CoreUI[name].create(content[i]);
-                            result.push(instance.render());
-
-                            panel.one('content_show', instance.initEvents, instance);
-                        }
-
-                    } else {
-                        result.push(JSON.stringify(content[i]));
+                        panel.one('content_show', instance.initEvents, instance);
                     }
+
+                } else {
+                    result.push(JSON.stringify(content[i]));
                 }
             }
         }
@@ -226,7 +232,7 @@ let coreuiPanelPrivate = {
      */
     renderBadge: function (badge) {
 
-        if ( ! coreuiPanelUtils.isObject(badge) ||
+        if ( ! panelUtils.isObject(badge) ||
              ! badge.hasOwnProperty('text') ||
             ['string', 'number'].indexOf(typeof badge.text) < 0
         ) {
@@ -243,7 +249,7 @@ let coreuiPanelPrivate = {
             ? 'rounded-pill bg-' + type
             : 'rounded-circle p-1 bg-' + type;
 
-        if (badge.hasOwnProperty('attr') && coreuiPanelUtils.isObject(badge.attr)) {
+        if (badge.hasOwnProperty('attr') && panelUtils.isObject(badge.attr)) {
             if (badge.attr.hasOwnProperty('class') && typeof badge.attr.class === 'string') {
                 classes += ' ' + badge.attr.class;
                 delete badge.attr.class;
@@ -256,7 +262,7 @@ let coreuiPanelPrivate = {
             });
         }
 
-        return ejs.render(coreuiPanelTpl['badge.html'], {
+        return ejs.render(panelTpl['badge.html'], {
             badge: {
                 text:    badge.text,
                 classes: classes ? ' ' + classes : '',
@@ -267,4 +273,4 @@ let coreuiPanelPrivate = {
 }
 
 
-export default coreuiPanelPrivate;
+export default panelPrivate;

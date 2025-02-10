@@ -1,14 +1,14 @@
 
 import 'ejs/ejs.min';
-import coreuiPanelUtils    from './coreui.panel.utils';
-import coreuiPanelPrivate  from './coreui.panel.private';
-import coreuiPanelTpl      from './coreui.panel.templates';
-import coreuiPanelElements from './coreui.panel.elements';
+import panelUtils    from './panel.utils';
+import panelPrivate  from './panel.private';
+import panelTpl      from './panel.tpl';
+import panelElements from './panel.elements';
 
 
-let panelInstance = {
+class PanelInstance {
 
-    _options: {
+    _options = {
         id: '',
         lang: 'en',
         langList: {},
@@ -26,12 +26,12 @@ let panelInstance = {
             fill: '', // fill, justify
             items: []
         }
-    },
+    }
 
-    _id: '',
-    _tabs: [],
-    _controls: [],
-    _events: {},
+    _id = '';
+    _tabs = [];
+    _controls = [];
+    _events = {};
 
 
     /**
@@ -39,12 +39,12 @@ let panelInstance = {
      * @param {object} panelWrapper
      * @param {object} options
      */
-    _init: function (panelWrapper, options) {
+    constructor(panelWrapper, options) {
 
         this._options = $.extend(true, {}, this._options, options);
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : coreuiPanelUtils.hashCode();
+            : panelUtils.hashCode();
 
 
         // Инициализация контролов
@@ -52,25 +52,25 @@ let panelInstance = {
             Array.isArray(this._options.controls) &&
             this._options.controls.length > 0
         ) {
-            coreuiPanelPrivate.initControls(panelWrapper, this, this._options.controls);
+            panelPrivate.initControls(panelWrapper, this, this._options.controls);
         }
 
         // Инициализация табов
         if (this._options.hasOwnProperty('tabs') &&
-            coreuiPanelUtils.isObject(this._options.tabs) &&
+            panelUtils.isObject(this._options.tabs) &&
             this._options.tabs.hasOwnProperty('items') &&
             Array.isArray(this._options.tabs.items) &&
             this._options.tabs.items.length > 0
         ) {
-            coreuiPanelPrivate.initTabs(this, this._options.tabs.items);
+            panelPrivate.initTabs(this, this._options.tabs.items);
         }
-    },
+    }
 
 
     /**
      * Инициализация событий
      */
-    initEvents: function () {
+    initEvents() {
 
         let that = this;
 
@@ -95,60 +95,60 @@ let panelInstance = {
             }
         });
 
-        coreuiPanelPrivate.trigger(this, 'panel_show');
+        panelPrivate.trigger(this, 'panel_show');
 
         if (this._options.content !== null) {
-            coreuiPanelPrivate.trigger(this, 'content_show');
+            panelPrivate.trigger(this, 'content_show');
         }
-    },
+    }
 
 
     /**
      * Получение идентификатора
      * @returns {string}
      */
-    getId: function () {
+    getId() {
         return this._id;
-    },
+    }
 
 
     /**
      * Получение опций
      * @returns {object}
      */
-    getOptions: function () {
+    getOptions() {
 
         return $.extend(true, {}, this._options);
-    },
+    }
 
 
     /**
      * Блокировка панели
      * @param {string} text
      */
-    lock: function (text) {
+    lock(text) {
 
-        let container = coreuiPanelElements.getPanel(this.getId());
+        let container = panelElements.getPanel(this.getId());
 
         if (container[0] && ! container.find('.coreui-panel-lock')[0]) {
-            let html = ejs.render(coreuiPanelTpl['loader.html'], {
+            let html = ejs.render(panelTpl['loader.html'], {
                 loading: typeof text === 'string' ? text : this.getLang().loading
             });
 
             container.prepend(html);
         }
-    },
+    }
 
 
     /**
      * Разблокировка панели
      */
-    unlock: function () {
+    unlock() {
 
-        coreuiPanelElements.getLock(this.getId()).hide(50, function () {
+        panelElements.getLock(this.getId()).hide(50, function () {
             $(this).remove()
         });
-    },
+    }
 
 
     /**
@@ -156,7 +156,7 @@ let panelInstance = {
      * @param {string}      url
      * @param {string|null} urlWindow
      */
-    loadContent: function (url, urlWindow) {
+    loadContent(url, urlWindow) {
 
         let that = this;
 
@@ -170,39 +170,39 @@ let panelInstance = {
             url: url,
             method: 'get',
             beforeSend: function(xhr) {
-                coreuiPanelPrivate.trigger(that, 'load_start', that, [ xhr ]);
+                panelPrivate.trigger(that, 'load_start', that, [ xhr ]);
             },
             success: function (result) {
-                coreuiPanelPrivate.trigger(that, 'load_success', that, [ result ]);
+                panelPrivate.trigger(that, 'load_success', that, [ result ]);
                 that.setContent(result);
             },
             error: function(xhr, textStatus, errorThrown) {
-                coreuiPanelPrivate.trigger(that, 'load_error', that, [ xhr, textStatus, errorThrown ]);
+                panelPrivate.trigger(that, 'load_error', that, [ xhr, textStatus, errorThrown ]);
                 that.setContent('');
             },
             complete: function(xhr, textStatus) {
                 that.unlock();
-                coreuiPanelPrivate.trigger(that, 'load_end', that, [ xhr, textStatus ]);
+                panelPrivate.trigger(that, 'load_end', that, [ xhr, textStatus ]);
             },
         });
-    },
+    }
 
 
     /**
      * Получение переводов текущего языка
      * @return {object}
      */
-    getLang: function () {
+    getLang() {
 
         return $.extend(true, {}, this._options.langList);
-    },
+    }
 
 
     /**
      * Получение объекта таба по id
      * @param tabId
      */
-    getTabById: function (tabId) {
+    getTabById(tabId) {
 
         let result = null;
 
@@ -217,7 +217,7 @@ let panelInstance = {
         });
 
         return result;
-    },
+    }
 
 
     /**
@@ -225,7 +225,7 @@ let panelInstance = {
      * @param {string} id
      * @return {object}
      */
-    getControlById: function (id) {
+    getControlById(id) {
 
         let result = null;
 
@@ -240,17 +240,17 @@ let panelInstance = {
         });
 
         return result;
-    },
+    }
 
 
     /**
      * Размещение содержимого внутри панели
      * @param {string|object|Array} content
      */
-    setContent: function (content) {
+    setContent(content) {
 
-        let contents  = coreuiPanelPrivate.renderContents(this, content);
-        let container = coreuiPanelElements.getContent(this.getId());
+        let contents  = panelPrivate.renderContents(this, content);
+        let container = panelElements.getContent(this.getId());
 
         container.html('');
 
@@ -258,8 +258,8 @@ let panelInstance = {
             container.append(content);
         });
 
-        coreuiPanelPrivate.trigger(this, 'content_show');
-    },
+        panelPrivate.trigger(this, 'content_show');
+    }
 
 
     /**
@@ -267,7 +267,7 @@ let panelInstance = {
      * @param element
      * @returns {*}
      */
-    render: function(element) {
+    render(element) {
 
         let that         = this;
         let tabsContent  = null;
@@ -278,12 +278,12 @@ let panelInstance = {
 
 
         if (this._options.hasOwnProperty('tabs') &&
-            coreuiPanelUtils.isObject(this._options.tabs) &&
+            panelUtils.isObject(this._options.tabs) &&
             this._options.tabs.hasOwnProperty('items') &&
             Array.isArray(this._options.tabs.items) &&
             this._options.tabs.items.length > 0
         ) {
-            tabsContent = coreuiPanelPrivate.renderTabs(this, this._options.tabs);
+            tabsContent = panelPrivate.renderTabs(this, this._options.tabs);
 
             tabsPosition = this._options.tabs.hasOwnProperty('position') && typeof this._options.tabs.position === 'string'
                 ? this._options.tabs.position
@@ -319,7 +319,7 @@ let panelInstance = {
 
 
         let panelElement = $(
-            ejs.render(coreuiPanelTpl['container.html'], {
+            ejs.render(panelTpl['container.html'], {
                 issetControls: !! this._controls.length,
                 id: this.getId(),
                 title: this._options.title,
@@ -335,7 +335,7 @@ let panelInstance = {
         );
 
         $.each(this._controls, function (key, control) {
-            panelElement.find('.coreui-panel-controls').append(coreuiPanelPrivate.renderControl(that, control));
+            panelElement.find('.coreui-panel-controls').append(panelPrivate.renderControl(that, control));
         });
 
 
@@ -345,7 +345,7 @@ let panelInstance = {
             });
 
         } else {
-            let renderContents = coreuiPanelPrivate.renderContents(this, this._options.content);
+            let renderContents = panelPrivate.renderContents(this, this._options.content);
 
             $.each(renderContents, function (key, content) {
                 panelElement.find('.coreui-panel-content').append(content);
@@ -370,7 +370,7 @@ let panelInstance = {
             $(domElement).html(panelElement);
             this.initEvents();
         }
-    },
+    }
 
 
     /**
@@ -379,7 +379,7 @@ let panelInstance = {
      * @param callback
      * @param context
      */
-    on: function(eventName, callback, context) {
+    on(eventName, callback, context) {
         if (typeof this._events[eventName] !== 'object') {
             this._events[eventName] = [];
         }
@@ -388,7 +388,7 @@ let panelInstance = {
             callback: callback,
             singleExec: false,
         });
-    },
+    }
 
 
     /**
@@ -397,7 +397,7 @@ let panelInstance = {
      * @param callback
      * @param context
      */
-    one: function(eventName, callback, context) {
+    one(eventName, callback, context) {
         if (typeof this._events[eventName] !== 'object') {
             this._events[eventName] = [];
         }
@@ -409,4 +409,4 @@ let panelInstance = {
     }
 }
 
-export default panelInstance;
+export default PanelInstance;

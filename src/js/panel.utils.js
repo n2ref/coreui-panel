@@ -1,5 +1,5 @@
 
-let coreuiPanelUtils = {
+let panelUtils = {
 
 
     /**
@@ -45,4 +45,4 @@ let coreuiPanelUtils = {
     }
 }
 
-export default coreuiPanelUtils;
+export default panelUtils;

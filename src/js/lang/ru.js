@@ -1,6 +1,6 @@
 
-import coreuiPanel from "../coreui.panel";
-
-coreuiPanel.lang.ru = {
+let langRu = {
     "loading": "Загрузка..."
 }
+
+export default langRu;

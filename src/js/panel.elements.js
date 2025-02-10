@@ -1,5 +1,5 @@
 
-let coreuiPanelElements = {
+let panelElements = {
 
     /**
      * получение контейнера панели
@@ -141,4 +141,4 @@ let coreuiPanelElements = {
     }
 }
 
-export default coreuiPanelElements;
+export default panelElements;

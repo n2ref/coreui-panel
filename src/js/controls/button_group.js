@@ -1,11 +1,10 @@
 
 import 'ejs/ejs.min';
-import coreuiPanel         from "../coreui.panel";
-import coreuiPanelTpl      from '../coreui.panel.templates';
-import coreuiPanelUtils    from '../coreui.panel.utils';
-import coreuiPanelElements from "../coreui.panel.elements";
+import panelTpl      from '../panel.tpl';
+import panelUtils    from '../panel.utils';
+import panelElements from "../panel.elements";
 
-coreuiPanel.controls.button_group = {
+let PanelControlButtonGroup = {
 
     _id: null,
     _panel: null,
@@ -44,22 +43,22 @@ coreuiPanel.controls.button_group = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : coreuiPanelUtils.hashCode();
+            : panelUtils.hashCode();
 
 
         if (Array.isArray(this._options.buttons)) {
             $.each(this._options.buttons, function (key, button) {
-                if (coreuiPanelUtils.isObject(button) && typeof button.type === 'string') {
+                if (panelUtils.isObject(button) && typeof button.type === 'string') {
 
-                    button.id = coreuiPanelUtils.hashCode();
+                    button.id = panelUtils.hashCode();
 
                     if (button.type === 'dropdown' && Array.isArray(button.items)) {
                         $.each(button.items, function (key, item) {
-                            if (coreuiPanelUtils.isObject(item) && typeof item.type === 'string') {
+                            if (panelUtils.isObject(item) && typeof item.type === 'string') {
 
                                 item.id = item.hasOwnProperty('id') && typeof item.id === 'string' && item.id
                                     ? item.id
-                                    : coreuiPanelUtils.hashCode();
+                                    : panelUtils.hashCode();
                             }
                         });
                     }
@@ -88,10 +87,10 @@ coreuiPanel.controls.button_group = {
 
         if (Array.isArray(options.buttons)) {
 
-            let control = coreuiPanelElements.getControl(this._panel.getId(), this._id);
+            let control = panelElements.getControl(this._panel.getId(), this._id);
 
             $.each(options.buttons, function (key, button) {
-                if (coreuiPanelUtils.isObject(button) && typeof button.type === 'string') {
+                if (panelUtils.isObject(button) && typeof button.type === 'string') {
 
                     if (button.type === 'button') {
                         if (button.hasOwnProperty('content') &&
@@ -113,7 +112,7 @@ coreuiPanel.controls.button_group = {
 
                     } else if (button.type === 'dropdown' && Array.isArray(button.items)) {
                         $.each(button.items, function (key, item) {
-                            if (coreuiPanelUtils.isObject(item) && typeof item.type === 'string') {
+                            if (panelUtils.isObject(item) && typeof item.type === 'string') {
 
                                 if (item.hasOwnProperty('content') &&
                                     item.hasOwnProperty('onClick') &&
@@ -162,7 +161,7 @@ coreuiPanel.controls.button_group = {
 
         if (Array.isArray(options.buttons)) {
             $.each(options.buttons, function (key, button) {
-                if (coreuiPanelUtils.isObject(button) && typeof button.type === 'string') {
+                if (panelUtils.isObject(button) && typeof button.type === 'string') {
 
                     if (button.type === 'link') {
                         if (button.hasOwnProperty('link') &&
@@ -172,7 +171,7 @@ coreuiPanel.controls.button_group = {
                         ) {
                             let attributes = [];
 
-                            if ( ! coreuiPanelUtils.isObject(button.attr)) {
+                            if ( ! panelUtils.isObject(button.attr)) {
                                 button.attr = {};
                             }
 
@@ -204,7 +203,7 @@ coreuiPanel.controls.button_group = {
                         ) {
                             let attributes = [];
 
-                            if ( ! coreuiPanelUtils.isObject(button.attr)) {
+                            if ( ! panelUtils.isObject(button.attr)) {
                                 button.attr = {};
                             }
 
@@ -241,7 +240,7 @@ coreuiPanel.controls.button_group = {
                             let items      = [];
 
                             $.each(button.items, function (key, item) {
-                                if (coreuiPanelUtils.isObject(item) && typeof item.type === 'string') {
+                                if (panelUtils.isObject(item) && typeof item.type === 'string') {
 
                                     if (item.type === 'link') {
                                         if (item.hasOwnProperty('link') &&
@@ -279,7 +278,7 @@ coreuiPanel.controls.button_group = {
                             });
 
 
-                            if ( ! coreuiPanelUtils.isObject(button.attr)) {
+                            if ( ! panelUtils.isObject(button.attr)) {
                                 button.attr = {};
                             }
 
@@ -313,8 +312,10 @@ coreuiPanel.controls.button_group = {
         }
 
 
-        return ejs.render(coreuiPanelTpl['controls/button_group.html'], {
+        return ejs.render(panelTpl['controls/button_group.html'], {
             buttons: buttons,
         });
     }
 }
+
+export default PanelControlButtonGroup;

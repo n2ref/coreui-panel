@@ -1,11 +1,10 @@
 
 import 'ejs/ejs.min';
-import coreuiPanel         from "../coreui.panel";
-import coreuiPanelTpl      from '../coreui.panel.templates';
-import coreuiPanelUtils    from '../coreui.panel.utils';
-import coreuiPanelElements from "../coreui.panel.elements";
+import panelTpl      from '../panel.tpl';
+import panelUtils    from '../panel.utils';
+import panelElements from "../panel.elements";
 
-coreuiPanel.controls.link = {
+let PanelControlLink = {
 
     _id: null,
     _panel: null,
@@ -30,7 +29,7 @@ coreuiPanel.controls.link = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : coreuiPanelUtils.hashCode();
+            : panelUtils.hashCode();
     },
 
 
@@ -43,7 +42,7 @@ coreuiPanel.controls.link = {
 
         if (typeof this._options.onClick === 'function' || typeof this._options.onClick === 'string') {
 
-            let control = coreuiPanelElements.getControl(this._panel.getId(), this.getId());
+            let control = panelElements.getControl(this._panel.getId(), this.getId());
             $('a', control)
                 .click(function (event) {
                     if (typeof that._options.onClick === 'function') {
@@ -80,10 +79,12 @@ coreuiPanel.controls.link = {
             });
         }
 
-        return ejs.render(coreuiPanelTpl['controls/link.html'], {
+        return ejs.render(panelTpl['controls/link.html'], {
             href: this._options.href,
             content: this._options.content,
             attr: attributes.length > 0 ? (' ' + attributes.join(' ')) : '',
         });
     }
 }
+
+export default PanelControlLink;

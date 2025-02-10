@@ -19,11 +19,11 @@ var conf = {
     js: {
         fileMin: 'coreui-panel.min.js',
         file: 'coreui-panel.js',
-        main: 'src/js/main.js',
+        main: 'src/main.js',
         src: 'src/js/**/*.js'
     },
     tpl: {
-        file: 'coreui.panel.templates.js',
+        file: 'panel.tpl.js',
         dist: './src/js',
         src: [
             'src/html/**/*.html',
@@ -33,7 +33,7 @@ var conf = {
     css: {
         fileMin: 'coreui-panel.min.css',
         file: 'coreui-panel.css',
-        main: 'src/css/main.scss',
+        main: 'src/main.scss',
         src: [
             'src/css/*.scss',
         ]

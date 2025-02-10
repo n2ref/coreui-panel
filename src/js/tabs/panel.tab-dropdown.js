@@ -1,11 +1,11 @@
-import coreuiPanelUtils              from '../coreui.panel.utils';
-import coreuiPanelPrivate            from '../coreui.panel.private';
-import coreuiPanelTpl                from "../coreui.panel.templates";
-import coreuiPanelElements           from "../coreui.panel.elements";
-import coreuiPanelTabDropdownItem    from "./coreui.panel.tab-dropdown-item";
-import coreuiPanelTabDropdownDivider from "./coreui.panel.tab-dropdown-divider";
+import panelUtils              from '../panel.utils';
+import panelPrivate            from '../panel.private';
+import panelTpl                from "../panel.tpl";
+import panelElements           from "../panel.elements";
+import panelTabDropdownItem    from "./panel.tab-dropdown-item";
+import panelTabDropdownDivider from "./panel.tab-dropdown-divider";
 
-let coreuiPanelTabDropdown = {
+let panelTabDropdown = {
 
     _id: null,
     _panel: null,
@@ -32,7 +32,7 @@ let coreuiPanelTabDropdown = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id == 'string' && this._options.id
             ? this._options.id
-            : coreuiPanelUtils.hashCode();
+            : panelUtils.hashCode();
 
 
         let that = this;
@@ -50,8 +50,8 @@ let coreuiPanelTabDropdown = {
 
                 switch (tabType) {
                     case 'item':
-                    default:        instance = $.extend(true, {}, coreuiPanelTabDropdownItem);    break;
-                    case 'divider': instance = $.extend(true, {}, coreuiPanelTabDropdownDivider); break;
+                    default:        instance = $.extend(true, {}, panelTabDropdownItem);    break;
+                    case 'divider': instance = $.extend(true, {}, panelTabDropdownDivider); break;
                 }
 
                 if (instance) {
@@ -81,14 +81,14 @@ let coreuiPanelTabDropdown = {
 
         this._panel.on('panel_show', function () {
 
-            let tabsContainerElement = coreuiPanelElements.getTabContainer(that._panel.getId(), that.getId())
+            let tabsContainerElement = panelElements.getTabContainer(that._panel.getId(), that.getId())
 
             $('.dropdown-item', tabsContainerElement).click(function (event) {
                 let tabId = $(this).data('tab-id') || '';
                 let tab   = that.getItem(tabId);
 
                 if (tab) {
-                    coreuiPanelPrivate.trigger(that._panel, 'tab_click', tab, [tab, event]);
+                    panelPrivate.trigger(that._panel, 'tab_click', tab, [tab, event]);
 
                     let options = tab.getOptions();
 
@@ -148,7 +148,7 @@ let coreuiPanelTabDropdown = {
             return;
         }
 
-        let tabTitleElement = coreuiPanelElements.getTabTitle(this._panel.getId(), this.getId());
+        let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
         tabTitleElement.text(title);
     },
 
@@ -159,7 +159,7 @@ let coreuiPanelTabDropdown = {
      */
     setCount: function (count) {
 
-        let tabCountElement = coreuiPanelElements.getTabCount(this._panel.getId(), this.getId());
+        let tabCountElement = panelElements.getTabCount(this._panel.getId(), this.getId());
 
         if (['string', 'number'].indexOf(typeof count) < 0 || count.toString().length === 0) {
             tabCountElement.remove();
@@ -169,7 +169,7 @@ let coreuiPanelTabDropdown = {
                 tabCountElement.text('(' + count + ')');
 
             } else {
-                let tabTitleElement = coreuiPanelElements.getTabTitle(this._panel.getId(), this.getId());
+                let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
                 tabTitleElement.after('(' + count + ')');
             }
         }
@@ -182,16 +182,16 @@ let coreuiPanelTabDropdown = {
      */
     setBadge: function (badge) {
 
-        let badgeRender = coreuiPanelPrivate.renderBadge(badge);
+        let badgeRender = panelPrivate.renderBadge(badge);
 
         if (badgeRender) {
-            let tabBadgeElement = coreuiPanelElements.getTabBadge(this._panel.getId(), this.getId());
+            let tabBadgeElement = panelElements.getTabBadge(this._panel.getId(), this.getId());
 
             if (tabBadgeElement[0]) {
                 tabBadgeElement.replaceWith(badgeRender);
 
             } else {
-                let tabTitleElement = coreuiPanelElements.getTabTitle(this._panel.getId(), this.getId());
+                let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
                 tabTitleElement.after(badgeRender);
             }
         }
@@ -222,7 +222,7 @@ let coreuiPanelTabDropdown = {
             : null;
 
         let badge = options.hasOwnProperty('badge')
-            ? coreuiPanelPrivate.renderBadge(options.badge)
+            ? panelPrivate.renderBadge(options.badge)
             : null;
 
         let itemsContents = [];
@@ -232,7 +232,7 @@ let coreuiPanelTabDropdown = {
         });
 
 
-        return ejs.render(coreuiPanelTpl['tabs/tab-dropdown.html'], {
+        return ejs.render(panelTpl['tabs/tab-dropdown.html'], {
             tab: {
                 id: this.getId(),
                 title: title,
@@ -247,4 +247,4 @@ let coreuiPanelTabDropdown = {
 }
 
 
-export default coreuiPanelTabDropdown;
+export default panelTabDropdown;

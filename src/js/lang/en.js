@@ -1,6 +1,6 @@
 
-import coreuiPanel from "../coreui.panel";
-
-coreuiPanel.lang.en = {
+let langEn = {
     "loading": "Loading...",
 }
+
+export default langEn;

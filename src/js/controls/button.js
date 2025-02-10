@@ -1,11 +1,10 @@
 
 import 'ejs/ejs.min';
-import coreuiPanel         from "../coreui.panel";
-import coreuiPanelTpl      from '../coreui.panel.templates';
-import coreuiPanelUtils    from '../coreui.panel.utils';
-import coreuiPanelElements from "../coreui.panel.elements";
+import panelTpl      from '../panel.tpl';
+import panelUtils    from '../panel.utils';
+import panelElements from "../panel.elements";
 
-coreuiPanel.controls.button = {
+let PanelControlButton = {
 
     _id: null,
     _panel: null,
@@ -29,7 +28,7 @@ coreuiPanel.controls.button = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : coreuiPanelUtils.hashCode();
+            : panelUtils.hashCode();
     },
 
 
@@ -42,7 +41,7 @@ coreuiPanel.controls.button = {
 
         if (typeof this._options.onClick === 'function' || typeof this._options.onClick === 'string') {
 
-            let control = coreuiPanelElements.getControl(this._panel.getId(), this.getId());
+            let control = panelElements.getControl(this._panel.getId(), this.getId());
             $('button', control)
                 .click(function (event) {
                     if (typeof that._options.onClick === 'function') {
@@ -73,16 +72,18 @@ coreuiPanel.controls.button = {
 
         let attributes = [];
 
-        if (coreuiPanelUtils.isObject(this._options.attr)) {
+        if (panelUtils.isObject(this._options.attr)) {
             $.each(this._options.attr, function (name, value) {
                 attributes.push(name + '="' + value + '"');
             });
         }
 
 
-        return ejs.render(coreuiPanelTpl['controls/button.html'], {
+        return ejs.render(panelTpl['controls/button.html'], {
             content: this._options.content,
             attr: attributes.length > 0 ? (' ' + attributes.join(' ')) : '',
         });
     }
 }
+
+export default PanelControlButton;

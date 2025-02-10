@@ -1,11 +1,10 @@
 
 import 'ejs/ejs.min';
-import coreuiPanel         from "../coreui.panel";
-import coreuiPanelTpl      from '../coreui.panel.templates';
-import coreuiPanelUtils    from '../coreui.panel.utils';
-import coreuiPanelElements from "../coreui.panel.elements";
+import panelTpl      from '../panel.tpl';
+import panelUtils    from '../panel.utils';
+import panelElements from "../panel.elements";
 
-coreuiPanel.controls.dropdown = {
+let PanelControlDropdown = {
 
     _id: null,
     _panel: null,
@@ -31,15 +30,15 @@ coreuiPanel.controls.dropdown = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : coreuiPanelUtils.hashCode();
+            : panelUtils.hashCode();
 
         if (Array.isArray(this._options.items)) {
             $.each(this._options.items, function (key, item) {
-                if (coreuiPanelUtils.isObject(item) && typeof item.type === 'string') {
+                if (panelUtils.isObject(item) && typeof item.type === 'string') {
 
                     item.id = item.hasOwnProperty('id') && typeof item.id === 'string' && item.id
                         ? item.id
-                        : coreuiPanelUtils.hashCode();
+                        : panelUtils.hashCode();
                 }
             });
         }
@@ -65,7 +64,7 @@ coreuiPanel.controls.dropdown = {
 
         if (Array.isArray(options.items)) {
             $.each(options.items, function (key, item) {
-                if (coreuiPanelUtils.isObject(item) && typeof item.type === 'string') {
+                if (panelUtils.isObject(item) && typeof item.type === 'string') {
 
                     if (item.type === 'button') {
                         if (item.hasOwnProperty('content') &&
@@ -74,7 +73,7 @@ coreuiPanel.controls.dropdown = {
                             typeof item.content === 'string'
                         ) {
 
-                            let control = coreuiPanelElements.getControl(that._panel.getId(), that.getId());
+                            let control = panelElements.getControl(that._panel.getId(), that.getId());
 
                             $('button#btn-dropdown-' + item.id, control)
                                 .click(function (event) {
@@ -115,7 +114,7 @@ coreuiPanel.controls.dropdown = {
 
         if (Array.isArray(options.items)) {
             $.each(options.items, function (key, item) {
-                if (coreuiPanelUtils.isObject(item) && typeof item.type === 'string') {
+                if (panelUtils.isObject(item) && typeof item.type === 'string') {
 
                     if (item.type === 'link') {
                         if (item.hasOwnProperty('link') &&
@@ -153,7 +152,7 @@ coreuiPanel.controls.dropdown = {
             });
         }
 
-        if (coreuiPanelUtils.isObject(options.attr)) {
+        if (panelUtils.isObject(options.attr)) {
             if (options.attr.hasOwnProperty('type')) {
                 delete options.attr.type;
             }
@@ -169,7 +168,7 @@ coreuiPanel.controls.dropdown = {
             });
         }
 
-        return ejs.render(coreuiPanelTpl['controls/dropdown.html'], {
+        return ejs.render(panelTpl['controls/dropdown.html'], {
             content: options.content,
             position: options.hasOwnProperty('position') && typeof options.position === 'string' ? options.position : 'end',
             attr: attributes.length > 0 ? (' ' + attributes.join(' ')) : '',
@@ -177,3 +176,5 @@ coreuiPanel.controls.dropdown = {
         });
     }
 }
+
+export default PanelControlDropdown;

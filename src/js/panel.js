@@ -1,8 +1,8 @@
 
-import coreuiPanelInstance from './coreui.panel.instance';
+import PanelInstance from './panel.instance';
 
 
-let coreuiPanel = {
+let Panel = {
 
     lang: {},
     controls: {},
@@ -15,11 +15,9 @@ let coreuiPanel = {
 
     /**
      * @param {object} options
-     * @returns {coreuiPanelInstance}
+     * @returns {PanelInstance}
      */
     create: function (options) {
-
-        let instance = $.extend(true, {}, coreuiPanelInstance);
 
         if ( ! options.hasOwnProperty('lang')) {
             options.lang = this.getSetting('lang');
@@ -30,7 +28,7 @@ let coreuiPanel = {
             ? $.extend(true, {}, langList, options.langList)
             : langList;
 
-        instance._init(this, options instanceof Object ? options : {});
+        let instance = new PanelInstance(this, options instanceof Object ? options : {});
 
         let panelId = instance.getId();
         this._instances[panelId] = instance;
@@ -41,7 +39,7 @@ let coreuiPanel = {
 
     /**
      * @param {string} id
-     * @returns {coreuiPanelInstance|null}
+     * @returns {PanelInstance|null}
      */
     get: function (id) {
 
@@ -84,4 +82,4 @@ let coreuiPanel = {
     }
 }
 
-export default coreuiPanel;
+export default Panel;

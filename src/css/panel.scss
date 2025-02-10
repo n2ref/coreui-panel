@@ -1,0 +1,31 @@
+
+.coreui-panel {
+
+  &.coreui-panel__content-fit {
+    min-width: fit-content;
+  }
+  &.coreui-panel__content-min {
+    min-width: min-content;
+  }
+  &.coreui-panel__content-max {
+    min-width: max-content;
+  }
+
+  .right-tabs .nav-link {
+    text-align: left;
+  }
+
+  .coreui-panel-lock {
+    z-index: 2;
+
+    .coreui-panel-message {
+      width: 200px;
+    }
+    .spinner-border {
+      --bs-spinner-width: 1.5rem;
+      --bs-spinner-height: 1.5rem;
+    }
+  }
+
+  @import "bootstrap-5-vertical-tabs/dist/b5vtabs.min";
+}
