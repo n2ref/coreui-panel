@@ -2209,10 +2209,9 @@
       key: "getTabById",
       value: function getTabById(tabId) {
         var result = null;
-        $.each(this._tabs, function (key, tab) {
+        this._tabs.map(function (tab) {
           if (tab.hasOwnProperty('getId') && typeof tab.getId === 'function' && tab.getId() === tabId) {
             result = tab;
-            return false;
           }
         });
         return result;
@@ -2227,10 +2226,9 @@
       key: "getControlById",
       value: function getControlById(id) {
         var result = null;
-        $.each(this._controls, function (key, control) {
+        this._controls.map(function (control) {
           if (control.hasOwnProperty('getId') && typeof control.getId === 'function' && control.getId() === id) {
             result = control;
-            return false;
           }
         });
         return result;
@@ -2243,13 +2241,17 @@
     }, {
       key: "setContent",
       value: function setContent(content) {
-        var contents = panelPrivate.renderContents(this, content);
         var container = panelElements.getContent(this.getId());
-        container.html('');
-        $.each(contents, function (key, content) {
-          container.append(content);
-        });
-        panelPrivate.trigger(this, 'content_show');
+        if (container[0]) {
+          var contents = panelPrivate.renderContents(this, content);
+          container.html('');
+          contents.map(function (content) {
+            container.append(content);
+          });
+          panelPrivate.trigger(this, 'content_show');
+        } else {
+          this._options.content = content;
+        }
       }
 
       /**
@@ -2305,7 +2307,7 @@
             width: tabsWidth
           }
         }));
-        $.each(this._controls, function (key, control) {
+        this._controls.map(function (control) {
           panelElement.find('.coreui-panel-controls').append(panelPrivate.renderControl(that, control));
         });
         if (this._options.contentUrl) {
@@ -2314,7 +2316,7 @@
           });
         } else {
           var renderContents = panelPrivate.renderContents(this, this._options.content);
-          $.each(renderContents, function (key, content) {
+          renderContents.map(function (content) {
             panelElement.find('.coreui-panel-content').append(content);
           });
         }

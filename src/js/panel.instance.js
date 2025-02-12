@@ -1,9 +1,9 @@
 
 import 'ejs/ejs.min';
-import panelUtils    from './panel.utils';
-import panelPrivate  from './panel.private';
-import panelTpl      from './panel.tpl';
-import panelElements from './panel.elements';
+import PanelUtils    from './panel.utils';
+import PanelPrivate  from './panel.private';
+import PanelTpl      from './panel.tpl';
+import PanelElements from './panel.elements';
 
 
 class PanelInstance {
@@ -44,7 +44,7 @@ class PanelInstance {
         this._options = $.extend(true, {}, this._options, options);
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : panelUtils.hashCode();
+            : PanelUtils.hashCode();
 
 
         // Инициализация контролов
@@ -52,17 +52,17 @@ class PanelInstance {
             Array.isArray(this._options.controls) &&
             this._options.controls.length > 0
         ) {
-            panelPrivate.initControls(panelWrapper, this, this._options.controls);
+            PanelPrivate.initControls(panelWrapper, this, this._options.controls);
         }
 
         // Инициализация табов
         if (this._options.hasOwnProperty('tabs') &&
-            panelUtils.isObject(this._options.tabs) &&
+            PanelUtils.isObject(this._options.tabs) &&
             this._options.tabs.hasOwnProperty('items') &&
             Array.isArray(this._options.tabs.items) &&
             this._options.tabs.items.length > 0
         ) {
-            panelPrivate.initTabs(this, this._options.tabs.items);
+            PanelPrivate.initTabs(this, this._options.tabs.items);
         }
     }
 
@@ -95,10 +95,10 @@ class PanelInstance {
             }
         });
 
-        panelPrivate.trigger(this, 'panel_show');
+        PanelPrivate.trigger(this, 'panel_show');
 
         if (this._options.content !== null) {
-            panelPrivate.trigger(this, 'content_show');
+            PanelPrivate.trigger(this, 'content_show');
         }
     }
 
@@ -128,10 +128,10 @@ class PanelInstance {
      */
     lock(text) {
 
-        let container = panelElements.getPanel(this.getId());
+        let container = PanelElements.getPanel(this.getId());
 
         if (container[0] && ! container.find('.coreui-panel-lock')[0]) {
-            let html = ejs.render(panelTpl['loader.html'], {
+            let html = ejs.render(PanelTpl['loader.html'], {
                 loading: typeof text === 'string' ? text : this.getLang().loading
             });
 
@@ -145,7 +145,7 @@ class PanelInstance {
      */
     unlock() {
 
-        panelElements.getLock(this.getId()).hide(50, function () {
+        PanelElements.getLock(this.getId()).hide(50, function () {
             $(this).remove()
         });
     }
@@ -170,19 +170,19 @@ class PanelInstance {
             url: url,
             method: 'get',
             beforeSend: function(xhr) {
-                panelPrivate.trigger(that, 'load_start', that, [ xhr ]);
+                PanelPrivate.trigger(that, 'load_start', that, [ xhr ]);
             },
             success: function (result) {
-                panelPrivate.trigger(that, 'load_success', that, [ result ]);
+                PanelPrivate.trigger(that, 'load_success', that, [ result ]);
                 that.setContent(result);
             },
             error: function(xhr, textStatus, errorThrown) {
-                panelPrivate.trigger(that, 'load_error', that, [ xhr, textStatus, errorThrown ]);
+                PanelPrivate.trigger(that, 'load_error', that, [ xhr, textStatus, errorThrown ]);
                 that.setContent('');
             },
             complete: function(xhr, textStatus) {
                 that.unlock();
-                panelPrivate.trigger(that, 'load_end', that, [ xhr, textStatus ]);
+                PanelPrivate.trigger(that, 'load_end', that, [ xhr, textStatus ]);
             },
         });
     }
@@ -206,13 +206,12 @@ class PanelInstance {
 
         let result = null;
 
-        $.each(this._tabs, function (key, tab) {
+        this._tabs.map(function (tab) {
             if (tab.hasOwnProperty('getId') &&
                 typeof tab.getId === 'function' &&
                 tab.getId() === tabId
             ) {
                 result = tab;
-                return false;
             }
         });
 
@@ -229,13 +228,12 @@ class PanelInstance {
 
         let result = null;
 
-        $.each(this._controls, function (key, control) {
+        this._controls.map(function (control) {
             if (control.hasOwnProperty('getId') &&
                 typeof control.getId === 'function' &&
                 control.getId() === id
             ) {
                 result = control;
-                return false;
             }
         });
 
@@ -249,16 +247,22 @@ class PanelInstance {
      */
     setContent(content) {
 
-        let contents  = panelPrivate.renderContents(this, content);
-        let container = panelElements.getContent(this.getId());
+        let container = PanelElements.getContent(this.getId());
 
-        container.html('');
+        if (container[0]) {
+            let contents  = PanelPrivate.renderContents(this, content);
 
-        $.each(contents, function (key, content) {
-            container.append(content);
-        });
+            container.html('');
 
-        panelPrivate.trigger(this, 'content_show');
+            contents.map(function (content) {
+                container.append(content);
+            });
+
+            PanelPrivate.trigger(this, 'content_show');
+
+        } else {
+            this._options.content = content;
+        }
     }
 
 
@@ -278,12 +282,12 @@ class PanelInstance {
 
 
         if (this._options.hasOwnProperty('tabs') &&
-            panelUtils.isObject(this._options.tabs) &&
+            PanelUtils.isObject(this._options.tabs) &&
             this._options.tabs.hasOwnProperty('items') &&
             Array.isArray(this._options.tabs.items) &&
             this._options.tabs.items.length > 0
         ) {
-            tabsContent = panelPrivate.renderTabs(this, this._options.tabs);
+            tabsContent = PanelPrivate.renderTabs(this, this._options.tabs);
 
             tabsPosition = this._options.tabs.hasOwnProperty('position') && typeof this._options.tabs.position === 'string'
                 ? this._options.tabs.position
@@ -319,7 +323,7 @@ class PanelInstance {
 
 
         let panelElement = $(
-            ejs.render(panelTpl['container.html'], {
+            ejs.render(PanelTpl['container.html'], {
                 issetControls: !! this._controls.length,
                 id: this.getId(),
                 title: this._options.title,
@@ -334,8 +338,10 @@ class PanelInstance {
             })
         );
 
-        $.each(this._controls, function (key, control) {
-            panelElement.find('.coreui-panel-controls').append(panelPrivate.renderControl(that, control));
+        this._controls.map(function (control) {
+            panelElement.find('.coreui-panel-controls').append(
+                PanelPrivate.renderControl(that, control)
+            );
         });
 
 
@@ -345,9 +351,9 @@ class PanelInstance {
             });
 
         } else {
-            let renderContents = panelPrivate.renderContents(this, this._options.content);
+            let renderContents = PanelPrivate.renderContents(this, this._options.content);
 
-            $.each(renderContents, function (key, content) {
+            renderContents.map(function (content) {
                 panelElement.find('.coreui-panel-content').append(content);
             });
         }
