@@ -125,7 +125,7 @@ gulp.task('build_js_min', function() {
     return rollup({
         input: conf.js.main,
         output: {
-            sourcemap: false,
+            sourcemap: true,
             format: 'umd',
             name: "CoreUI.panel"
         },

@@ -9,7 +9,7 @@ let Panel = {
 
     _instances: {},
     _settings: {
-        lang: 'ru',
+        lang: 'en',
     },
 
 
