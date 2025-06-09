@@ -4,7 +4,7 @@
         <%- content %>
     </button>
     <ul class="dropdown-menu dropdown-menu-<%= position %>">
-        <% $.each(items, function(key, item) { %>
+        <% items.map(function(item) { %>
             <% if (item.type === 'link') { %>
             <li><a class="dropdown-item" href="<%= item.link %>"><%- item.content %></a></li>
 

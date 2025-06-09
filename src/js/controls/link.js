@@ -1,8 +1,8 @@
 
 import 'ejs/ejs.min';
-import panelTpl      from '../panel.tpl';
-import panelUtils    from '../panel.utils';
-import panelElements from "../panel.elements";
+import Tpl      from '../tpl';
+import Utils    from '../utils';
+import Elements from "../elements";
 
 let PanelControlLink = {
 
@@ -29,7 +29,7 @@ let PanelControlLink = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : panelUtils.hashCode();
+            : Utils.hashCode();
     },
 
 
@@ -42,14 +42,18 @@ let PanelControlLink = {
 
         if (typeof this._options.onClick === 'function' || typeof this._options.onClick === 'string') {
 
-            let control = panelElements.getControl(this._panel.getId(), this.getId());
+            let control = Elements.getControl(this._panel.getId(), this.getId());
             $('a', control)
                 .click(function (event) {
+                    let prop = {
+                        event: event,
+                        panel: that._panel
+                    }
                     if (typeof that._options.onClick === 'function') {
-                        return that._options.onClick(event, that._panel);
+                        return that._options.onClick(prop);
 
                     } else if (typeof that._options.onClick === 'string') {
-                        return (new Function(that._options.onClick))();
+                        return (new Function(that._options.onClick))(prop);
                     }
                 });
         }
@@ -74,12 +78,12 @@ let PanelControlLink = {
         let attributes = [];
 
         if (typeof this._options.attr === 'object') {
-            $.each(this._options.attr, function (name, value) {
+            for (const [name, value] of Object.entries(this._options.attr)) {
                 attributes.push(name + '="' + value + '"');
-            });
+            }
         }
 
-        return ejs.render(panelTpl['controls/link.html'], {
+        return ejs.render(Tpl['controls/link.html'], {
             href: this._options.href,
             content: this._options.content,
             attr: attributes.length > 0 ? (' ' + attributes.join(' ')) : '',

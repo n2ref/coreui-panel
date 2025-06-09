@@ -1,8 +1,8 @@
 
 import 'ejs/ejs.min';
-import panelTpl      from '../panel.tpl';
-import panelUtils    from '../panel.utils';
-import panelElements from "../panel.elements";
+import Tpl      from '../tpl';
+import Utils    from '../utils';
+import Elements from "../elements";
 
 let PanelControlDropdown = {
 
@@ -21,7 +21,7 @@ let PanelControlDropdown = {
 
     /**
      * Инициализация
-     * @param {object} panel
+     * @param {Panel}  panel
      * @param {object} options
      */
     init: function (panel, options) {
@@ -30,15 +30,15 @@ let PanelControlDropdown = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : panelUtils.hashCode();
+            : Utils.hashCode();
 
         if (Array.isArray(this._options.items)) {
-            $.each(this._options.items, function (key, item) {
-                if (panelUtils.isObject(item) && typeof item.type === 'string') {
+            this._options.items.map(function (item) {
+                if (Utils.isObject(item) && typeof item.type === 'string') {
 
                     item.id = item.hasOwnProperty('id') && typeof item.id === 'string' && item.id
                         ? item.id
-                        : panelUtils.hashCode();
+                        : Utils.hashCode();
                 }
             });
         }
@@ -63,8 +63,8 @@ let PanelControlDropdown = {
         let options = this.getOptions();
 
         if (Array.isArray(options.items)) {
-            $.each(options.items, function (key, item) {
-                if (panelUtils.isObject(item) && typeof item.type === 'string') {
+            options.items.map(function (item) {
+                if (Utils.isObject(item) && typeof item.type === 'string') {
 
                     if (item.type === 'button') {
                         if (item.hasOwnProperty('content') &&
@@ -73,15 +73,19 @@ let PanelControlDropdown = {
                             typeof item.content === 'string'
                         ) {
 
-                            let control = panelElements.getControl(that._panel.getId(), that.getId());
+                            let control = Elements.getControl(that._panel.getId(), that.getId());
 
                             $('button#btn-dropdown-' + item.id, control)
                                 .click(function (event) {
+                                    let prop = {
+                                        event: event,
+                                        panel: that._panel
+                                    }
                                     if (typeof item.onClick === 'function') {
-                                        item.onClick(event, that._panel);
+                                        return item.onClick(prop);
 
                                     } else if (typeof item.onClick === 'string') {
-                                        (new Function(item.onClick))();
+                                        return (new Function(item.onClick))(prop);
                                     }
                                 });
                         }
@@ -111,10 +115,9 @@ let PanelControlDropdown = {
         let items      = [];
         let attributes = [];
 
-
         if (Array.isArray(options.items)) {
-            $.each(options.items, function (key, item) {
-                if (panelUtils.isObject(item) && typeof item.type === 'string') {
+            options.items.map(function (item) {
+                if (Utils.isObject(item) && typeof item.type === 'string') {
 
                     if (item.type === 'link') {
                         if (item.hasOwnProperty('link') &&
@@ -152,7 +155,7 @@ let PanelControlDropdown = {
             });
         }
 
-        if (panelUtils.isObject(options.attr)) {
+        if (Utils.isObject(options.attr)) {
             if (options.attr.hasOwnProperty('type')) {
                 delete options.attr.type;
             }
@@ -163,12 +166,12 @@ let PanelControlDropdown = {
                 delete options.attr['data-bs-toggle'];
             }
 
-            $.each(options.attr, function (name, value) {
+            for (const [name, value] of Object.entries(options.attr)) {
                 attributes.push(name + '="' + value + '"');
-            });
+            }
         }
 
-        return ejs.render(panelTpl['controls/dropdown.html'], {
+        return ejs.render(Tpl['controls/dropdown.html'], {
             content: options.content,
             position: options.hasOwnProperty('position') && typeof options.position === 'string' ? options.position : 'end',
             attr: attributes.length > 0 ? (' ' + attributes.join(' ')) : '',

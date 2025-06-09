@@ -1,7 +1,7 @@
-import panelUtils from '../panel.utils';
-import panelTpl   from "../panel.tpl";
+import Utils from '../../utils';
+import Tpl   from "../../tpl";
 
-let panelTabDropdownDivider = {
+let Divider = {
 
     _id: null,
     _panel: null,
@@ -26,7 +26,7 @@ let panelTabDropdownDivider = {
         this._dropdown = dropdown;
         this._id       = this._options.hasOwnProperty('id') && typeof this._options.id == 'string' && this._options.id
             ? this._options.id
-            : panelUtils.hashCode();
+            : Utils.hashCode();
     },
 
 
@@ -45,9 +45,9 @@ let panelTabDropdownDivider = {
      */
     render: function () {
 
-        return panelTpl['tabs/tab-dropdown-divider.html'];
+        return Tpl['tabs/tab-dropdown-divider.html'];
     }
 }
 
 
-export default panelTabDropdownDivider;
+export default Divider;

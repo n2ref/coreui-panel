@@ -1,8 +1,8 @@
 
 import 'ejs/ejs.min';
-import panelTpl      from '../panel.tpl';
-import panelUtils    from '../panel.utils';
-import panelElements from "../panel.elements";
+import Tpl      from '../tpl';
+import Utils    from '../utils';
+import Elements from "../elements";
 
 let PanelControlButton = {
 
@@ -19,8 +19,8 @@ let PanelControlButton = {
 
     /**
      * Инициализация
-     * @param {object} panel
-     * @param {object}                options
+     * @param {Panel}  panel
+     * @param {object} options
      */
     init: function (panel, options) {
 
@@ -28,7 +28,7 @@ let PanelControlButton = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : panelUtils.hashCode();
+            : Utils.hashCode();
     },
 
 
@@ -41,14 +41,19 @@ let PanelControlButton = {
 
         if (typeof this._options.onClick === 'function' || typeof this._options.onClick === 'string') {
 
-            let control = panelElements.getControl(this._panel.getId(), this.getId());
+
+            let control = Elements.getControl(this._panel.getId(), this.getId());
             $('button', control)
                 .click(function (event) {
+                    let prop = {
+                        event: event,
+                        panel: that._panel
+                    }
                     if (typeof that._options.onClick === 'function') {
-                        that._options.onClick(event, that._panel);
+                        return that._options.onClick(prop);
 
                     } else if (typeof that._options.onClick === 'string') {
-                        (new Function(that._options.onClick))();
+                        return (new Function(that._options.onClick))(prop);
                     }
                 });
         }
@@ -72,14 +77,14 @@ let PanelControlButton = {
 
         let attributes = [];
 
-        if (panelUtils.isObject(this._options.attr)) {
-            $.each(this._options.attr, function (name, value) {
+        if (Utils.isObject(this._options.attr)) {
+            for (const [name, value] of Object.entries(this._options.attr)) {
                 attributes.push(name + '="' + value + '"');
-            });
+            }
         }
 
 
-        return ejs.render(panelTpl['controls/button.html'], {
+        return ejs.render(Tpl['controls/button.html'], {
             content: this._options.content,
             attr: attributes.length > 0 ? (' ' + attributes.join(' ')) : '',
         });

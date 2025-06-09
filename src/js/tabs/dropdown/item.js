@@ -1,9 +1,9 @@
-import panelUtils    from '../panel.utils';
-import panelPrivate  from '../panel.private';
-import panelTpl      from "../panel.tpl";
-import panelElements from "../panel.elements";
+import Utils    from '../../utils';
+import Private  from '../../private';
+import Tpl      from "../../tpl";
+import Elements from "../../elements";
 
-let panelTabDropdownItem = {
+let item = {
 
     _id: null,
     _panel: null,
@@ -35,7 +35,7 @@ let panelTabDropdownItem = {
         this._dropdown = dropdown;
         this._id       = this._options.hasOwnProperty('id') && ['string', 'number'].indexOf(typeof this._options.id) >= 0 && this._options.id
             ? this._options.id
-            : panelUtils.hashCode();
+            : Utils.hashCode();
     },
 
 
@@ -63,20 +63,20 @@ let panelTabDropdownItem = {
      */
     setActive: function () {
 
-        let tabItemElement = panelElements.getTabItemContainer(this._panel.getId(), this.getId());
+        let tabItemElement = Elements.getTabItemContainer(this._panel.getId(), this.getId());
 
         if (tabItemElement[0]) {
-            let tabTabsElement = panelElements.getTabsContainer(this._panel.getId());
+            let tabTabsElement = Elements.getTabsContainer(this._panel.getId());
             tabTabsElement.find('.nav-link').removeClass('active');
             tabTabsElement.find('.nav-link.dropdown-toggle').removeClass('active');
             tabTabsElement.find('.nav-link.dropdown-toggle .dropdown-item').removeClass('active');
 
-            let tabElement = panelElements.getTabContainer(this._panel.getId(), this._dropdown.getId());
+            let tabElement = Elements.getTabContainer(this._panel.getId(), this._dropdown.getId());
             tabElement.find('> a').addClass('active');
 
             tabItemElement.find('> a').addClass('active');
 
-            panelPrivate.trigger(this._panel, 'tab_click', this._panel, [this]);
+            Private.trigger(this._panel, 'tab_click', this._panel, [this]);
         }
     },
 
@@ -91,7 +91,7 @@ let panelTabDropdownItem = {
             return;
         }
 
-        let tabTitleElement = panelElements.getTabItemTitle(this._panel.getId(), this.getId());
+        let tabTitleElement = Elements.getTabItemTitle(this._panel.getId(), this.getId());
         tabTitleElement.text(title);
     },
 
@@ -102,7 +102,7 @@ let panelTabDropdownItem = {
      */
     setCount: function (count) {
 
-        let tabCountElement = panelElements.getTabItemCount(this._panel.getId(), this.getId());
+        let tabCountElement = Elements.getTabItemCount(this._panel.getId(), this.getId());
 
         if (['string', 'number'].indexOf(typeof count) < 0 || count.toString().length === 0) {
             tabCountElement.remove();
@@ -112,7 +112,7 @@ let panelTabDropdownItem = {
                 tabCountElement.text('(' + count + ')');
 
             } else {
-                let tabTitleElement = panelElements.getTabItemTitle(this._panel.getId(), this.getId());
+                let tabTitleElement = Elements.getTabItemTitle(this._panel.getId(), this.getId());
                 tabTitleElement.after('(' + count + ')');
             }
         }
@@ -138,11 +138,11 @@ let panelTabDropdownItem = {
 
         let url = '';
 
-        if (options.hasOwnProperty('url') && typeof options.url == 'string' && options.url) {
-            url = options.url;
+        if (options.hasOwnProperty('url') && typeof options._url == 'string' && options._url) {
+            url = options._url;
 
-        } else if (options.hasOwnProperty('urlWindow') && typeof options.urlWindow == 'string' && options.urlWindow) {
-            url = options.urlWindow;
+        } else if (options.hasOwnProperty('urlWindow') && typeof options._urlWindow == 'string' && options._urlWindow) {
+            url = options._urlWindow;
 
         } else {
             url = '#';
@@ -159,12 +159,12 @@ let panelTabDropdownItem = {
             : false;
 
         let count = options.hasOwnProperty('count') &&
-                    ['string', 'number'].indexOf(typeof options.count) >= 0 &&
-                    options.count.toString().length > 0
-            ? options.count
+                    ['string', 'number'].indexOf(typeof options._count) >= 0 &&
+                    options._count.toString().length > 0
+            ? options._count
             : null;
 
-        return ejs.render(panelTpl['tabs/tab-dropdown-item.html'], {
+        return ejs.render(Tpl['tabs/tab-dropdown-item.html'], {
             item: {
                 id: this.getId(),
                 type: 'item',
@@ -179,4 +179,4 @@ let panelTabDropdownItem = {
 }
 
 
-export default panelTabDropdownItem;
+export default item;

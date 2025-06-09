@@ -1,9 +1,9 @@
-import panelUtils    from '../panel.utils';
-import panelPrivate  from '../panel.private';
-import panelTpl      from "../panel.tpl";
-import panelElements from "../panel.elements";
+import Utils    from '../utils';
+import Private  from '../private';
+import Tpl      from "../tpl";
+import Elements from "../elements";
 
-let panelTab = {
+let Tab = {
 
     _id: null,
     _panel: null,
@@ -35,7 +35,7 @@ let panelTab = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id == 'string' && this._options.id
             ? this._options.id
-            : panelUtils.hashCode();
+            : Utils.hashCode();
     },
 
 
@@ -63,17 +63,17 @@ let panelTab = {
      */
     setActive: function () {
 
-        let tabTabElement = panelElements.getTabContainer(this._panel.getId(), this.getId());
+        let tabTabElement = Elements.getTabContainer(this._panel.getId(), this.getId());
 
         if (tabTabElement[0]) {
-            let tabTabsElement = panelElements.getTabsContainer(this._panel.getId());
+            let tabTabsElement = Elements.getTabsContainer(this._panel.getId());
             tabTabsElement.find('.nav-link').removeClass('active');
             tabTabsElement.find('.nav-link.dropdown-toggle').removeClass('active');
             tabTabsElement.find('.nav-link.dropdown-toggle .dropdown-item').removeClass('active');
 
             tabTabElement.find('> a').addClass('active');
 
-            panelPrivate.trigger(this._panel, 'tab_click', this._panel, [this]);
+            Private.trigger(this._panel, 'tab_click', this._panel, [this]);
         }
     },
 
@@ -88,7 +88,7 @@ let panelTab = {
             return;
         }
 
-        let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
+        let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
         tabTitleElement.text(title);
     },
 
@@ -99,7 +99,7 @@ let panelTab = {
      */
     setCount: function (count) {
 
-        let tabCountElement = panelElements.getTabCount(this._panel.getId(), this.getId());
+        let tabCountElement = Elements.getTabCount(this._panel.getId(), this.getId());
 
         if (['string', 'number'].indexOf(typeof count) < 0 || count.toString().length === 0) {
             tabCountElement.remove();
@@ -109,7 +109,7 @@ let panelTab = {
                 tabCountElement.text(' (' + count + ')');
 
             } else {
-                let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
+                let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
                 tabTitleElement.after('<span class="coreui-panel__tab-count"> (' + count + ')>');
             }
         }
@@ -122,16 +122,16 @@ let panelTab = {
      */
     setBadge: function (badge) {
 
-        let badgeRender = panelPrivate.renderBadge(badge);
+        let badgeRender = Private.renderBadge(badge);
 
         if (badgeRender) {
-            let tabBadgeElement = panelElements.getTabBadge(this._panel.getId(), this.getId());
+            let tabBadgeElement = Elements.getTabBadge(this._panel.getId(), this.getId());
 
             if (tabBadgeElement[0]) {
                 tabBadgeElement.replaceWith(badgeRender);
 
             } else {
-                let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
+                let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
                 tabTitleElement.after(badgeRender);
             }
         }
@@ -148,10 +148,10 @@ let panelTab = {
 
         this._panel.on('panel_show', function () {
 
-            let tabsContainerElement = panelElements.getTabContainer(that._panel.getId(), that.getId())
+            let tabsContainerElement = Elements.getTabContainer(that._panel.getId(), that.getId())
 
             $('.nav-link', tabsContainerElement).click(function (event) {
-                panelPrivate.trigger(that._panel, 'tab_click', that, [that, event]);
+                Private.trigger(that._panel, 'tab_click', that, [that, event]);
 
                 if (options.url && options.url !== '#') {
                     location.href = options.url;
@@ -164,9 +164,9 @@ let panelTab = {
 
 
             let count = options.hasOwnProperty('count') &&
-                        ['string', 'number'].indexOf(typeof options.count) >= 0 &&
-                        options.count.toString().length > 0
-                ? options.count
+                        ['string', 'number'].indexOf(typeof options._count) >= 0 &&
+                        options._count.toString().length > 0
+                ? options._count
                 : null;
 
             let urlCount = options.hasOwnProperty('urlCount') && typeof options.urlCount == 'string' && options.urlCount
@@ -186,12 +186,12 @@ let panelTab = {
                                 ? JSON.parse(result)
                                 : result;
 
-                            if (panelUtils.isObject(response) &&
+                            if (Utils.isObject(response) &&
                                 response.hasOwnProperty('count') &&
-                                ['string', 'number'].indexOf(typeof response.count) >= 0 &&
-                                response.count.toString().length > 0
+                                ['string', 'number'].indexOf(typeof response._count) >= 0 &&
+                                response._count.toString().length > 0
                             ) {
-                                that.setCount(response.count);
+                                that.setCount(response._count);
 
                             } else {
                                 that.setCount(null);
@@ -233,9 +233,9 @@ let panelTab = {
                             ? JSON.parse(result)
                             : result;
 
-                        if (panelUtils.isObject(response) &&
+                        if (Utils.isObject(response) &&
                             response.hasOwnProperty('badge') &&
-                            panelUtils.isObject(response.badge)
+                            Utils.isObject(response.badge)
                         ) {
                             that.setBadge(response.badge);
                         }
@@ -284,11 +284,11 @@ let panelTab = {
             : null;
 
         let badge = options.hasOwnProperty('badge')
-            ? panelPrivate.renderBadge(options.badge)
+            ? Private.renderBadge(options.badge)
             : null;
 
 
-        return ejs.render(panelTpl['tabs/tab.html'], {
+        return ejs.render(Tpl['tabs/tab.html'], {
             tab: {
                 id:       this.getId(),
                 title:    title,
@@ -303,4 +303,4 @@ let panelTab = {
 }
 
 
-export default panelTab;
+export default Tab;

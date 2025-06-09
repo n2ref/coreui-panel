@@ -1,5 +1,5 @@
 
-let panelUtils = {
+let Utils = {
 
 
     /**
@@ -45,4 +45,4 @@ let panelUtils = {
     }
 }
 
-export default panelUtils;
+export default Utils;

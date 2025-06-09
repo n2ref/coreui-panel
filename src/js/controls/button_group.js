@@ -1,8 +1,8 @@
 
 import 'ejs/ejs.min';
-import panelTpl      from '../panel.tpl';
-import panelUtils    from '../panel.utils';
-import panelElements from "../panel.elements";
+import Tpl      from '../tpl';
+import Utils    from '../utils';
+import Elements from "../elements";
 
 let PanelControlButtonGroup = {
 
@@ -10,7 +10,7 @@ let PanelControlButtonGroup = {
     _panel: null,
     _options: {
         id: null,
-        type: 'button_group',
+        type: 'buttonGroup',
         content: null,
         onClick: null,
         attr: null
@@ -39,26 +39,26 @@ let PanelControlButtonGroup = {
      */
     init: function (panel, options) {
 
-        this._options = $.extend({}, this._options, options);
         this._panel   = panel;
+        this._options = $.extend({}, this._options, options);
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : panelUtils.hashCode();
+            : Utils.hashCode();
 
 
         if (Array.isArray(this._options.buttons)) {
-            $.each(this._options.buttons, function (key, button) {
-                if (panelUtils.isObject(button) && typeof button.type === 'string') {
+            this._options.buttons.map(function (button) {
+                if (Utils.isObject(button) && typeof button.type === 'string') {
 
-                    button.id = panelUtils.hashCode();
+                    button.id = Utils.hashCode();
 
                     if (button.type === 'dropdown' && Array.isArray(button.items)) {
                         $.each(button.items, function (key, item) {
-                            if (panelUtils.isObject(item) && typeof item.type === 'string') {
+                            if (Utils.isObject(item) && typeof item.type === 'string') {
 
                                 item.id = item.hasOwnProperty('id') && typeof item.id === 'string' && item.id
                                     ? item.id
-                                    : panelUtils.hashCode();
+                                    : Utils.hashCode();
                             }
                         });
                     }
@@ -87,46 +87,50 @@ let PanelControlButtonGroup = {
 
         if (Array.isArray(options.buttons)) {
 
-            let control = panelElements.getControl(this._panel.getId(), this._id);
+            let control = Elements.getControl(this._panel.getId(), this._id);
 
-            $.each(options.buttons, function (key, button) {
-                if (panelUtils.isObject(button) && typeof button.type === 'string') {
+            options.buttons.map(function (button) {
+                if (Utils.isObject(button) && typeof button.type === 'string') {
 
                     if (button.type === 'button') {
-                        if (button.hasOwnProperty('content') &&
-                            button.hasOwnProperty('onClick') &&
-                            ['string', 'function'].indexOf(typeof button.onClick) >= 0 &&
-                            typeof button.content === 'string'
+                        if (button.hasOwnProperty('onClick') &&
+                            ['string', 'function'].indexOf(typeof button.onClick) >= 0
                         ) {
 
                             $('button#btn-' + button.id, control)
                                 .click(function (event) {
+                                    let prop = {
+                                        event: event,
+                                        panel: that._panel,
+                                    }
                                     if (typeof button.onClick === 'function') {
-                                        button.onClick(event, that._panel);
+                                        button.onClick(prop);
 
                                     } else if (typeof button.onClick === 'string') {
-                                        (new Function(button.onClick))();
+                                        (new Function(button.onClick))(prop);
                                     }
                                 });
                         }
 
                     } else if (button.type === 'dropdown' && Array.isArray(button.items)) {
-                        $.each(button.items, function (key, item) {
-                            if (panelUtils.isObject(item) && typeof item.type === 'string') {
+                        button.items.map(function (item) {
+                            if (Utils.isObject(item) && typeof item.type === 'string') {
 
-                                if (item.hasOwnProperty('content') &&
-                                    item.hasOwnProperty('onClick') &&
-                                    ['string', 'function'].indexOf(typeof item.onClick) >= 0 &&
-                                    typeof item.content === 'string'
+                                if (item.hasOwnProperty('onClick') &&
+                                    ['string', 'function'].indexOf(typeof item.onClick) >= 0
                                 ) {
 
                                     $('button#btn-dropdown-' + item.id, control)
                                         .click(function (event) {
+                                            let prop = {
+                                                event: event,
+                                                panel: that._panel,
+                                            }
                                             if (typeof item.onClick === 'function') {
-                                                item.onClick(event, that._panel);
+                                                item.onClick(prop);
 
                                             } else if (typeof item.onClick === 'string') {
-                                                (new Function(item.onClick))();
+                                                (new Function(item.onClick))(prop);
                                             }
                                         });
                                 }
@@ -158,10 +162,10 @@ let PanelControlButtonGroup = {
         let buttons = [];
         let that    = this;
 
-
         if (Array.isArray(options.buttons)) {
-            $.each(options.buttons, function (key, button) {
-                if (panelUtils.isObject(button) && typeof button.type === 'string') {
+
+            options.buttons.map(function (button) {
+                if (Utils.isObject(button) && typeof button.type === 'string') {
 
                     if (button.type === 'link') {
                         if (button.hasOwnProperty('link') &&
@@ -171,7 +175,7 @@ let PanelControlButtonGroup = {
                         ) {
                             let attributes = [];
 
-                            if ( ! panelUtils.isObject(button.attr)) {
+                            if ( ! Utils.isObject(button.attr)) {
                                 button.attr = {};
                             }
 
@@ -203,7 +207,7 @@ let PanelControlButtonGroup = {
                         ) {
                             let attributes = [];
 
-                            if ( ! panelUtils.isObject(button.attr)) {
+                            if ( ! Utils.isObject(button.attr)) {
                                 button.attr = {};
                             }
 
@@ -219,9 +223,9 @@ let PanelControlButtonGroup = {
                                 button.attr.class = that._button.attr.class;
                             }
 
-                            $.each(button.attr, function (name, value) {
+                            for(const [name, value] of Object.entries(button.attr)) {
                                 attributes.push(name + '="' + value + '"');
-                            });
+                            }
 
                             buttons.push({
                                 type: 'button',
@@ -239,8 +243,8 @@ let PanelControlButtonGroup = {
                             let attributes = [];
                             let items      = [];
 
-                            $.each(button.items, function (key, item) {
-                                if (panelUtils.isObject(item) && typeof item.type === 'string') {
+                            button.items.map(function (item) {
+                                if (Utils.isObject(item) && typeof item.type === 'string') {
 
                                     if (item.type === 'link') {
                                         if (item.hasOwnProperty('link') &&
@@ -278,7 +282,7 @@ let PanelControlButtonGroup = {
                             });
 
 
-                            if ( ! panelUtils.isObject(button.attr)) {
+                            if ( ! Utils.isObject(button.attr)) {
                                 button.attr = {};
                             }
 
@@ -291,12 +295,12 @@ let PanelControlButtonGroup = {
                             }
 
                             if ( ! button.attr.hasOwnProperty('class')) {
-                                button.attr.class = that._dropdown.attr.class;
+                                button.attr.class = that.dropdown.attr.class;
                             }
 
-                            $.each(button.attr, function (name, value) {
+                            for(const [name, value] of Object.entries(button.attr)) {
                                 attributes.push(name + '="' + value + '"');
-                            });
+                            }
 
                             buttons.push({
                                 type: 'dropdown',
@@ -312,7 +316,7 @@ let PanelControlButtonGroup = {
         }
 
 
-        return ejs.render(panelTpl['controls/button_group.html'], {
+        return ejs.render(Tpl['controls/button_group.html'], {
             buttons: buttons,
         });
     }

@@ -1,5 +1,5 @@
 
-import Panel from "./js/panel";
+import Controller from "./js/controller";
 
 import PanelControlLink        from "./js/controls/link";
 import PanelControlButton      from "./js/controls/button";
@@ -10,14 +10,14 @@ import PanelControlCustom      from "./js/controls/custom";
 import langEn from "./js/lang/en";
 import langRu from "./js/lang/ru";
 
-Panel.controls.link         = PanelControlLink;
-Panel.controls.button       = PanelControlButton;
-Panel.controls.dropdown     = PanelControlDropdown;
-Panel.controls.button_group = PanelControlButtonGroup;
-Panel.controls.custom       = PanelControlCustom;
+Controller.controls.link        = PanelControlLink;
+Controller.controls.button      = PanelControlButton;
+Controller.controls.dropdown    = PanelControlDropdown;
+Controller.controls.buttonGroup = PanelControlButtonGroup;
+Controller.controls.custom      = PanelControlCustom;
 
-Panel.lang.en = langEn;
-Panel.lang.ru = langRu;
+Controller.lang.en = langEn;
+Controller.lang.ru = langRu;
 
 
-export default Panel;
+export default Controller;

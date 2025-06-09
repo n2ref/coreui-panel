@@ -18,12 +18,11 @@ var conf = {
     dist: "./dist",
     js: {
         fileMin: 'coreui-panel.min.js',
-        file: 'coreui-panel.js',
         main: 'src/main.js',
         src: 'src/js/**/*.js'
     },
     tpl: {
-        file: 'panel.tpl.js',
+        file: 'tpl.js',
         dist: './src/js',
         src: [
             'src/html/**/*.html',
@@ -32,7 +31,6 @@ var conf = {
     },
     css: {
         fileMin: 'coreui-panel.min.css',
-        file: 'coreui-panel.css',
         main: 'src/main.scss',
         src: [
             'src/css/*.scss',
@@ -46,7 +44,7 @@ var conf = {
 
 
 
-gulp.task('build_css_min', function(){
+gulp.task('build_css', function(){
     return gulp.src(conf.css.main)
         .pipe(sourcemaps.init())
         .pipe(sass({includePaths: ['node_modules'], outputStyle: 'compressed'}).on('error', sass.logError))
@@ -55,50 +53,18 @@ gulp.task('build_css_min', function(){
         .pipe(gulp.dest(conf.dist));
 });
 
-gulp.task('build_css_min_fast', function(){
+gulp.task('build_css_fast', function(){
     return gulp.src(conf.css.main)
         .pipe(sass({includePaths: ['node_modules']}).on('error', sass.logError))
         .pipe(concat(conf.css.fileMin))
         .pipe(gulp.dest(conf.dist));
 });
 
-gulp.task('build_css', function(){
-    return gulp.src(conf.css.main)
-        .pipe(sass({includePaths: ['node_modules']}).on('error', sass.logError))
-        .pipe(concat(conf.css.file))
-        .pipe(gulp.dest(conf.dist));
-});
-
-gulp.task('build_js', function() {
+gulp.task('build_js_fast', function() {
     return rollup({
         input: conf.js.main,
         output: {
-            sourcemap: false,
-            format: 'umd',
-            name: "CoreUI.panel"
-        },
-        onwarn: function (log, handler) {
-            if (log.code === 'CIRCULAR_DEPENDENCY') {
-                return; // Ignore circular dependency warnings
-            }
-            handler(log.message);
-        },
-        context: "window",
-        plugins: [
-            nodeResolve(),
-            rollupBabel({babelHelpers: 'bundled'}),
-        ]
-    })
-        .pipe(source(conf.js.file))
-        .pipe(buffer())
-        .pipe(gulp.dest(conf.dist));
-});
-
-gulp.task('build_js_min_fast', function() {
-    return rollup({
-        input: conf.js.main,
-        output: {
-            sourcemap: false,
+            sourcemap: true,
             format: 'umd',
             name: "CoreUI.panel"
         },
@@ -121,7 +87,7 @@ gulp.task('build_js_min_fast', function() {
 });
 
 
-gulp.task('build_js_min', function() {
+gulp.task('build_js', function() {
     return rollup({
         input: conf.js.main,
         output: {
@@ -181,9 +147,9 @@ gulp.task('build_bootstrap', function() {
 
 
 gulp.task('build_watch', function() {
-    gulp.watch(conf.css.src, gulp.series(['build_css_min_fast']));
-    gulp.watch(conf.tpl.src, gulp.series(['build_tpl', 'build_js_min_fast']));
-    gulp.watch(conf.js.src, gulp.parallel(['build_js_min_fast']));
+    gulp.watch(conf.css.src, gulp.series(['build_css_fast']));
+    gulp.watch(conf.tpl.src, gulp.series(['build_tpl', 'build_js_fast']));
+    gulp.watch(conf.js.src, gulp.parallel(['build_js_fast']));
 });
 
-gulp.task("default", gulp.series([ 'build_tpl', 'build_js_min', 'build_js', 'build_css_min', 'build_css']));
+gulp.task("default", gulp.series([ 'build_tpl', 'build_js', 'build_css']));

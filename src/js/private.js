@@ -1,11 +1,11 @@
 
 import 'ejs/ejs.min';
-import panelUtils       from './panel.utils';
-import panelTpl         from "./panel.tpl";
-import panelTab         from "./tabs/panel.tab";
-import panelTabDropdown from "./tabs/panel.tab-dropdown";
+import Utils       from './utils';
+import Tpl         from "./tpl";
+import Tab         from "./tabs/tab";
+import tabDropdown from "./tabs/dropdown";
 
-let panelPrivate = {
+let Private = {
 
 
     /**
@@ -37,21 +37,18 @@ let panelPrivate = {
 
     /**
      * Инициализация контролов и фильтров
-     * @param {object} panelWrapper
-     * @param {object} panel
-     * @param {Array}  controls
+     * @param {Panel} panel
+     * @param {Array} controls
      * @private
      */
-    initControls: function (panelWrapper, panel, controls) {
+    initControls: function (panel, controls) {
 
-        let that = this;
+        controls.map(function (control) {
 
-        $.each(controls, function (key, control) {
+            if (Utils.isObject(control) && typeof control.type === 'string') {
 
-            if (panelUtils.isObject(control) && typeof control.type === 'string') {
-
-                if (panelWrapper.controls.hasOwnProperty(control.type)) {
-                    let instance = $.extend(true, {}, panelWrapper.controls[control.type]);
+                if (panel._controller.controls.hasOwnProperty(control.type)) {
+                    let instance = $.extend(true, {}, panel._controller.controls[control.type]);
                     instance.init(panel, control);
 
                     panel._controls.push(instance);
@@ -69,8 +66,8 @@ let panelPrivate = {
      */
     initTabs: function (panel, tabItems) {
 
-        $.each(tabItems, function (key, tabItem) {
-            if (panelUtils.isObject(tabItem)) {
+        tabItems.map(function (tabItem) {
+            if (Utils.isObject(tabItem)) {
 
                 let instance = null;
                 let tabType  = tabItem.hasOwnProperty('type') && typeof tabItem.type === 'string'
@@ -78,10 +75,10 @@ let panelPrivate = {
                     : 'tab';
 
                 if (tabType === 'tab') {
-                    instance = $.extend(true, {}, panelTab);
+                    instance = $.extend(true, {}, Tab);
 
                 } else if (tabType === 'dropdown') {
-                    instance = $.extend(true, {}, panelTabDropdown);
+                    instance = $.extend(true, {}, tabDropdown);
                 }
 
 
@@ -125,12 +122,12 @@ let panelPrivate = {
         }
 
 
-        $.each(panel._tabs, function (key, tab) {
+        panel._tabs.map(function (tab) {
             tabsContents.push(tab.render());
         });
 
 
-        return ejs.render(panelTpl['tabs.html'], {
+        return ejs.render(Tpl['tabs.html'], {
             classes: classes.join(' '),
             type: tabs.hasOwnProperty('type') && typeof tabs.type === 'string' ? tabs.type : '',
             fill: tabs.hasOwnProperty('fill') && typeof tabs.fill === 'string' ? tabs.fill : '',
@@ -148,9 +145,9 @@ let panelPrivate = {
      */
     renderControl: function (panel, control) {
 
-        if (panelUtils.isObject(control)) {
+        if (Utils.isObject(control)) {
             let controlElement = $(
-                ejs.render(panelTpl['panel-control.html'], {
+                ejs.render(Tpl['panel-control.html'], {
                     id: control.getId()
                 })
             );
@@ -206,7 +203,7 @@ let panelPrivate = {
                     let name = content[i].component.split('.')[1];
 
                     if (CoreUI.hasOwnProperty(name) &&
-                        panelUtils.isObject(CoreUI[name])
+                        Utils.isObject(CoreUI[name])
                     ) {
                         let instance = CoreUI[name].create(content[i]);
                         result.push(instance.render());
@@ -232,7 +229,7 @@ let panelPrivate = {
      */
     renderBadge: function (badge) {
 
-        if ( ! panelUtils.isObject(badge) ||
+        if ( ! Utils.isObject(badge) ||
              ! badge.hasOwnProperty('text') ||
             ['string', 'number'].indexOf(typeof badge.text) < 0
         ) {
@@ -249,20 +246,20 @@ let panelPrivate = {
             ? 'rounded-pill bg-' + type
             : 'rounded-circle p-1 bg-' + type;
 
-        if (badge.hasOwnProperty('attr') && panelUtils.isObject(badge.attr)) {
+        if (badge.hasOwnProperty('attr') && Utils.isObject(badge.attr)) {
             if (badge.attr.hasOwnProperty('class') && typeof badge.attr.class === 'string') {
                 classes += ' ' + badge.attr.class;
                 delete badge.attr.class;
             }
 
-            $.each(badge.attr, function (name, value) {
+            for (const [name, value] of Object.entries(badge.attr)) {
                 if (typeof name === 'string' && ['string', 'number'].indexOf(typeof value) >= 0) {
                     attr.push(name + '="' + value + '"');
                 }
-            });
+            }
         }
 
-        return ejs.render(panelTpl['badge.html'], {
+        return ejs.render(Tpl['badge.html'], {
             badge: {
                 text:    badge.text,
                 classes: classes ? ' ' + classes : '',
@@ -273,4 +270,4 @@ let panelPrivate = {
 }
 
 
-export default panelPrivate;
+export default Private;

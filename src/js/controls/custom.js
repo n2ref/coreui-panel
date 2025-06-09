@@ -1,6 +1,6 @@
 
 import 'ejs/ejs.min';
-import panelUtils from '../panel.utils';
+import Utils from '../utils';
 
 let PanelControlCustom = {
 
@@ -24,7 +24,7 @@ let PanelControlCustom = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id === 'string' && this._options.id
             ? this._options.id
-            : panelUtils.hashCode();
+            : Utils.hashCode();
     },
 
 

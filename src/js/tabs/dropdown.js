@@ -1,11 +1,11 @@
-import panelUtils              from '../panel.utils';
-import panelPrivate            from '../panel.private';
-import panelTpl                from "../panel.tpl";
-import panelElements           from "../panel.elements";
-import panelTabDropdownItem    from "./panel.tab-dropdown-item";
-import panelTabDropdownDivider from "./panel.tab-dropdown-divider";
+import Utils      from '../utils';
+import Private    from '../private';
+import Tpl        from "../tpl";
+import Elements   from "../elements";
+import TabItem    from "./dropdown/item";
+import TabDivider from "./dropdown/divider";
 
-let panelTabDropdown = {
+let TabDropdown = {
 
     _id: null,
     _panel: null,
@@ -32,7 +32,7 @@ let panelTabDropdown = {
         this._panel   = panel;
         this._id      = this._options.hasOwnProperty('id') && typeof this._options.id == 'string' && this._options.id
             ? this._options.id
-            : panelUtils.hashCode();
+            : Utils.hashCode();
 
 
         let that = this;
@@ -41,7 +41,7 @@ let panelTabDropdown = {
             Array.isArray(this._options.items) &&
             this._options.items.length > 0
         ) {
-            $.each(this._options.items, function (key, item) {
+            this._options.items.map(function (item) {
                 let tabType = item.hasOwnProperty('type') && typeof item.type === 'string'
                     ? item.type
                     : 'item';
@@ -50,8 +50,8 @@ let panelTabDropdown = {
 
                 switch (tabType) {
                     case 'item':
-                    default:        instance = $.extend(true, {}, panelTabDropdownItem);    break;
-                    case 'divider': instance = $.extend(true, {}, panelTabDropdownDivider); break;
+                    default:        instance = $.extend(true, {}, TabItem);    break;
+                    case 'divider': instance = $.extend(true, {}, TabDivider); break;
                 }
 
                 if (instance) {
@@ -81,19 +81,19 @@ let panelTabDropdown = {
 
         this._panel.on('panel_show', function () {
 
-            let tabsContainerElement = panelElements.getTabContainer(that._panel.getId(), that.getId())
+            let tabsContainerElement = Elements.getTabContainer(that._panel.getId(), that.getId())
 
             $('.dropdown-item', tabsContainerElement).click(function (event) {
                 let tabId = $(this).data('tab-id') || '';
                 let tab   = that.getItem(tabId);
 
                 if (tab) {
-                    panelPrivate.trigger(that._panel, 'tab_click', tab, [tab, event]);
+                    Private.trigger(that._panel, 'tab_click', tab, [tab, event]);
 
                     let options = tab.getOptions();
 
-                    if (options.url && options.url !== '#') {
-                        location.href = options.url;
+                    if (options._url && options._url !== '#') {
+                        location.href = options._url;
 
                     } else {
                         return false;
@@ -123,16 +123,16 @@ let panelTabDropdown = {
 
         let result = null;
 
-        $.each(this._items, function (key, item) {
+        for (const item of this._items) {
 
             if (item.hasOwnProperty('getId') &&
                 typeof item.getId === 'function' &&
                 item.getId() == itemId
             ) {
                 result = item;
-                return false;
+                break;
             }
-        });
+        }
 
         return result;
     },
@@ -148,7 +148,7 @@ let panelTabDropdown = {
             return;
         }
 
-        let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
+        let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
         tabTitleElement.text(title);
     },
 
@@ -159,7 +159,7 @@ let panelTabDropdown = {
      */
     setCount: function (count) {
 
-        let tabCountElement = panelElements.getTabCount(this._panel.getId(), this.getId());
+        let tabCountElement = Elements.getTabCount(this._panel.getId(), this.getId());
 
         if (['string', 'number'].indexOf(typeof count) < 0 || count.toString().length === 0) {
             tabCountElement.remove();
@@ -169,7 +169,7 @@ let panelTabDropdown = {
                 tabCountElement.text('(' + count + ')');
 
             } else {
-                let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
+                let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
                 tabTitleElement.after('(' + count + ')');
             }
         }
@@ -182,16 +182,16 @@ let panelTabDropdown = {
      */
     setBadge: function (badge) {
 
-        let badgeRender = panelPrivate.renderBadge(badge);
+        let badgeRender = Private.renderBadge(badge);
 
         if (badgeRender) {
-            let tabBadgeElement = panelElements.getTabBadge(this._panel.getId(), this.getId());
+            let tabBadgeElement = Elements.getTabBadge(this._panel.getId(), this.getId());
 
             if (tabBadgeElement[0]) {
                 tabBadgeElement.replaceWith(badgeRender);
 
             } else {
-                let tabTitleElement = panelElements.getTabTitle(this._panel.getId(), this.getId());
+                let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
                 tabTitleElement.after(badgeRender);
             }
         }
@@ -222,17 +222,17 @@ let panelTabDropdown = {
             : null;
 
         let badge = options.hasOwnProperty('badge')
-            ? panelPrivate.renderBadge(options.badge)
+            ? Private.renderBadge(options.badge)
             : null;
 
         let itemsContents = [];
 
-        $.each(this._items, function (key, item) {
+        this._items.map(function (item) {
             itemsContents.push(item.render());
         });
 
 
-        return ejs.render(panelTpl['tabs/tab-dropdown.html'], {
+        return ejs.render(Tpl['tabs/tab-dropdown.html'], {
             tab: {
                 id: this.getId(),
                 title: title,
@@ -247,4 +247,4 @@ let panelTabDropdown = {
 }
 
 
-export default panelTabDropdown;
+export default TabDropdown;

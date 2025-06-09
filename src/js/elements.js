@@ -1,5 +1,5 @@
 
-let panelElements = {
+let Elements = {
 
     /**
      * получение контейнера панели
@@ -141,4 +141,4 @@ let panelElements = {
     }
 }
 
-export default panelElements;
+export default Elements;
