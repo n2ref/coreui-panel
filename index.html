@@ -171,9 +171,9 @@
                     { type: "dropdown", content: "Dropdown", attr: { class: 'btn btn-primary' }, position: 'end',
                         items: [
                             { type: 'link',   content: 'Link', link: "#" },
-                            { type: 'button', content: 'Button 1', onClick: function (event, panel) { console.log(2) } },
+                            { type: 'button', content: 'Button 1', onClick: function (prop) { console.log(2) } },
                             { type: 'divider' },
-                            { type: 'button', content: 'Button 2', onClick: function (event, panel) { console.log(3) } },
+                            { type: 'button', content: 'Button 2', onClick: function (prop) { console.log(3) } },
                         ]
                     },
                     { type: "button_group", attr: { class: 'btn-group' },
@@ -183,9 +183,9 @@
                             { type: "dropdown", content: "Dropdown", attr: { class: 'btn btn-secondary' }, position: 'end',
                                 items: [
                                     { type: 'link',   content: 'Link', link: "#" },
-                                    { type: 'button', content: 'Button 1', onClick: function (event, panel) { console.log(5) } },
+                                    { type: 'button', content: 'Button 1', onClick: function (prop) { console.log(5) } },
                                     { type: 'divider' },
-                                    { type: 'button', content: 'Button 2', onClick: function (event, panel) { console.log(6) } },
+                                    { type: 'button', content: 'Button 2', onClick: function (prop) { console.log(6) } },
                                 ]
                             },
                         ]
@@ -495,7 +495,7 @@
                                 { id: "tab4", title: "Tab title 3", disabled: true},
                                 { id: "tab5", title: "Tab title 4", urlContent: "data/tab3.json" },
                                 { type: "divider"},
-                                { id: "tab6",title: "Tab title 5", urlurlContent: "data/tab4.json"}
+                                { id: "tab6",title: "Tab title 5", urlContent: "data/tab4.json"}
                             ]
                         }
                     ]

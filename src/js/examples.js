@@ -28,26 +28,26 @@ document.addEventListener('DOMContentLoaded', function () {
         title: "Title",
         controls: [
             { type: "custom", content: "<div class=\"py-2\"><em>Custom content</em></div>" },
-            { type: "link",   content: "Link", href: "/link-url", attr: {class: 'btn btn-success'}, onClick: function () { return false } },
-            { type: "button", attr: {class: "btn btn-outline-secondary" }, content: "Button", onClick: function () {console.log(1) } },
+            { type: "link",   content: "Link", href: "/link-url", attr: {class: 'btn btn-success'}, onClick: function (prop) { return false } },
+            { type: "button", attr: {class: "btn btn-outline-secondary" }, content: "Button", onClick: function (prop) {console.log(1) } },
             { type: "dropdown", content: "Dropdown", attr: { class: 'btn btn-primary dropdown-toggle' }, position: 'end',
                 items: [
                     { type: 'link',   content: 'Link', link: "#" },
-                    { type: 'button', content: 'Button 1', onClick: function (event, panel) { console.log(2) } },
+                    { type: 'button', content: 'Button 1', onClick: function (prop) { console.log(2) } },
                     { type: 'divider' },
-                    { type: 'button', content: 'Button 2', onClick: function (event, panel) { console.log(3) } },
+                    { type: 'button', content: 'Button 2', onClick: function (prop) { console.log(3) } },
                 ]
             },
-            { type: "button_group", attr: { class: 'btn-group' },
+            { type: "buttonGroup", attr: { class: 'btn-group' },
                 buttons: [
                     { type: "link",     content: "Link",     attr: { class: 'btn btn-secondary' }, link: "#" },
-                    { type: "button",   content: "Button",   attr: { class: 'btn btn-secondary' }, onClick: function (event, table) { console.log(4) } },
+                    { type: "button",   content: "Button",   attr: { class: 'btn btn-secondary' }, onClick: function (prop) { console.log(4) } },
                     { type: "dropdown", content: "Dropdown", attr: { class: 'btn btn-secondary dropdown-toggle' }, position: 'end',
                         items: [
                             { type: 'link',   content: 'Link', link: "#" },
-                            { type: 'button', content: 'Button 1', onClick: function (event, panel) { console.log(5) } },
+                            { type: 'button', content: 'Button 1', onClick: function (prop) { console.log(5) } },
                             { type: 'divider' },
-                            { type: 'button', content: 'Button 2', onClick: function (event, panel) { console.log(6) } },
+                            { type: 'button', content: 'Button 2', onClick: function (prop) { console.log(6) } },
                         ]
                     },
                 ]
@@ -55,6 +55,39 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
         content: "Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui."
     }).render('panel-controls');
+
+
+    // let panel = CoreUI.panel.create();
+    //
+    // let dropdown = panel.controls.dropdown('Dropdown').setAttr({class: "btn btn-primary dropdown-toggle"}).setPosition('end');
+    // dropdown.addItemLink('Link', '#');
+    // dropdown.addItemButton('Button 1').setOnClick(function (prop) { console.log(2) });
+    // dropdown.addItemDivider();
+    // dropdown.addItemButton('Button 2').setOnClick(function (prop) { console.log(3) });
+    //
+    // let btnGroup = panel.controls.buttonGroup().setAttr({class: "btn-group"});
+    // btnGroup.addBtnLink('Link', '#').setAttr({ class: 'btn btn-secondary' });
+    // btnGroup.addBtnButton('Button 1').setAttr({ class: 'btn btn-secondary' }).setOnClick(function (prop) { console.log(4) });
+    //
+    // let btnGroupDropdown = btnGroup.addBtnDropdown('Button 2');
+    // btnGroupDropdown.setAttr({ class: 'btn btn-secondary' });
+    // btnGroupDropdown.addItemLink('Link', '#');
+    // btnGroupDropdown.addItemButton('Button 1').setOnClick(function (prop) { console.log(5) });
+    // btnGroupDropdown.addItemDivider();
+    // btnGroupDropdown.addItemButton('Button 2').setOnClick(function (prop) { console.log(6) });
+    //
+    // panel.setTitle("Title")
+    // panel.addControls([
+    //     panel.controls.custom("<div class=\"py-2\"><em>Custom content</em></div>"),
+    //     panel.controls.link('Link', '/link-url').setAttr({class: 'btn btn-success'}),
+    //     panel.controls.button('Button').setAttr({class: "btn btn-outline-secondary"}).setOnClick(function (prop) {console.log(1) }),
+    //     dropdown,
+    //     btnGroup
+    // ]);
+    //
+    // panel.setContent("Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.");
+    //
+    // panel.render('panel-controls');
 
 
     // Tabs panel
