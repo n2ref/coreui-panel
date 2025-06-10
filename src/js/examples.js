@@ -69,12 +69,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // btnGroup.addBtnLink('Link', '#').setAttr({ class: 'btn btn-secondary' });
     // btnGroup.addBtnButton('Button 1').setAttr({ class: 'btn btn-secondary' }).setOnClick(function (prop) { console.log(4) });
     //
-    // let btnGroupDropdown = btnGroup.addBtnDropdown('Button 2');
-    // btnGroupDropdown.setAttr({ class: 'btn btn-secondary' });
+    // let btnGroupDropdown = btnGroup.addBtnDropdown('Dropdown');
+    // btnGroupDropdown.setAttr({ class: 'btn btn-secondary dropdown-toggle' });
     // btnGroupDropdown.addItemLink('Link', '#');
     // btnGroupDropdown.addItemButton('Button 1').setOnClick(function (prop) { console.log(5) });
     // btnGroupDropdown.addItemDivider();
     // btnGroupDropdown.addItemButton('Button 2').setOnClick(function (prop) { console.log(6) });
+    //
+    // panel.addTab('user', 'Пользователь');
+    // panel.addTab('sessions', 'Сессии');
+    // panel.setTabActive('user');
+    //
     //
     // panel.setTitle("Title")
     // panel.addControls([
