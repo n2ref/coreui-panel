@@ -297,13 +297,13 @@ class Panel {
 
                 if (tab) {
                     if (tab.constructor) {
-                        if (tab.constructor.name === 'Tab') {
+                        if (typeof tab.setActive === 'function') {
                             if (tab.getId() === tabId) {
                                 tab.setActive(true);
                                 isActive = true;
                             }
 
-                        } else if (tab.constructor.name === 'TabDropdown') {
+                        } else if (typeof tab.getItems === 'function') {
                             tab.getItems().map(function (item) {
                                 if (item.getId() === tabId) {
                                     item.setActive(true);
@@ -400,8 +400,6 @@ class Panel {
             if (control && control.constructor) {
                 if (control.constructor.name && typeof control.toObject === 'function') {
                     that._options.controls.push(control.toObject());
-
-                    console.log(control.toObject())
                 }
 
             } else if (PanelUtils.isObject(control)) {

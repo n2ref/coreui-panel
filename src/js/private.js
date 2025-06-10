@@ -67,6 +67,13 @@ let Private = {
     initTabs: function (panel, tabItems) {
 
         tabItems.map(function (tabItem) {
+
+            if (tabItem && tabItem.constructor) {
+                if (tabItem.constructor.name && typeof tabItem.toObject === 'function') {
+                    tabItem = tabItem.toObject();
+                }
+            }
+
             if (Utils.isObject(tabItem)) {
 
                 let instance = null;
