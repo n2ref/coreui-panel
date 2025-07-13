@@ -81,9 +81,9 @@ class Panel {
 
         let that = this;
 
-        this.on('tab_click', function (tab, event) {
+        this.on('tab_click', function (prop) {
 
-            let options    = tab.getOptions();
+            let options    = prop.tab.getOptions();
             let urlContent = options.hasOwnProperty('urlContent') && typeof options.urlContent == 'string' && options.urlContent
                 ? options.urlContent
                 : '#';
@@ -100,9 +100,19 @@ class Panel {
             if (urlWindow) {
                 window.history.pushState({ path:urlWindow }, '', urlWindow);
             }
+
+            if (that._tabs.length > 0) {
+                PanelPrivate.trigger(this, 'tab_active', that, [prop]);
+            }
         });
 
         PanelPrivate.trigger(this, 'panel_show');
+
+        if (that._tabs.length > 0) {
+            PanelPrivate.trigger(this, 'tab_active', that, [{
+                tab: that.getTabActive()
+            }]);
+        }
 
         if (this._options.content !== null) {
             PanelPrivate.trigger(this, 'content_show');
@@ -177,19 +187,28 @@ class Panel {
             url: url,
             method: 'get',
             beforeSend: function(xhr) {
-                PanelPrivate.trigger(that, 'load_start', that, [ xhr ]);
+                PanelPrivate.trigger(that, 'load_start', that, [ {xhr: xhr} ]);
             },
             success: function (result) {
-                PanelPrivate.trigger(that, 'load_success', that, [ result ]);
+                PanelPrivate.trigger(that, 'load_success', that, [ {
+                    result: result
+                } ]);
                 that.setContent(result);
             },
             error: function(xhr, textStatus, errorThrown) {
-                PanelPrivate.trigger(that, 'load_error', that, [ xhr, textStatus, errorThrown ]);
+                PanelPrivate.trigger(that, 'load_error', that, [{
+                    xhr : xhr,
+                    textStatus: textStatus,
+                    errorThrown: errorThrown
+                } ]);
                 that.setContent('');
             },
             complete: function(xhr, textStatus) {
                 that.unlock();
-                PanelPrivate.trigger(that, 'load_end', that, [ xhr, textStatus ]);
+                PanelPrivate.trigger(that, 'load_end', that, [{
+                    xhr: xhr,
+                    textStatus: textStatus
+                } ]);
             },
         });
     }
@@ -431,6 +450,27 @@ class Panel {
 
 
     /**
+     * Получение объекта активного таба
+     * @return {Object|null}
+     */
+    getTabActive() {
+
+        let result = null;
+
+        this._tabs.map(function (tab) {
+            if (tab.isActive &&
+                typeof tab.isActive === 'function' &&
+                tab.isActive()
+            ) {
+                result = tab;
+            }
+        });
+
+        return result;
+    }
+
+
+    /**
      * Получение объекта контрола по его id
      * @param {string} id
      * @return {object}
@@ -440,7 +480,7 @@ class Panel {
         let result = null;
 
         this._controls.map(function (control) {
-            if (control.hasOwnProperty('getId') &&
+            if (control.getId &&
                 typeof control.getId === 'function' &&
                 control.getId() === id
             ) {
@@ -632,12 +672,25 @@ class Panel {
 
 
     /**
+     * Установка события которое будет выполняться при смене таба
+     * @param {function} callback
+     */
+    onTabActive(callback) {
+
+        if (typeof callback === 'function') {
+            this.on('tab_active', callback);
+        }
+    }
+
+
+    /**
      * Регистрация функции на событие
      * @param eventName
      * @param callback
      * @param context
      */
     on(eventName, callback, context) {
+
         if (typeof this._events[eventName] !== 'object') {
             this._events[eventName] = [];
         }

@@ -1,67 +1,57 @@
-import Utils    from '../utils';
-import Private  from '../private';
-import Tpl      from "../tpl";
-import Elements from "../elements";
+import Utils       from '../utils';
+import Private     from '../private';
+import Tpl         from "../tpl";
+import Elements    from "../elements";
+import TabAbstract from "../abstract/tab";
 
-let Tab = {
 
-    _id: null,
-    _panel: null,
-    _options: {
-        id: null,
-        type: 'tab',
-        title: '',
-        url: null,
-        urlContent: null,
-        urlCount: null,
-        urlBadge: null,
-        urlWindow: null,
-        count: null,
-        badge: null,
-        active: false,
-        disabled: false,
-    },
+/**
+ *
+ */
+class Tab extends TabAbstract {
 
 
     /**
      * Инициализация таба
-     * @param {object} panel
-     * @param {object} options
+     * @param {Panel}  panel
+     * @param {Object} options
      * @private
      */
-    _init: function (panel, options) {
+    constructor(panel, options) {
 
-        this._options = $.extend(true, {}, this._options, options);
-        this._panel   = panel;
-        this._id      = this._options.hasOwnProperty('id') && typeof this._options.id == 'string' && this._options.id
-            ? this._options.id
-            : Utils.hashCode();
-    },
+        let optionsDefault = {
+            id: null,
+            type: 'tab',
+            title: '',
+            url: null,
+            urlContent: null,
+            urlCount: null,
+            urlBadge: null,
+            urlWindow: null,
+            count: null,
+            badge: null,
+            active: false,
+            disabled: false,
+        };
 
-
-    /**
-     * Получение идентификатора таба
-     * @returns {string}
-     */
-    getId: function () {
-        return this._id;
-    },
+        super(panel, $.extend(true, optionsDefault, options));
+    }
 
 
     /**
      * Получение опций таба
      * @return {object}
      */
-    getOptions: function () {
+    getOptions() {
 
         return $.extend(true, {}, this._options);
-    },
+    }
 
 
     /**
      * Установка активного таба
      */
-    setActive: function () {
+    setActive() {
 
         let tabTabElement = Elements.getTabContainer(this._panel.getId(), this.getId());
 
@@ -73,31 +63,16 @@ let Tab = {
 
             tabTabElement.find('> a').addClass('active');
 
-            Private.trigger(this._panel, 'tab_click', this._panel, [this]);
+            Private.trigger(this._panel, 'tab_click', this._panel, [{tab : this}]);
         }
-    },
-
-
-    /**
-     * Установка названия
-     * @param {string} title
-     */
-    setTitle: function (title) {
-
-        if (['string', 'number'].indexOf(typeof title) < 0 || title.toString().length === 0) {
-            return;
-        }
-
-        let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
-        tabTitleElement.text(title);
-    },
+    }
 
 
     /**
      * Установка количества
      * @param {number|null} count
      */
-    setCount: function (count) {
+    setCount(count) {
 
         let tabCountElement = Elements.getTabCount(this._panel.getId(), this.getId());
 
@@ -113,35 +88,13 @@ let Tab = {
                 tabTitleElement.after('<span class="coreui-panel__tab-count"> (' + count + ')>');
             }
         }
-    },
-
-
-    /**
-     * Установка количества
-     * @param {object} badge
-     */
-    setBadge: function (badge) {
-
-        let badgeRender = Private.renderBadge(badge);
-
-        if (badgeRender) {
-            let tabBadgeElement = Elements.getTabBadge(this._panel.getId(), this.getId());
-
-            if (tabBadgeElement[0]) {
-                tabBadgeElement.replaceWith(badgeRender);
-
-            } else {
-                let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
-                tabTitleElement.after(badgeRender);
-            }
-        }
-    },
+    }
 
 
     /**
      *
      */
-    initEvents: function () {
+    initEvents() {
 
         let that    = this;
         let options = this.getOptions();
@@ -151,7 +104,7 @@ let Tab = {
             let tabsContainerElement = Elements.getTabContainer(that._panel.getId(), that.getId())
 
             $('.nav-link', tabsContainerElement).click(function (event) {
-                Private.trigger(that._panel, 'tab_click', that, [that, event]);
+                Private.trigger(that._panel, 'tab_click', that, [{ tab : that, event : event  }]);
 
                 if (options.url && options.url !== '#') {
                     location.href = options.url;
@@ -176,35 +129,26 @@ let Tab = {
             if (count === null && urlCount) {
                 that.setCount('<div class="spinner-border spinner-border-sm text-secondary"></div>');
 
-                $.ajax({
-                    url: urlCount,
-                    method: 'get',
-                    success: function (result) {
+                fetch(urlCount)
+                    .then(function (response) {
+                        return response.json();
 
-                        try {
-                            let response = typeof result === 'string'
-                                ? JSON.parse(result)
-                                : result;
+                    }).then(function (response) {
 
-                            if (Utils.isObject(response) &&
-                                response.hasOwnProperty('count') &&
-                                ['string', 'number'].indexOf(typeof response._count) >= 0 &&
-                                response._count.toString().length > 0
-                            ) {
-                                that.setCount(response._count);
+                        if (Utils.isObject(response) &&
+                            response.hasOwnProperty('count') &&
+                            ['string', 'number'].indexOf(typeof response.count) >= 0 &&
+                            response.count.toString().length > 0
+                        ) {
+                            that.setCount(response.count);
 
-                            } else {
-                                that.setCount(null);
-                            }
-
-                        } catch (e) {
+                        } else {
                             that.setCount(null);
                         }
-                    },
-                    error: function(xhr, textStatus, errorThrown) {
+
+                    }).catch(function () {
                         that.setCount(null);
-                    }
-                });
+                    });
             }
         });
 
@@ -223,36 +167,30 @@ let Tab = {
             : null;
 
         if (badge === null && urlBadge) {
-            $.ajax({
-                url: urlBadge,
-                method: 'get',
-                success: function (result) {
 
-                    try {
-                        let response = typeof result === 'string'
-                            ? JSON.parse(result)
-                            : result;
+            fetch(urlBadge)
+                .then(function (response) {
+                    return response.json()
 
-                        if (Utils.isObject(response) &&
-                            response.hasOwnProperty('badge') &&
-                            Utils.isObject(response.badge)
-                        ) {
-                            that.setBadge(response.badge);
-                        }
-
-                    } catch (e) {
-                        // ignore
+                }).then(function (response) {
+                    if (Utils.isObject(response) &&
+                        response.hasOwnProperty('badge') &&
+                        Utils.isObject(response.badge)
+                    ) {
+                        that.setBadge(response.badge);
                     }
-                }
-            });
+
+                }).catch(function () {
+                    that.setBadge(null);
+                });
         }
-    },
+    }
 
 
     /**
      * Рендер содержимого
      */
-    render: function () {
+    render() {
 
         let options = this.getOptions();
 
@@ -278,8 +216,8 @@ let Tab = {
         }
 
         let count = options.hasOwnProperty('count') &&
-                        ['string', 'number'].indexOf(typeof options.count) >= 0 &&
-                        options.count.toString().length > 0
+                    ['string', 'number'].indexOf(typeof options.count) >= 0 &&
+                    options.count.toString().length > 0
             ? options.count
             : null;
 

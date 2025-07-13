@@ -3,12 +3,13 @@ import Private  from '../../private';
 import Tpl      from "../../tpl";
 import Elements from "../../elements";
 
-let item = {
 
-    _id: null,
-    _panel: null,
-    _dropdown: null,
-    _options: {
+class DropdownItem {
+
+    _id = null;
+    _panel = null;
+    _dropdown = null;
+    _options = {
         id: null,
         type: 'item',
         active: false,
@@ -18,17 +19,17 @@ let item = {
         urlWindow: '',
         title: '',
         count: null,
-    },
+    };
 
 
     /**
      * Инициализация таба
-     * @param {object} panel
-     * @param {object} dropdown
-     * @param {object} options
+     * @param {Panel}       panel
+     * @param {TabDropdown} dropdown
+     * @param {Object}      options
      * @private
      */
-    _init: function (panel, dropdown, options) {
+    constructor(panel, dropdown, options) {
 
         this._options  = $.extend(true, {}, this._options, options);
         this._panel    = panel;
@@ -36,32 +37,32 @@ let item = {
         this._id       = this._options.hasOwnProperty('id') && ['string', 'number'].indexOf(typeof this._options.id) >= 0 && this._options.id
             ? this._options.id
             : Utils.hashCode();
-    },
+    }
 
 
     /**
      * Получение идентификатора таба
      * @returns {string}
      */
-    getId: function () {
+    getId() {
         return this._id;
-    },
+    }
 
 
     /**
      * Получение опций таба
      * @return {object}
      */
-    getOptions: function () {
+    getOptions() {
 
         return $.extend(true, {}, this._options);
-    },
+    }
 
 
     /**
      * Установка активного таба
      */
-    setActive: function () {
+    setActive() {
 
         let tabItemElement = Elements.getTabItemContainer(this._panel.getId(), this.getId());
 
@@ -76,16 +77,16 @@ let item = {
 
             tabItemElement.find('> a').addClass('active');
 
-            Private.trigger(this._panel, 'tab_click', this._panel, [this]);
+            Private.trigger(this._panel, 'tab_click', this._panel, [{ tab : this }]);
         }
-    },
+    }
 
 
     /**
      * Установка названия
      * @param {string} title
      */
-    setTitle: function (title) {
+    setTitle(title) {
 
         if (['string', 'number'].indexOf(typeof title) < 0 || title.toString().length === 0) {
             return;
@@ -93,14 +94,14 @@ let item = {
 
         let tabTitleElement = Elements.getTabItemTitle(this._panel.getId(), this.getId());
         tabTitleElement.text(title);
-    },
+    }
 
 
     /**
      * Установка количества
      * @param {number} count
      */
-    setCount: function (count) {
+    setCount(count) {
 
         let tabCountElement = Elements.getTabItemCount(this._panel.getId(), this.getId());
 
@@ -116,14 +117,14 @@ let item = {
                 tabTitleElement.after('(' + count + ')');
             }
         }
-    },
+    }
 
 
     /**
      * Рендер содержимого
      * @return {*}
      */
-    render: function () {
+    render() {
 
         let options = this.getOptions();
 
@@ -179,4 +180,4 @@ let item = {
 }
 
 
-export default item;
+export default DropdownItem;

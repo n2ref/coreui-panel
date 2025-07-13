@@ -1,38 +1,37 @@
-import Utils      from '../utils';
-import Private    from '../private';
-import Tpl        from "../tpl";
-import Elements   from "../elements";
-import TabItem    from "./dropdown/item";
-import TabDivider from "./dropdown/divider";
+import Private         from '../private';
+import Tpl             from "../tpl";
+import Elements        from "../elements";
+import TabAbstract     from "../abstract/tab";
+import DropdownItem    from "./dropdown/item";
+import DropdownDivider from "./dropdown/divider";
 
-let TabDropdown = {
 
-    _id: null,
-    _panel: null,
-    _items: [],
-    _options: {
-        id: null,
-        type: 'dropdown',
-        title: '',
-        active: false,
-        disabled: false,
-        items: [],
-    },
+/**
+ *
+ */
+class TabDropdown extends TabAbstract {
+
+    _items = [];
 
 
     /**
      * Инициализация таба
-     * @param {object} panel
+     * @param {Panel}  panel
      * @param {object} options
      * @private
      */
-    _init: function (panel, options) {
+    constructor(panel, options) {
 
-        this._options = $.extend(true, {}, this._options, options);
-        this._panel   = panel;
-        this._id      = this._options.hasOwnProperty('id') && typeof this._options.id == 'string' && this._options.id
-            ? this._options.id
-            : Utils.hashCode();
+        let defaultOptions = {
+            id: null,
+            type: 'dropdown',
+            title: '',
+            active: false,
+            disabled: false,
+            items: [],
+        };
+
+        super(panel, $.extend(true, {}, defaultOptions, options));
 
 
         let that = this;
@@ -50,32 +49,22 @@ let TabDropdown = {
 
                 switch (tabType) {
                     case 'item':
-                    default:        instance = $.extend(true, {}, TabItem);    break;
-                    case 'divider': instance = $.extend(true, {}, TabDivider); break;
+                    default:        instance = new DropdownItem(panel, that, item);    break;
+                    case 'divider': instance = new DropdownDivider(panel, that, item); break;
                 }
 
                 if (instance) {
-                    instance._init(panel, that, item);
                     that._items.push(instance);
                 }
             });
         }
-    },
-
-
-    /**
-     * Получение идентификатора таба
-     * @returns {string}
-     */
-    getId: function () {
-        return this._id;
-    },
+    }
 
 
     /**
      * Инициализация событий
      */
-    initEvents: function () {
+    initEvents() {
 
         let that = this;
 
@@ -88,7 +77,7 @@ let TabDropdown = {
                 let tab   = that.getItem(tabId);
 
                 if (tab) {
-                    Private.trigger(that._panel, 'tab_click', tab, [tab, event]);
+                    Private.trigger(that._panel, 'tab_click', tab, [{tab : tab, event : event}]);
 
                     let options = tab.getOptions();
 
@@ -101,17 +90,7 @@ let TabDropdown = {
                 }
             });
         });
-    },
-
-
-    /**
-     * Получение опций таба
-     * @return {object}
-     */
-    getOptions: function () {
-
-        return $.extend(true, {}, this._options);
-    },
+    }
 
 
     /**
@@ -119,13 +98,13 @@ let TabDropdown = {
      * @property {string} itemId
      * @return {object}
      */
-    getItem: function (itemId) {
+    getItem(itemId) {
 
         let result = null;
 
         for (const item of this._items) {
 
-            if (item.hasOwnProperty('getId') &&
+            if (item.getId &&
                 typeof item.getId === 'function' &&
                 item.getId() == itemId
             ) {
@@ -135,29 +114,14 @@ let TabDropdown = {
         }
 
         return result;
-    },
-
-
-    /**
-     * Установка названия
-     * @param {string} title
-     */
-    setTitle: function (title) {
-
-        if (['string', 'number'].indexOf(typeof title) < 0 || title.toString().length === 0) {
-            return;
-        }
-
-        let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
-        tabTitleElement.text(title);
-    },
+    }
 
 
     /**
      * Установка количества
      * @param {number} count
      */
-    setCount: function (count) {
+    setCount(count) {
 
         let tabCountElement = Elements.getTabCount(this._panel.getId(), this.getId());
 
@@ -173,36 +137,14 @@ let TabDropdown = {
                 tabTitleElement.after('(' + count + ')');
             }
         }
-    },
-
-
-    /**
-     * Установка метки
-     * @param {object} badge
-     */
-    setBadge: function (badge) {
-
-        let badgeRender = Private.renderBadge(badge);
-
-        if (badgeRender) {
-            let tabBadgeElement = Elements.getTabBadge(this._panel.getId(), this.getId());
-
-            if (tabBadgeElement[0]) {
-                tabBadgeElement.replaceWith(badgeRender);
-
-            } else {
-                let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
-                tabTitleElement.after(badgeRender);
-            }
-        }
-    },
+    }
 
 
     /**
      * Рендер содержимого
      * @return {string}
      */
-    render: function () {
+    render() {
 
         let options = this.getOptions();
 

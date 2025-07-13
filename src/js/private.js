@@ -3,7 +3,7 @@ import 'ejs/ejs.min';
 import Utils       from './utils';
 import Tpl         from "./tpl";
 import Tab         from "./tabs/tab";
-import tabDropdown from "./tabs/dropdown";
+import TabDropdown from "./tabs/dropdown";
 
 let Private = {
 
@@ -60,8 +60,8 @@ let Private = {
 
     /**
      * Инициализация контролов и фильтров
-     * @param {Object} panel
-     * @param {Array}  tabItems
+     * @param {Panel} panel
+     * @param {Array} tabItems
      * @private
      */
     initTabs: function (panel, tabItems) {
@@ -82,15 +82,14 @@ let Private = {
                     : 'tab';
 
                 if (tabType === 'tab') {
-                    instance = $.extend(true, {}, Tab);
+                    instance = new Tab(panel, tabItem);
 
                 } else if (tabType === 'dropdown') {
-                    instance = $.extend(true, {}, tabDropdown);
+                    instance = new TabDropdown(panel, tabItem);
                 }
 
 
                 if (instance) {
-                    instance._init(panel, tabItem);
                     panel._tabs.push(instance);
 
                     panel.on('panel_show', function () {
