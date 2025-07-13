@@ -741,6 +741,10 @@
                                 <td>Получение заданных ранее опций панели</td>
                             </tr>
                             <tr>
+                                <td>panel.getTabActive()</td>
+                                <td>Получение экземпляра активного таба</td>
+                            </tr>
+                            <tr>
                                 <td>panel.setContent(content)</td>
                                 <td>Установка содержимого для панели. Может содержать в себе тоже, что и параметр <code>content</code> в опциях</td>
                             </tr>
@@ -767,6 +771,10 @@
                             <tr>
                                 <td>panel.one( name, function, context)</td>
                                 <td>Регистрация функции вызываемой при наступлении указанного события. Выполняется один раз</td>
+                            </tr>
+                            <tr>
+                                <td>panel.onTabActive(callback)</td>
+                                <td>Регистрация функции вызываемой при наступлении смены таба или при инициализации панели</td>
                             </tr>
                             <tr>
                                 <td>panel.getLang()</td>
@@ -812,28 +820,35 @@
                                 <td class="text-nowrap">tab_click</td>
                                 <td>
                                     Происходит при нажатии на таб.<br>
-                                    В качестве параметров передаются <code>panel.on('tab_click', function (tab, event)</code>
+                                    В качестве параметров передаются <code>panel.on('tab_click', function (prop)</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">tab_active</td>
+                                <td>
+                                    Происходит при активации таба<br>
+                                    В качестве параметров передаются <code>panel.on('tab_active', function (prop)</code>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="text-nowrap">load_start</td>
                                 <td>
                                     Происходит при загрузке содержимого внутрь панели.<br>
-                                    В качестве параметров передаются <code>panel.on('load_start', function (xhr)</code>
+                                    В качестве параметров передаются <code>panel.on('load_start', function (prop)</code>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="text-nowrap">load_success</td>
                                 <td>
                                     Происходит при успешной ajax загрузке содержимого панели.<br>
-                                    В качестве параметров передаются <code>panel.on('load_success', function (result)</code>
+                                    В качестве параметров передаются <code>panel.on('load_success', function (prop)</code>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="text-nowrap">load_error</td>
                                 <td>
                                     Происходит при НЕ успешной ajax загрузке содержимого панели.<br>
-                                    В качестве параметров передаются <code>panel.on('load_error', function (xhr, textStatus, errorThrown)</code>
+                                    В качестве параметров передаются <code>panel.on('load_error', function (prop)</code>
                                 </td>
                             </tr>
                             <tr>
@@ -841,7 +856,7 @@
                                 <td>
                                     Происходит после завершения ajax запроса для получения содержимого для панели.
                                     Дает возможность скрыть прелодер.<br>
-                                    В качестве параметров передаются <code>panel.on('load_end', function (xhr, textStatus)</code>
+                                    В качестве параметров передаются <code>panel.on('load_end', function (prop)</code>
                                 </td>
                             </tr>
                             </tbody>

@@ -80,6 +80,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // panel.addTab('sessions', 'Сессии');
     // panel.setTabActive('user');
     //
+    // panel.onTabActive(function (prop) {
+    //     console.log(prop)
+    // });
     //
     // panel.setTitle("Title")
     // panel.addControls([
@@ -121,8 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     panelTabs.render('panel-tabs');
-    panelTabs.on('tab_click', function (tab, event) {
-        this.setContent( tab.getOptions().title );
+    panelTabs.on('tab_click', function (prop) {
+        this.setContent( prop.tab.getOptions().title );
     });
 
 
@@ -150,8 +153,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     panelPills.render('panel-pills');
-    panelPills.on('tab_click', function (tab, event) {
-        this.setContent( tab.getOptions().title );
+    panelPills.on('tab_click', function (prop) {
+        this.setContent( prop.tab.getOptions().title );
     });
 
 
@@ -179,8 +182,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     panelUnderline.render('panel-underline');
-    panelUnderline.on('tab_click', function (tab, event) {
-        this.setContent( tab.getOptions().title );
+    panelUnderline.on('tab_click', function (prop) {
+        this.setContent( prop.tab.getOptions().title );
     });
 
 
@@ -200,8 +203,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     panelFill.render('panel-fill');
-    panelFill.on('tab_click', function (tab, event) {
-        this.setContent( tab.getOptions().title );
+    panelFill.on('tab_click', function (prop) {
+        this.setContent( prop.tab.getOptions().title );
     });
 
 
@@ -221,8 +224,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     panelJustify.render('panel-justify');
-    panelJustify.on('tab_click', function (tab, event) {
-        this.setContent( tab.getOptions().title );
+    panelJustify.on('tab_click', function (prop) {
+        this.setContent( prop.tab.getOptions().title );
     });
 
 
@@ -251,8 +254,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     panelLeft.render('panel-pos-left');
-    panelLeft.on('tab_click', function (tab, event) {
-        this.setContent( tab.getOptions().title );
+    panelLeft.on('tab_click', function (prop) {
+        this.setContent( prop.tab.getOptions().title );
     });
 
     // Positions right
@@ -280,8 +283,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     panelRight.render('panel-pos-right');
-    panelRight.on('tab_click', function (tab, event) {
-        this.setContent( tab.getOptions().title );
+    panelRight.on('tab_click', function (prop) {
+        this.setContent( prop.tab.getOptions().title );
     });
 
 
@@ -311,19 +314,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     panelAjax.render('panel-ajax');
-    panelAjax.on('tab_click', function (tab, event) {
-        console.log(tab.getId() + ' ' + 'tab_click')
+    panelAjax.on('tab_click', function (prop, event) {
+        console.log(prop.tab.getId() + ' ' + 'tab_click')
     });
-    panelAjax.on('load_start', function (xhr) {
+    panelAjax.on('load_start', function (prop) {
         console.log('load_start')
     });
-    panelAjax.on('load_success', function (result) {
+    panelAjax.on('load_success', function (prop) {
         console.log('load_success')
     });
-    panelAjax.on('load_error', function (xhr, textStatus, errorThrown ) {
+    panelAjax.on('load_error', function (prop ) {
         console.log('load_error')
     });
-    panelAjax.on('load_end', function (xhr) {
+    panelAjax.on('load_end', function (prop) {
         console.log('load_end')
     });
 
