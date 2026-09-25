@@ -1,19 +1,58 @@
 
 .coreui-panel {
-
     @import "bootstrap/scss/functions";
     @import "bootstrap/scss/variables";
     @import "bootstrap/scss/mixins";
     @import "bootstrap/scss/maps";
     @import "bootstrap/scss/utilities";
-    @import "bootstrap/scss/bootstrap-grid";
+
     @import "bootstrap/scss/bootstrap-reboot";
+    @import "bootstrap/scss/bootstrap-grid";
     @import "bootstrap/scss/bootstrap-utilities";
+    @import "bootstrap/scss/helpers";
+
     @import "bootstrap/scss/buttons";
     @import "bootstrap/scss/button-group";
     @import "bootstrap/scss/containers";
-    @import "bootstrap/scss/card";
     @import "bootstrap/scss/dropdown";
-    @import "bootstrap/scss/helpers";
     @import "bootstrap/scss/spinners";
+    @import "bootstrap/scss/card";
+    @import "bootstrap/scss/nav";
+
+    &.card {
+        // scss-docs-start card-css-vars
+        --#{$prefix}card-spacer-y: #{$card-spacer-y};
+        --#{$prefix}card-spacer-x: #{$card-spacer-x};
+        --#{$prefix}card-title-spacer-y: #{$card-title-spacer-y};
+        --#{$prefix}card-title-color: #{$card-title-color};
+        --#{$prefix}card-subtitle-color: #{$card-subtitle-color};
+        --#{$prefix}card-border-width: #{$card-border-width};
+        --#{$prefix}card-border-color: #{$card-border-color};
+        --#{$prefix}card-border-radius: #{$card-border-radius};
+        --#{$prefix}card-box-shadow: #{$card-box-shadow};
+        --#{$prefix}card-inner-border-radius: #{$card-inner-border-radius};
+        --#{$prefix}card-cap-padding-y: #{$card-cap-padding-y};
+        --#{$prefix}card-cap-padding-x: #{$card-cap-padding-x};
+        --#{$prefix}card-cap-bg: #{$card-cap-bg};
+        --#{$prefix}card-cap-color: #{$card-cap-color};
+        --#{$prefix}card-height: #{$card-height};
+        --#{$prefix}card-color: #{$card-color};
+        --#{$prefix}card-bg: #{$card-bg};
+        --#{$prefix}card-img-overlay-padding: #{$card-img-overlay-padding};
+        --#{$prefix}card-group-margin: #{$card-group-margin};
+        // scss-docs-end card-css-vars
+
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0; // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
+        height: var(--#{$prefix}card-height);
+        color: var(--#{$prefix}body-color);
+        word-wrap: break-word;
+        background-color: var(--#{$prefix}card-bg);
+        background-clip: border-box;
+        border: var(--#{$prefix}card-border-width) solid var(--#{$prefix}card-border-color);
+        @include border-radius(var(--#{$prefix}card-border-radius));
+        @include box-shadow(var(--#{$prefix}card-box-shadow));
+    }
 }

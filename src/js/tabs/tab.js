@@ -53,18 +53,8 @@ class Tab extends TabAbstract {
      */
     setActive() {
 
-        let tabTabElement = Elements.getTabContainer(this._panel.getId(), this.getId());
-
-        if (tabTabElement[0]) {
-            let tabTabsElement = Elements.getTabsContainer(this._panel.getId());
-            tabTabsElement.find('.nav-link').removeClass('active');
-            tabTabsElement.find('.nav-link.dropdown-toggle').removeClass('active');
-            tabTabsElement.find('.nav-link.dropdown-toggle .dropdown-item').removeClass('active');
-
-            tabTabElement.find('> a').addClass('active');
-
-            Private.trigger(this._panel, 'tab_click', this._panel, [{tab : this}]);
-        }
+        this._activeTabClass();
+        Private.trigger(this._panel, 'tab_click', this._panel, [{tab : this}]);
     }
 
 
@@ -92,6 +82,25 @@ class Tab extends TabAbstract {
 
 
     /**
+     * Установка класса для активности таба
+     * @private
+     */
+    _activeTabClass() {
+
+        let tabTabElement = Elements.getTabContainer(this._panel.getId(), this.getId());
+
+        if (tabTabElement[0]) {
+            let tabTabsElement = Elements.getTabsContainer(this._panel.getId());
+            tabTabsElement.find('.nav-link').removeClass('active');
+            tabTabsElement.find('.nav-link.dropdown-toggle').removeClass('active');
+            tabTabsElement.find('.nav-link.dropdown-toggle .dropdown-item').removeClass('active');
+
+            tabTabElement.find('> a').addClass('active');
+        }
+    }
+
+
+    /**
      *
      */
     initEvents() {
@@ -104,6 +113,7 @@ class Tab extends TabAbstract {
             let tabsContainerElement = Elements.getTabContainer(that._panel.getId(), that.getId())
 
             $('.nav-link', tabsContainerElement).click(function (event) {
+                that._activeTabClass();
                 Private.trigger(that._panel, 'tab_click', that, [{ tab : that, event : event  }]);
 
                 if (options.url && options.url !== '#') {

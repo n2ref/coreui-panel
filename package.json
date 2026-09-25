@@ -1,11 +1,10 @@
 {
   "name": "coreui-panel",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "CoreUI Panel",
   "scripts": {
     "build": "gulp build_tpl && gulp build_js && gulp build_css && npm run test_js",
     "watch": "gulp build_watch",
-
     "build_bootstrap": "gulp build_bootstrap",
     "test_js": "eslint -c ./.eslintrc.json --max-warnings 100 --ext .js ./src"
   },
