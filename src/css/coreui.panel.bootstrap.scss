@@ -19,6 +19,9 @@
     @import "bootstrap/scss/card";
     @import "bootstrap/scss/nav";
 
+    @import "coreui.panel.bootstrap-root";
+    @include coreui-bootstrap-root();
+
     &.card {
         // scss-docs-start card-css-vars
         --#{$prefix}card-spacer-y: #{$card-spacer-y};
