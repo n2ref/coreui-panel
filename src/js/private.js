@@ -7,6 +7,7 @@ import TabDropdown from "./tabs/dropdown";
 
 let Private = {
 
+    _renderEvents: [],
 
     /**
      * @param panel
@@ -181,6 +182,8 @@ let Private = {
 
         let result = [];
 
+        Private._renderEvents = [];
+
         if (typeof content === 'string') {
             result.push(content);
 
@@ -199,7 +202,7 @@ let Private = {
                 ) {
                     result.push(content[i].render());
 
-                    panel.one('content_show', content[i].initEvents, content[i], true);
+                    Private._renderEvents.push({ event: content[i].initEvents, context: content[i] });
 
                 } else if ( ! Array.isArray(content[i]) &&
                     content[i].hasOwnProperty('component') &&
@@ -214,7 +217,7 @@ let Private = {
                         let instance = CoreUI[name].create(content[i]);
                         result.push(instance.render());
 
-                        panel.one('content_show', instance.initEvents, instance);
+                        Private._renderEvents.push({ event: instance.initEvents, context: instance });
                     }
 
                 } else {
@@ -224,6 +227,15 @@ let Private = {
         }
 
         return result;
+    },
+
+
+    /**
+     * Получение событий которые были отрендерены
+     * @returns {[]}
+     */
+    getRenderContentEvents: function () {
+        return Private._renderEvents;
     },
 
 

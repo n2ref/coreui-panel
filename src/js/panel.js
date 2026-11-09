@@ -519,6 +519,12 @@ class Panel {
                 container.append(content);
             });
 
+            PanelPrivate.getRenderContentEvents().map(function (componentEvent) {
+                if (typeof componentEvent.event === 'function') {
+                    componentEvent.event.apply(componentEvent.context);
+                }
+            });
+
             PanelPrivate.trigger(this, 'content_show');
 
         } else {
@@ -647,6 +653,12 @@ class Panel {
 
             renderContents.map(function (content) {
                 panelElement.find('.coreui-panel-content').append(content);
+            });
+
+            PanelPrivate.getRenderContentEvents().map(function (componentEvent) {
+                if (typeof componentEvent.event === 'function') {
+                    that.on('content_show', componentEvent.event, componentEvent.context, true);
+                }
             });
         }
 
