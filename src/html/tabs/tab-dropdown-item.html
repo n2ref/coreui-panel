@@ -3,7 +3,7 @@
     <a class="dropdown-item position-relative<% if (item.active) { %> active<% } %><% if (item.disabled) { %> disabled<% } %>"
        href="<% if (item.url) { %><%= item.url %><% } else { %>#<% } %>" data-bs-toggle="tab"
        data-tab-id="<%= item.id %>">
-        <span class="coreui-panel__tab-item-title"><%= item.title %></span>
+        <span class="coreui-panel__tab-item-title"><%- item.title %></span>
         <% if (item.count !== null) { %> <span class="coreui-panel__tab-item-count">(<%= item.count %>)</span><% } %>
         <%- item.badge %>
     </a>
