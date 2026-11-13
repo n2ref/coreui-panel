@@ -657,7 +657,7 @@ class Panel {
 
             PanelPrivate.getRenderContentEvents().map(function (componentEvent) {
                 if (typeof componentEvent.event === 'function') {
-                    that.on('content_show', componentEvent.event, componentEvent.context, true);
+                    that.one('content_show', componentEvent.event, componentEvent.context);
                 }
             });
         }
