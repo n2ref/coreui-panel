@@ -94,6 +94,82 @@ class TabAbstract {
 
 
     /**
+     * Повторная загрузка количества таба
+     */
+    reloadCount() {
+
+        let that     = this;
+        let urlCount = this._options.hasOwnProperty('urlCount') &&
+                       typeof this._options.urlCount === 'string' &&
+                       this._options.urlCount
+            ? this._options.urlCount
+            : null;
+
+        if (urlCount === null) {
+            return;
+        }
+
+        this.setCount('<div class="spinner-border spinner-border-sm text-secondary"></div>');
+
+
+        fetch(urlCount)
+            .then(function (response) {
+                return response.json();
+
+            }).then(function (response) {
+
+                if (Utils.isObject(response) &&
+                    response.hasOwnProperty('count') &&
+                    ['string', 'number'].indexOf(typeof response.count) >= 0 &&
+                    response.count.toString().length > 0
+                ) {
+                    that.setCount(response.count);
+
+                } else {
+                    that.setCount(null);
+                }
+
+            }).catch(function () {
+                that.setCount(null);
+            });
+    }
+
+
+    /**
+     * Повторная загрузка метки таба
+     */
+    reloadBadge() {
+
+        let that     = this;
+        let urlBadge = this._options.hasOwnProperty('urlBadge') &&
+                       typeof this._options.urlBadge === 'string' &&
+                       this._options.urlBadge
+            ? this._options.urlBadge
+            : null;
+
+        if (urlBadge === null) {
+            return;
+        }
+
+        fetch(urlBadge)
+            .then(function (response) {
+                return response.json();
+
+            }).then(function (response) {
+                if (Utils.isObject(response) &&
+                    response.hasOwnProperty('badge') &&
+                    Utils.isObject(response.badge)
+                ) {
+                    that.setBadge(response.badge);
+                }
+
+            }).catch(function () {
+                that.setBadge(null);
+            });
+    }
+
+
+    /**
      * Установка метки
      * @param {object} badge
      */

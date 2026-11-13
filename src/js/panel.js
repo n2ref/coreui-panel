@@ -436,9 +436,8 @@ class Panel {
 
         let result = null;
 
-        this._tabs.map(function (tab) {
-            if (tab.hasOwnProperty('getId') &&
-                typeof tab.getId === 'function' &&
+        this._tabs.map(function (tab) {;
+            if (typeof tab.getId === 'function' &&
                 tab.getId() === tabId
             ) {
                 result = tab;
@@ -467,6 +466,60 @@ class Panel {
         });
 
         return result;
+    }
+
+
+    /**
+     * Повторная загрузка количества таба
+     * @param {string} tabId
+     */
+    reloadTabCount(tabId) {
+
+        let tab = this.getTabById(tabId);
+
+        if (tab && typeof tab.reloadCount === 'function') {
+            tab.reloadCount();
+        }
+    }
+
+
+    /**
+     * Повторная загрузка метки таба
+     * @param {string} tabId
+     */
+    reloadTabBadge(tabId) {
+
+        let tab = this.getTabById(tabId);
+
+        if (tab && typeof tab.reloadBadge === 'function') {
+            tab.reloadBadge();
+        }
+    }
+
+
+    /**
+     * Повторная загрузка количества всех табов
+     */
+    reloadTabsCount() {
+
+        this._tabs.map(function (tab) {
+            if (tab && typeof tab.reloadCount === 'function') {
+                tab.reloadCount();
+            }
+        });
+    }
+
+
+    /**
+     * Повторная загрузка метки всех табов
+     */
+    reloadTabsBadge() {
+
+        this._tabs.map(function (tab) {
+            if (tab && typeof tab.reloadBadge === 'function') {
+                tab.reloadBadge();
+            }
+        });
     }
 
 

@@ -1,4 +1,3 @@
-import Utils       from '../utils';
 import Private     from '../private';
 import Tpl         from "../tpl";
 import Elements    from "../elements";
@@ -71,11 +70,11 @@ class Tab extends TabAbstract {
 
         } else {
             if (tabCountElement[0]) {
-                tabCountElement.text(' (' + count + ')');
+                tabCountElement.html(' (' + count + ')');
 
             } else {
                 let tabTitleElement = Elements.getTabTitle(this._panel.getId(), this.getId());
-                tabTitleElement.after('<span class="coreui-panel__tab-count"> (' + count + ')>');
+                tabTitleElement.after('<span class="coreui-panel__tab-count"> (' + count + ')</span>');
             }
         }
     }
@@ -137,28 +136,7 @@ class Tab extends TabAbstract {
                 : null;
 
             if (count === null && urlCount) {
-                that.setCount('<div class="spinner-border spinner-border-sm text-secondary"></div>');
-
-                fetch(urlCount)
-                    .then(function (response) {
-                        return response.json();
-
-                    }).then(function (response) {
-
-                        if (Utils.isObject(response) &&
-                            response.hasOwnProperty('count') &&
-                            ['string', 'number'].indexOf(typeof response.count) >= 0 &&
-                            response.count.toString().length > 0
-                        ) {
-                            that.setCount(response.count);
-
-                        } else {
-                            that.setCount(null);
-                        }
-
-                    }).catch(function () {
-                        that.setCount(null);
-                    });
+                that.reloadCount();
             }
         });
 
@@ -177,22 +155,7 @@ class Tab extends TabAbstract {
             : null;
 
         if (badge === null && urlBadge) {
-
-            fetch(urlBadge)
-                .then(function (response) {
-                    return response.json()
-
-                }).then(function (response) {
-                    if (Utils.isObject(response) &&
-                        response.hasOwnProperty('badge') &&
-                        Utils.isObject(response.badge)
-                    ) {
-                        that.setBadge(response.badge);
-                    }
-
-                }).catch(function () {
-                    that.setBadge(null);
-                });
+            that.reloadBadge();
         }
     }
 
